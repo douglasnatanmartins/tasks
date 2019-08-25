@@ -1,27 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:tasks/models/task.dart';
+import 'package:tasks/models/category.dart';
 
 class TaskListScreen extends StatefulWidget {
+  Category category;
+  TaskListScreen(this.category);
+
   @override
   State<StatefulWidget> createState() {
-    return _TaskListScreenState();
+    return _TaskListScreenState(category);
   }
 }
 
 class _TaskListScreenState extends State<TaskListScreen> {
-  List<Task> tasks = [
-    Task(title: 'Flutter Learn'),
-    Task(title: 'Hello Flutter'),
-    Task(title: 'New Program with Flutter')
-  ];
+  Category category;
+  List<Task> tasks = [];
 
   TextEditingController controller = new TextEditingController();
+
+  _TaskListScreenState(this.category) {
+    this.tasks = category.tasks;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Tasks List')
+        title: Text(category.title)
       ),
       body: ListView.builder(
         itemCount: tasks.length,
