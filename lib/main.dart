@@ -10,6 +10,9 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Tasks',
       home: CategoryListScreen(),
+      theme: ThemeData(
+        primaryColor: Colors.green
+      )
     );
   }
 }
