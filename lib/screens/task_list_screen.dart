@@ -60,7 +60,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
                     onPressed: () {
                       controller.clear();
                       Navigator.pop(context);
-                    },
+                    }
                   ),
                   FlatButton(
                     child: Text("Add"),
@@ -69,9 +69,9 @@ class _TaskListScreenState extends State<TaskListScreen> {
                         final task = Task(title: controller.value.text);
                         tasks.add(task);
                         controller.clear();
-                        Navigator.of(context).pop(task);
+                        Navigator.pop(context);
                       });
-                    },
+                    }
                   )
                 ],
               );
@@ -88,10 +88,10 @@ class _TaskListScreenState extends State<TaskListScreen> {
     return ListTile(
       title: Text(task.title),
       leading: Checkbox(
-        value: task.done,
+        value: task.isDone(),
         onChanged: (bool checked) {
           setState(() {
-            task.done = checked;
+            task.setDone(checked);
           });
         },
       ),
@@ -101,7 +101,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
           setState(() {
             tasks.remove(task);
           });
-        },
+        }
       ),
     );
   }
