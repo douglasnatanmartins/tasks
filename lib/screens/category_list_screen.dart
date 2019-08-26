@@ -21,9 +21,11 @@ class _CategoryListScreen extends State<CategoryListScreen> {
       )
     );
 
-    setState(() {
-      categories.add(result);
-    });
+    if (result != null) {
+      setState(() {
+        categories.add(result);
+      });
+    }
   }
 
   @override
