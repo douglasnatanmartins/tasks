@@ -31,7 +31,7 @@ class _NewCategoryScreenState extends State<NewCategoryScreen> {
                     labelText: "Title:"
                   ),
                   validator: (value) {
-                    if (value.isEmpty) {
+                    if (value.trim().isEmpty) {
                       return 'Enter category title.';
                     }
                     return null;
@@ -49,8 +49,8 @@ class _NewCategoryScreenState extends State<NewCategoryScreen> {
                   onPressed: () {
                     if (_formKey.currentState.validate()) {
                       Category newCat = new Category(
-                        title: controllerTitle.text,
-                        description: controllerDescription.text
+                        title: controllerTitle.text.trim(),
+                        description: controllerDescription.text.trim()
                       );
                       Navigator.of(context).pop(newCat);
                     }
