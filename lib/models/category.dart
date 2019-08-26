@@ -5,5 +5,5 @@ class Category {
   String description;
   List<Task> tasks = [];
 
-  Category({this.title, this.description, this.tasks});
+  Category({this.title, this.description});
 }

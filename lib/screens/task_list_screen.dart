@@ -49,6 +49,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
                     child: Text("Cancel"),
                     onPressed: () {
                       controller.clear();
+                      Navigator.pop(context);
                     },
                   ),
                   FlatButton(
@@ -58,7 +59,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
                         final task = Task(title: controller.value.text);
                         tasks.add(task);
                         controller.clear();
-                        Navigator.of(context).pop();
+                        Navigator.of(context).pop(task);
                       });
                     },
                   )

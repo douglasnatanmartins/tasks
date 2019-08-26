@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tasks/models/category.dart';
-import 'package:tasks/models/task.dart';
 import 'package:tasks/screens/task_list_screen.dart';
+import 'package:tasks/screens/new_category_screen.dart';
 
 class CategoryListScreen extends StatefulWidget {
   @override
@@ -11,16 +11,21 @@ class CategoryListScreen extends StatefulWidget {
 }
 
 class _CategoryListScreen extends State<CategoryListScreen> {
-  List<Category> categories = [
-    Category(
-      title: "Home Work",
-      description: "Some description",
-      tasks: [
-        Task(title: "Item 1"),
-        Task(title: "Item 2")
-      ]
-    )
-  ];
+  List<Category> categories = [];
+
+  _createNewCategory(BuildContext context) async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => NewCategoryScreen()
+      )
+    );
+
+    setState(() {
+      categories.add(result);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +34,9 @@ class _CategoryListScreen extends State<CategoryListScreen> {
         actions: <Widget>[
           FlatButton(
             child: Icon(Icons.add, color: Colors.white),
-            onPressed: () {},
+            onPressed: () {
+              _createNewCategory(context);
+            }
           )
         ],
       ),
@@ -41,7 +48,12 @@ class _CategoryListScreen extends State<CategoryListScreen> {
             title: Text(category.title),
             subtitle: Text(category.description),
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => TaskListScreen(category)));
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TaskListScreen(category)
+                )
+              );
             }
           );
         }
