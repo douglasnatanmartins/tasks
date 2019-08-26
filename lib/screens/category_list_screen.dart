@@ -28,6 +28,21 @@ class _CategoryListScreen extends State<CategoryListScreen> {
     }
   }
 
+  _deleteCategory(BuildContext context, Category category) async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TaskListScreen(category)
+      )
+    );
+
+    if (result != null) {
+      setState(() {
+        categories.remove(result);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,12 +65,7 @@ class _CategoryListScreen extends State<CategoryListScreen> {
             title: Text(category.title),
             subtitle: Text(category.description),
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => TaskListScreen(category)
-                )
-              );
+              _deleteCategory(context, category);
             }
           );
         }

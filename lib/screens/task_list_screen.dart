@@ -26,7 +26,15 @@ class _TaskListScreenState extends State<TaskListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(category.title)
+        title: Text(category.title),
+        actions: <Widget>[
+          FlatButton(
+            child: Icon(Icons.delete),
+            onPressed: () {
+              Navigator.of(context).pop(category);
+            }
+          )
+        ],
       ),
       body: ListView.builder(
         itemCount: tasks.length,
