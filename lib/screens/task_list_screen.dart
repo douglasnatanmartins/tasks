@@ -36,9 +36,11 @@ class _TaskListScreenState extends State<TaskListScreen> {
           )
         ],
       ),
-      body: ListView.builder(
-        itemCount: tasks.length,
-        itemBuilder: _buildTaskItem
+      body: Container(
+        child: ListView.builder(
+          itemCount: tasks.length,
+          itemBuilder: _buildTaskItem
+        )
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
@@ -83,14 +85,24 @@ class _TaskListScreenState extends State<TaskListScreen> {
   Widget _buildTaskItem(BuildContext context, int index) {
     final task = tasks[index];
 
-    return CheckboxListTile(
-      value: task.done,
+    return ListTile(
       title: Text(task.title),
-      onChanged: (bool checked) {
-        setState(() {
-          task.done = checked;
-        });
-      }
+      leading: Checkbox(
+        value: task.done,
+        onChanged: (bool checked) {
+          setState(() {
+            task.done = checked;
+          });
+        },
+      ),
+      trailing: FlatButton(
+        child: Icon(Icons.clear, color: Colors.red),
+        onPressed: () {
+          setState(() {
+            tasks.remove(task);
+          });
+        },
+      ),
     );
   }
 }
