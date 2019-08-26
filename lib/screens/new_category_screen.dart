@@ -30,6 +30,12 @@ class _NewCategoryScreenState extends State<NewCategoryScreen> {
                   decoration: InputDecoration(
                     labelText: "Title:"
                   ),
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Enter category title.';
+                    }
+                    return null;
+                  },
                   controller: controllerTitle
                 ),
                 TextFormField(
@@ -41,11 +47,13 @@ class _NewCategoryScreenState extends State<NewCategoryScreen> {
                 RaisedButton(
                   child: Text("New"),
                   onPressed: () {
-                    Category newCat = new Category(
-                      title: controllerTitle.text,
-                      description: controllerDescription.text
-                    );
-                    Navigator.of(context).pop(newCat);
+                    if (_formKey.currentState.validate()) {
+                      Category newCat = new Category(
+                        title: controllerTitle.text,
+                        description: controllerDescription.text
+                      );
+                      Navigator.of(context).pop(newCat);
+                    }
                   }
                 )
               ],
