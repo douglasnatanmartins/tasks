@@ -29,7 +29,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
         title: Text(category.title),
         actions: <Widget>[
           FlatButton(
-            child: Icon(Icons.delete),
+            child: Icon(Icons.delete, color: Colors.white),
             onPressed: () {
               Navigator.of(context).pop(category);
             }
