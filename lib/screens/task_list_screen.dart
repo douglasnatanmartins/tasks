@@ -88,10 +88,10 @@ class _TaskListScreenState extends State<TaskListScreen> {
     return ListTile(
       title: Text(task.title),
       leading: Checkbox(
-        value: task.isDone(),
+        value: task.done,
         onChanged: (bool checked) {
           setState(() {
-            task.setDone(checked);
+            task.done = checked;
           });
         },
       ),
