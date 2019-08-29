@@ -1,3 +1,4 @@
 # Tasks
 ## (Developing)
-![create_category](docs/images/create_category.gif?raw=true)
+## Showcase
+<img src="https://github.com/greenplanets/tasks/blob/master/docs/images/create_category.gif" width="250" />
