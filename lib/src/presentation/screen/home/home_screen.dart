@@ -51,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Expanded(
                   child: FlatButton(
                     color: Colors.green,
-                    child: Icon(Icons.add),
+                    child: Icon(Icons.add, color: Colors.white),
                     onPressed: () async {
                       final result = await _buildForm(context);
                       if (result is CategoryModel) {
@@ -93,6 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
             itemBuilder: (context, index) {
               final category = source[index];
               return ListTile(
+                leading: Icon(Icons.book),
                 title: Text(
                   category.title
                 ),

@@ -48,6 +48,7 @@ class _TaskListDetailScreenState extends State<TaskListDetailScreen> {
       ),
       body: _buildBody(context, list),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.green,
         child: Icon(Icons.add),
         onPressed: () async {
           final result = await _buildForm(context);
