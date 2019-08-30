@@ -92,15 +92,18 @@ class _ProjectDetailScreenState extends State<ProjectDetailScreen> {
                         );
                       },
                       trailing: PopupMenuButton(
+                        onSelected: (action) {
+                          if (action == 'delete') {
+                            _bloc.removeTask(task);
+                          }
+                        },
                         itemBuilder: (context) {
                           return [
                             PopupMenuItem(
+                              value: 'delete',
                               child: ListTile(
                                 leading: Icon(Icons.delete),
-                                title: Text("Delete"),
-                                onTap: () {
-                                  _bloc.removeTask(task);
-                                }
+                                title: Text("Delete")
                               )
                             )
                           ];
