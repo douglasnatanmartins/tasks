@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tasks/src/domain/entities/project_entity.dart';
 import 'package:tasks/src/domain/entities/task_entity.dart';
 import 'package:tasks/src/presentation/screen/project_detail/project_detail_screen_bloc.dart';
+import 'package:tasks/src/presentation/screen/task_detail/task_detail_screen.dart';
 
 class ProjectDetailScreen extends StatefulWidget {
   final ProjectEntity project;
@@ -79,9 +80,17 @@ class _ProjectDetailScreenState extends State<ProjectDetailScreen> {
                         value: task.done,
                         onChanged: (bool checked) {
                           _bloc.taskIsDone(task, checked);
-                        },
+                        }
                       ),
-                      title: Text(task.title)
+                      title: Text(task.title),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => TaskDetailScreen(task: task)
+                          )
+                        );
+                      }
                     );
                   }
                 );
