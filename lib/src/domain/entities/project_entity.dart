@@ -1,21 +1,26 @@
 import 'package:flutter/foundation.dart';
-import 'package:tasks/src/data/models/task_model.dart';
+import 'package:tasks/src/domain/entities/task_entity.dart';
 
-class TaskListModel {
+class ProjectEntity {
   String _title;
   String _description;
-  List<TaskModel> _tasks;
+  List<TaskEntity> _tasks;
 
   String get title => _title;
   set title(String title) => _title = title;
+
   String get description => _description;
   set description(String description) => _description = description;
-  List<TaskModel> get tasks => _tasks;
-  set tasks(List<TaskModel> tasks) => _tasks = tasks;
 
-  TaskListModel({@required String title, String description, List<TaskModel> tasks}) {
+  List<TaskEntity> get tasks => _tasks;
+  set tasks(List<TaskEntity> tasks) => _tasks = tasks;
+
+  ProjectEntity({
+    @required String title,
+    String description = ''
+  }) {
     _title = title;
     _description = description;
-    _tasks = tasks != null ? tasks : [];
+    _tasks = [];
   }
 }

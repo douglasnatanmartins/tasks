@@ -1,12 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:tasks/src/data/models/category_model.dart';
-import 'package:tasks/src/data/models/task_list_model.dart';
-import 'package:tasks/src/presentation/screen/task_list_detail/task_list_detail_screen.dart';
+import 'package:tasks/src/domain/entities/category_entity.dart';
+import 'package:tasks/src/domain/entities/project_entity.dart';
+import 'package:tasks/src/presentation/screen/project_detail/project_detail_screen.dart';
+
 import 'category_detail_screen_bloc.dart';
 
 class CategoryDetailScreen extends StatefulWidget {
-  final CategoryModel category;
+  final CategoryEntity category;
 
   const CategoryDetailScreen({Key key, @required this.category}):
     assert(category != null),
@@ -36,14 +37,14 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
   Widget build(BuildContext context) {
     return StreamBuilder(
       initialData: widget.category,
-      stream: _bloc.stream,
+      stream: _bloc.streamOfCategory,
       builder: (context, snapshot) {
         return _buildUI(context, snapshot.data);
       }
     );
   }
 
-  Widget _buildUI(BuildContext context, CategoryModel category) {
+  Widget _buildUI(BuildContext context, CategoryEntity category) {
     return Scaffold(
       appBar: AppBar(
         title: Text(category.title),
@@ -70,8 +71,8 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                     child: Icon(Icons.add, color: Colors.white),
                     onPressed: () async {
                       final result = await _buildForm(context);
-                      if (result is TaskListModel) {
-                        _bloc.addNewList(result);
+                      if (result is ProjectEntity) {
+                        _bloc.addProject(result);
                       }
                     },
                   )
@@ -80,22 +81,22 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
             ),
             Expanded(
               child: StreamBuilder(
-                initialData: category.allList,
-                stream: _bloc.streamOfList,
+                initialData: category.projects,
+                stream: _bloc.streamOfProjects,
                 builder: (context, snapshot) {
-                  final List<TaskListModel> source = snapshot.data;
+                  final List<ProjectEntity> source = snapshot.data;
                   return ListView.builder(
                     itemCount: source.length,
                     itemBuilder: (context, index) {
-                      final list = source[index];
+                      final project = source[index];
                       return ListTile(
                         leading: Icon(Icons.list),
-                        title: Text(list.title),
+                        title: Text(project.title),
                         onTap: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => TaskListDetailScreen(list: list)
+                              builder: (context) => ProjectDetailScreen(project: project)
                             )
                           );
                         },
@@ -162,11 +163,11 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                           )
                         ),
                         onPressed: () {
-                          TaskListModel list = TaskListModel(
+                          ProjectEntity project = ProjectEntity(
                             title: _titleController.text.trim(),
                             description: _descriptionController.text.trim()
                           );
-                          Navigator.of(context).pop(list);
+                          Navigator.of(context).pop(project);
                         }
                       )
                     )

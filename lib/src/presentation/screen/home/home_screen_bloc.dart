@@ -1,22 +1,27 @@
 import 'dart:async';
-import 'package:tasks/src/data/models/category_model.dart';
+
+import 'package:tasks/src/domain/entities/category_entity.dart';
 
 class HomeScreenBloc {
-  final _action = StreamController.broadcast();
-  Sink get action => _action.sink;
-  Stream get stream => _action.stream;
-  List<CategoryModel> _categories = [];
+  final _controllerOfHome = StreamController.broadcast();
+  Sink get sinkOfHome => _controllerOfHome.sink;
+  Stream get streamOfHome => _controllerOfHome.stream;
 
-  void onAdd(CategoryModel category) {
+  final _controllerOfCategories = StreamController.broadcast();
+  Sink get sinkOfCategories => _controllerOfCategories.sink;
+  Stream get streamOfCategories => _controllerOfCategories.stream;
+
+  List<CategoryEntity> _categories = [];
+
+  void addCategory(CategoryEntity category) {
     _categories.add(category);
-    passData();
+    _sinkingCategories();
   }
 
-  void passData() {
-    action.add(_categories);
-  }
+  void _sinkingCategories() => sinkOfCategories.add(_categories);
 
   void dispose() {
-    _action.close();
+    _controllerOfCategories.close();
+    _controllerOfHome.close();
   }
 }

@@ -1,28 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:tasks/src/data/models/task_list_model.dart';
-import 'package:tasks/src/data/models/task_model.dart';
-import 'package:tasks/src/presentation/screen/task_list_detail/task_list_detail_screen_bloc.dart';
+import 'package:tasks/src/domain/entities/project_entity.dart';
+import 'package:tasks/src/domain/entities/task_entity.dart';
+import 'package:tasks/src/presentation/screen/project_detail/project_detail_screen_bloc.dart';
 
-class TaskListDetailScreen extends StatefulWidget {
-  final TaskListModel list;
+class ProjectDetailScreen extends StatefulWidget {
+  final ProjectEntity project;
 
-  TaskListDetailScreen({Key key, @required this.list}):
-    assert(list != null),
+  ProjectDetailScreen({Key key, @required this.project}):
+    assert(project != null),
     super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return _TaskListDetailScreenState();
+    return _ProjectDetailScreenState();
   }
 }
 
-class _TaskListDetailScreenState extends State<TaskListDetailScreen> {
-  TaskListDetailScreenBloc _bloc;
+class _ProjectDetailScreenState extends State<ProjectDetailScreen> {
+  ProjectDetailScreenBloc _bloc;
 
   @override
   void initState() {
     super.initState();
-    _bloc = TaskListDetailScreenBloc(list: widget.list);
+    _bloc = ProjectDetailScreenBloc(project: widget.project);
   }
 
   void dispose() {
@@ -33,26 +33,26 @@ class _TaskListDetailScreenState extends State<TaskListDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      initialData: widget.list,
-      stream: _bloc.stream,
+      initialData: widget.project,
+      stream: _bloc.streamOfProject,
       builder: (context, snapshot) {
         return _buildUI(context, snapshot.data);
       }
     );
   }
 
-  Widget _buildUI(BuildContext context, TaskListModel list) {
+  Widget _buildUI(BuildContext context, ProjectEntity project) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(list.title)
+        title: Text(project.title)
       ),
-      body: _buildBody(context, list),
+      body: _buildBody(context, project),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.green,
         child: Icon(Icons.add),
         onPressed: () async {
           final result = await _buildForm(context);
-          if (result is TaskModel) {
+          if (result is TaskEntity) {
             _bloc.addTask(result);
           }
         },
@@ -60,25 +60,25 @@ class _TaskListDetailScreenState extends State<TaskListDetailScreen> {
     );
   }
 
-  Widget _buildBody(BuildContext context, TaskListModel list) {
+  Widget _buildBody(BuildContext context, ProjectEntity project) {
     return Container(
       child: Column(
         children: <Widget>[
           Expanded(
             child: StreamBuilder(
-              initialData: list.tasks,
+              initialData: project.tasks,
               stream: _bloc.streamOfTasks,
               builder: (context, snapshot) {
-                final List<TaskModel> source = snapshot.data;
+                final List<TaskEntity> source = snapshot.data;
                 return ListView.builder(
                   itemCount: source.length,
                   itemBuilder: (context, index) {
-                    final task = list.tasks[index];
+                    final task = source[index];
                     return ListTile(
                       leading: Checkbox(
-                        value: task.finished,
+                        value: task.done,
                         onChanged: (bool checked) {
-                          _bloc.onFinished(index, checked);
+                          _bloc.taskIsDone(task, checked);
                         },
                       ),
                       title: Text(task.title)
@@ -115,7 +115,7 @@ class _TaskListDetailScreenState extends State<TaskListDetailScreen> {
             FlatButton(
               child: Text("Add"),
               onPressed: () {
-                final task = TaskModel(title: controller.value.text);
+                final task = TaskEntity(title: controller.value.text);
                 controller.clear();
                 Navigator.of(context).pop(task);
               }

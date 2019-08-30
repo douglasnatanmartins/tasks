@@ -1,44 +1,40 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
-import 'package:tasks/src/data/models/category_model.dart';
-import 'package:tasks/src/data/models/task_list_model.dart';
+import 'package:tasks/src/domain/entities/category_entity.dart';
+import 'package:tasks/src/domain/entities/project_entity.dart';
 
 class CategoryDetailScreenBloc {
-  final _action = StreamController.broadcast();
-  Sink get action => _action.sink;
-  Stream get stream => _action.stream;
-  final _actionOfList = StreamController.broadcast();
-  Sink get actionOfList => _actionOfList.sink;
-  Stream get streamOfList => _actionOfList.stream;
+  final _controllerOfCategory = StreamController.broadcast();
+  Sink get sinkOfCategory => _controllerOfCategory.sink;
+  Stream get streamOfCategory => _controllerOfCategory.stream;
 
-  CategoryModel category;
-  List<TaskListModel> taskLists;
+  final _controllerOfProjects = StreamController.broadcast();
+  Sink get sinkOfProjects => _controllerOfProjects.sink;
+  Stream get streamOfProjects => _controllerOfProjects.stream;
 
-  CategoryDetailScreenBloc({@required CategoryModel category}) {
-    this.category = category;
-    this.taskLists = category.allList;
+  CategoryEntity _category;
+
+  CategoryDetailScreenBloc({@required CategoryEntity category}) {
+    _category = category;
   }
 
-  void updateCategory(CategoryModel category) {
-    this.category = category;
-    passCategory();
+  /// Update category and sinking updated category to stream.
+  void updateCategory(CategoryEntity category) {
+    _category = category;
+    _sinkingCategory();
   }
 
-  void passCategory() {
-    action.add(category);
+  /// Add project to category.
+  void addProject(ProjectEntity project) {
+    _category.addProject(project);
+    _sinkingProjects();
   }
 
-  void addNewList(TaskListModel list) {
-    category.addTaskList(list);
-    passLists();
-  }
-
-  void passLists() {
-    actionOfList.add(taskLists);
-  }
+  void _sinkingCategory() => sinkOfCategory.add(_category);
+  void _sinkingProjects() => sinkOfProjects.add(_category.projects);
 
   void dispose() {
-    _action.close();
-    _actionOfList.close();
+    _controllerOfProjects.close();
+    _controllerOfCategory.close();
   }
 }
