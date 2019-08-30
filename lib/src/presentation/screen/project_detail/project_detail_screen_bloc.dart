@@ -24,6 +24,11 @@ class ProjectDetailScreenBloc {
     _sinkingTasks();
   }
 
+  void removeTask(TaskEntity task) {
+    _project.tasks.remove(task);
+    _sinkingTasks();
+  }
+
   void taskIsDone(TaskEntity task, bool done) {
     int index = _project.tasks.indexOf(task);
     _project.tasks[index].done = done;

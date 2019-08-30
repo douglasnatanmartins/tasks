@@ -90,7 +90,22 @@ class _ProjectDetailScreenState extends State<ProjectDetailScreen> {
                             builder: (context) => TaskDetailScreen(task: task)
                           )
                         );
-                      }
+                      },
+                      trailing: PopupMenuButton(
+                        itemBuilder: (context) {
+                          return [
+                            PopupMenuItem(
+                              child: ListTile(
+                                leading: Icon(Icons.delete),
+                                title: Text("Delete"),
+                                onTap: () {
+                                  _bloc.removeTask(task);
+                                }
+                              )
+                            )
+                          ];
+                        }
+                      ),
                     );
                   }
                 );
