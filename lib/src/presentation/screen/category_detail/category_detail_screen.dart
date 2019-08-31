@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:tasks/src/domain/entities/category_entity.dart';
 import 'package:tasks/src/domain/entities/project_entity.dart';
 import 'package:tasks/src/presentation/screen/project_detail/project_detail_screen.dart';
-
 import 'category_detail_screen_bloc.dart';
 
 class CategoryDetailScreen extends StatefulWidget {
@@ -100,6 +99,10 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                             )
                           );
                         },
+                        trailing: IconButton(
+                          icon: Icon(Icons.star),
+                          onPressed: () {},
+                        )
                       );
                     }
                   );

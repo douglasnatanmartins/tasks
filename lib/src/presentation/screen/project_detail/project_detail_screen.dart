@@ -108,7 +108,7 @@ class _ProjectDetailScreenState extends State<ProjectDetailScreen> {
                             )
                           ];
                         }
-                      ),
+                      )
                     );
                   }
                 );
