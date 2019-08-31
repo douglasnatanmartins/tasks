@@ -75,6 +75,10 @@ class _ProjectDetailScreenState extends State<ProjectDetailScreen> {
                   itemCount: source.length,
                   itemBuilder: (context, index) {
                     final task = source[index];
+                    TextDecoration decoration = TextDecoration.none;
+                    if (task.done) {
+                      decoration = TextDecoration.lineThrough;
+                    }
                     return ListTile(
                       leading: Checkbox(
                         value: task.done,
@@ -82,7 +86,12 @@ class _ProjectDetailScreenState extends State<ProjectDetailScreen> {
                           _bloc.taskIsDone(task, checked);
                         }
                       ),
-                      title: Text(task.title),
+                      title: Text(
+                        task.title,
+                        style: TextStyle(
+                          decoration: decoration
+                        )
+                      ),
                       onTap: () {
                         Navigator.push(
                           context,
