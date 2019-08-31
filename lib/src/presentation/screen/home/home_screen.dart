@@ -30,7 +30,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildUI(BuildContext context, data) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text("Tasks"),
+        centerTitle: true
+      ),
       body: Container(
         child: SafeArea(
           child: Column(
