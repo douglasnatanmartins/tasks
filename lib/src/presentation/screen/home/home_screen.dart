@@ -151,9 +151,14 @@ class _HomeScreenState extends State<HomeScreen> {
       itemBuilder: (context, index) {
         final category = categories[index];
         return ListTile(
-          leading: Icon(Icons.book),
+          leading: Icon(Icons.book, color: Colors.green),
           title: Text(
-            category.title
+            category.title,
+            style: TextStyle(
+              color: Colors.orange,
+              fontWeight: FontWeight.w500,
+              fontSize: 18
+            )
           ),
           subtitle: Text(category.description),
           onTap: () {
