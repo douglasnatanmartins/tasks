@@ -28,6 +28,11 @@ class TaskDetailScreenBloc {
     _task.steps.insert(index, step);
   }
 
+  void removeStep(StepEntity step) {
+    _task.steps.remove(step);
+    _sinkingSteps();
+  }
+
   void markStepIsDone(int index, bool isDone) {
     _task.steps[index].done = isDone;
     _sinkingSteps();

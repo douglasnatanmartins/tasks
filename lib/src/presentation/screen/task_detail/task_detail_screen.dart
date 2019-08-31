@@ -95,7 +95,16 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
             _bloc.updateStep(index, step);
           }
         }
-      )
+      ),
+      trailing: IconButton(
+        icon: Icon(Icons.remove),
+        color: Colors.red,
+        onPressed: () {
+          if(_controller.text.trim() != '') {
+            _bloc.removeStep(step);
+          }
+        }
+      ),
     );
   }
 }
