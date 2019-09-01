@@ -50,7 +50,9 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
         actions: <Widget>[
           FlatButton(
             child: Icon(Icons.delete, color: Colors.red),
-            onPressed: () {}
+            onPressed: () {
+              Navigator.of(context).pop(["delete", category]);
+            }
           )
         ],
       ),
@@ -99,9 +101,22 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                             )
                           );
                         },
-                        trailing: Text(
-                          _bloc.countNotDoneTaskInProject(project).toString(),
-                          style: TextStyle(fontSize: 17)
+                        trailing: Container(
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Text(
+                                _bloc.countNotDoneTaskInProject(project).toString(),
+                                style: TextStyle(fontSize: 17)
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.clear),
+                                onPressed: () {
+                                  _bloc.deleteProject(project);
+                                }
+                              )
+                            ]
+                          )
                         )
                       );
                     }

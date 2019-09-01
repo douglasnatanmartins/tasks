@@ -30,6 +30,11 @@ class CategoryDetailScreenBloc {
     _sinkingProjects();
   }
 
+  void deleteProject(ProjectEntity project) {
+    _category.removeProject(project);
+    _sinkingProjects();
+  }
+
   int countNotDoneTaskInProject(ProjectEntity project) {
     int count = 0;
     project.tasks.forEach((task) {

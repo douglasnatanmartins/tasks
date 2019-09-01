@@ -18,6 +18,11 @@ class HomeScreenBloc {
     _sinkingCategories();
   }
 
+  void removeCategory(CategoryEntity category) {
+    _categories.remove(category);
+    _sinkingCategories();
+  }
+
   void _sinkingCategories() => sinkOfCategories.add(_categories);
 
   void dispose() {

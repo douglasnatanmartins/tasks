@@ -161,13 +161,16 @@ class _HomeScreenState extends State<HomeScreen> {
             )
           ),
           subtitle: Text(category.description),
-          onTap: () {
-            Navigator.push(
+          onTap: () async {
+            final result = await Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => CategoryDetailScreen(category: category)
               )
             );
+            if (result[0] == "delete") {
+              _bloc.removeCategory(result[1]);
+            }
           }
         );
       }
