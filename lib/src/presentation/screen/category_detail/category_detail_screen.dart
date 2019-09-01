@@ -50,8 +50,33 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
         actions: <Widget>[
           FlatButton(
             child: Icon(Icons.delete, color: Colors.red),
-            onPressed: () {
-              Navigator.of(context).pop(["delete", category]);
+            onPressed: () async {
+              final result = await showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    content: Text("Are you want delete this category?"),
+                    actions: <Widget>[
+                      FlatButton(
+                        child: Text("Yes"),
+                        onPressed: () {
+                          Navigator.of(context).pop("yes");
+                        },
+                      ),
+                      FlatButton(
+                        child: Text("Cancel"),
+                        onPressed: () {
+                          Navigator.of(context).pop("cancel");
+                        }
+                      )
+                    ],
+                  );
+                }
+              );
+
+              if (result == "yes") {
+                Navigator.of(context).pop(["delete", category]);
+              }
             }
           )
         ],

@@ -73,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Text(
                   _getMonthLabel(now.month),
                   style: TextStyle(
-                    fontSize: 72,
+                    fontSize: 54,
                     color: Color.fromRGBO(30, 40, 50, 0.25)
                   )
                 )
@@ -168,8 +168,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 builder: (context) => CategoryDetailScreen(category: category)
               )
             );
-            if (result[0] == "delete") {
-              _bloc.removeCategory(result[1]);
+
+            if (result != null) {
+              if (result[0] == "delete") {
+                _bloc.removeCategory(result[1]);
+              }
             }
           }
         );
