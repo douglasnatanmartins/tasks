@@ -130,15 +130,26 @@ class _ProjectDetailScreenState extends State<ProjectDetailScreen> {
   }
 
   _buildForm(context) {
+    final _key = GlobalKey<FormState>();
+
     return showDialog(
       context: context,
       builder: (BuildContext context) {
         final controller = TextEditingController();
         return AlertDialog(
           title: Text("New Task"),
-          content: TextField(
-            controller: controller,
-            autofocus: true
+          content: Form(
+            key: _key,
+            child: TextFormField(
+              autofocus: true,
+              controller: controller,
+              validator: (value) {
+                if (value.trim().isEmpty) {
+                  return "Please enter task title";
+                }
+                return null;
+              }
+            )
           ),
           actions: <Widget>[
             FlatButton(
@@ -151,9 +162,11 @@ class _ProjectDetailScreenState extends State<ProjectDetailScreen> {
             FlatButton(
               child: Text("Add"),
               onPressed: () {
-                final task = TaskEntity(title: controller.value.text);
-                controller.clear();
-                Navigator.of(context).pop(task);
+                if (_key.currentState.validate()) {
+                  final task = TaskEntity(title: controller.value.text.trim());
+                  controller.clear();
+                  Navigator.of(context).pop(task);
+                }
               }
             )
           ],

@@ -58,13 +58,20 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                     content: Text("Are you want delete this category?"),
                     actions: <Widget>[
                       FlatButton(
-                        child: Text("Yes"),
+                        color: Colors.red,
+                        child: Text(
+                          "Yes",
+                          style: TextStyle(color: Colors.white)
+                        ),
                         onPressed: () {
                           Navigator.of(context).pop("yes");
                         },
                       ),
                       FlatButton(
-                        child: Text("Cancel"),
+                        child: Text(
+                          "Cancel",
+                          style: TextStyle(color: Colors.grey)
+                        ),
                         onPressed: () {
                           Navigator.of(context).pop("cancel");
                         }
