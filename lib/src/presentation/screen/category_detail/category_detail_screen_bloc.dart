@@ -30,6 +30,16 @@ class CategoryDetailScreenBloc {
     _sinkingProjects();
   }
 
+  int countNotDoneTaskInProject(ProjectEntity project) {
+    int count = 0;
+    project.tasks.forEach((task) {
+      if (!task.done) {
+        count++;
+      }
+    });
+    return count;
+  }
+
   void _sinkingCategory() => sinkOfCategory.add(_category);
   void _sinkingProjects() => sinkOfProjects.add(_category.projects);
 

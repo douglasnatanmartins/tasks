@@ -99,9 +99,9 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                             )
                           );
                         },
-                        trailing: IconButton(
-                          icon: Icon(Icons.star),
-                          onPressed: () {},
+                        trailing: Text(
+                          _bloc.countNotDoneTaskInProject(project).toString(),
+                          style: TextStyle(fontSize: 17)
                         )
                       );
                     }
