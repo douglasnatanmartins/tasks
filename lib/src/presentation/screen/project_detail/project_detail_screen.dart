@@ -160,7 +160,11 @@ class _ProjectDetailScreenState extends State<ProjectDetailScreen> {
               }
             ),
             FlatButton(
-              child: Text("Add"),
+              color: Colors.green,
+              child: Text(
+                "Add",
+                style: TextStyle(color: Colors.white)
+              ),
               onPressed: () {
                 if (_key.currentState.validate()) {
                   final task = TaskEntity(title: controller.value.text.trim());

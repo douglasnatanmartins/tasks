@@ -163,6 +163,8 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
   }
 
   _buildForm(BuildContext context) {
+    final _key = GlobalKey<FormState>();
+
     return showDialog(
       context: context,
       builder: (context) {
@@ -171,10 +173,12 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
         return Dialog(
           child: Container(
             width: 360,
-            height: 240,
+            height: 280,
             padding: EdgeInsets.all(20),
             child: Form(
+              key: _key,
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
                     "New List",
@@ -183,23 +187,24 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                       fontWeight: FontWeight.w600
                     )
                   ),
-                  Flexible(
-                    child: TextFormField(
-                      autofocus: true,
-                      controller: _titleController,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        labelText: "Title"
-                      )
-                    )
+                  TextFormField(
+                    autofocus: true,
+                    controller: _titleController,
+                    decoration: InputDecoration(
+                      labelText: "Title"
+                    ),
+                    validator: (value) {
+                      if (value.trim().isEmpty) {
+                        return "Please enter project title.";
+                      }
+                      return null;
+                    },
                   ),
-                  Flexible(
-                    child: TextFormField(
+                  TextFormField(
                       controller: _descriptionController,
                       decoration: InputDecoration(
                         labelText: "Description"
                       )
-                    )
                   ),
                   Expanded(
                     child: Align(
@@ -213,11 +218,13 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                           )
                         ),
                         onPressed: () {
-                          ProjectEntity project = ProjectEntity(
-                            title: _titleController.text.trim(),
-                            description: _descriptionController.text.trim()
-                          );
-                          Navigator.of(context).pop(project);
+                          if (_key.currentState.validate()) {
+                            ProjectEntity project = ProjectEntity(
+                              title: _titleController.text.trim(),
+                              description: _descriptionController.text.trim()
+                            );
+                            Navigator.of(context).pop(project);
+                          }
                         }
                       )
                     )

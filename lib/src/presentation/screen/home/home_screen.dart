@@ -181,6 +181,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   _buildForm(BuildContext context) {
+    final _key = GlobalKey<FormState>();
     return showDialog(
       context: context,
       builder: (context) {
@@ -189,9 +190,10 @@ class _HomeScreenState extends State<HomeScreen> {
         return Dialog(
           child: Container(
             width: 360,
-            height: 240,
+            height: 280,
             padding: EdgeInsets.all(20),
             child: Form(
+              key: _key,
               child: Column(
                 children: <Widget>[
                   Text(
@@ -206,9 +208,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       autofocus: true,
                       controller: _titleController,
                       decoration: InputDecoration(
-                        border: InputBorder.none,
                         labelText: "Title"
-                      )
+                      ),
+                      validator: (value) {
+                        if (value.trim().isEmpty) {
+                          return "Please enter category title.";
+                        }
+                        return null;
+                      },
                     )
                   ),
                   Flexible(
@@ -231,11 +238,13 @@ class _HomeScreenState extends State<HomeScreen> {
                           )
                         ),
                         onPressed: () {
-                          CategoryEntity category = CategoryEntity(
-                            title: _titleController.text.trim(),
-                            description: _descriptionController.text.trim()
-                          );
-                          Navigator.of(context).pop(category);
+                          if (_key.currentState.validate()) {
+                            CategoryEntity category = CategoryEntity(
+                              title: _titleController.text.trim(),
+                              description: _descriptionController.text.trim()
+                            );
+                            Navigator.of(context).pop(category);
+                          }
                         }
                       )
                     )
