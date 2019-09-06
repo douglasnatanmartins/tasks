@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tasks/src/data/models/category_model.dart';
 import 'package:tasks/src/domain/entities/category_entity.dart';
 
 import 'home_screen_bloc.dart';
@@ -12,11 +13,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  HomeScreenBloc _bloc;
-
-  _HomeScreenState() {
-    _bloc = HomeScreenBloc();
-  }
+  HomeScreenBloc _bloc = HomeScreenBloc();
 
   @override
   Widget build(BuildContext context) {
@@ -111,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Icon(Icons.add, color: Colors.white),
                   onPressed: () async {
                     final result = await _buildForm(context);
-                    if (result is CategoryEntity) {
+                    if (result is CategoryModel) {
                       _bloc.addCategory(result);
                     }
                   }
@@ -122,19 +119,31 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         Container(
           child: Expanded(
-            child: StreamBuilder(
-              stream: _bloc.streamOfCategories,
-              builder: (context, snapshot) {
-                if (snapshot.hasData && snapshot.data is List<CategoryEntity>) {
-                  return _buildListView(snapshot.data);
+            child: FutureBuilder(
+              future: _bloc.repository.all(),
+              builder: (context, loaded) {
+                if (loaded.hasData) {
+                  return StreamBuilder(
+                    initialData: loaded.data,
+                    stream: _bloc.streamOfCategories,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData && !snapshot.data.isEmpty) {
+                        return _buildListView(snapshot.data);
+                      } else {
+                        return Center(
+                          child: Text(
+                            "Empty",
+                            style: TextStyle(
+                              fontSize: 16
+                            )
+                          )
+                        );
+                      }
+                    }
+                  );
                 } else {
                   return Center(
-                    child: Text(
-                      "Empty",
-                      style: TextStyle(
-                        fontSize: 16
-                      )
-                    )
+                    child: CircularProgressIndicator()
                   );
                 }
               }
@@ -145,7 +154,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildListView(List<CategoryEntity> categories) {
+  Widget _buildListView(List<CategoryModel> categories) {
     return ListView.builder(
       itemCount: categories.length,
       itemBuilder: (context, index) {
@@ -171,7 +180,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
             if (result != null) {
               if (result[0] == "delete") {
-                _bloc.removeCategory(result[1]);
+                _bloc.deleteCategory(result[1]);
               }
             }
           }
@@ -239,7 +248,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         onPressed: () {
                           if (_key.currentState.validate()) {
-                            CategoryEntity category = CategoryEntity(
+                            CategoryModel category = CategoryModel(
                               title: _titleController.text.trim(),
                               description: _descriptionController.text.trim()
                             );

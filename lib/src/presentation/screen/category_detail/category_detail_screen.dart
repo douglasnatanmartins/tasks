@@ -1,12 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:tasks/src/domain/entities/category_entity.dart';
+import 'package:tasks/src/data/models/category_model.dart';
+import 'package:tasks/src/data/models/project_model.dart';
 import 'package:tasks/src/domain/entities/project_entity.dart';
 import 'package:tasks/src/presentation/screen/project_detail/project_detail_screen.dart';
 import 'category_detail_screen_bloc.dart';
 
 class CategoryDetailScreen extends StatefulWidget {
-  final CategoryEntity category;
+  final CategoryModel category;
 
   const CategoryDetailScreen({Key key, @required this.category}):
     assert(category != null),
@@ -43,7 +44,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
     );
   }
 
-  Widget _buildUI(BuildContext context, CategoryEntity category) {
+  Widget _buildUI(BuildContext context, CategoryModel category) {
     return Scaffold(
       appBar: AppBar(
         title: Text(category.title),
@@ -104,7 +105,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                     child: Icon(Icons.add, color: Colors.white),
                     onPressed: () async {
                       final result = await _buildForm(context);
-                      if (result is ProjectEntity) {
+                      if (result is ProjectModel) {
                         _bloc.addProject(result);
                       }
                     },
@@ -113,52 +114,72 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
               )
             ),
             Expanded(
-              child: StreamBuilder(
-                initialData: category.projects,
-                stream: _bloc.streamOfProjects,
-                builder: (context, snapshot) {
-                  final List<ProjectEntity> source = snapshot.data;
-                  return ListView.builder(
-                    itemCount: source.length,
-                    itemBuilder: (context, index) {
-                      final project = source[index];
-                      return ListTile(
-                        leading: Icon(Icons.list),
-                        title: Text(project.title),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ProjectDetailScreen(project: project)
-                            )
+              child: FutureBuilder(
+                future: _bloc.getAllProject(),
+                builder: (context, loaded) {
+                  if (loaded.hasData) {
+                    return StreamBuilder(
+                      initialData: loaded.data,
+                      stream: _bloc.streamOfProjects,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData && !snapshot.data.isEmpty) {
+                          return _buildListView(snapshot.data);
+                        } else {
+                          return Center(
+                            child: Text("Empty")
                           );
-                        },
-                        trailing: Container(
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Text(
-                                _bloc.countNotDoneTaskInProject(project).toString(),
-                                style: TextStyle(fontSize: 17)
-                              ),
-                              IconButton(
-                                icon: Icon(Icons.clear),
-                                onPressed: () {
-                                  _bloc.deleteProject(project);
-                                }
-                              )
-                            ]
-                          )
-                        )
-                      );
-                    }
-                  );
+                        }
+                      }
+                    );
+                  } else {
+                    return Center(
+                      child: CircularProgressIndicator()
+                    );
+                  }
                 }
               )
             )
           ],
         )
       )
+    );
+  }
+
+  Widget _buildListView(List<ProjectModel> data) {
+    return ListView.builder(
+      itemCount: data.length,
+      itemBuilder: (context, index) {
+        final project = data[index];
+        return ListTile(
+          leading: Icon(Icons.list),
+          title: Text(project.title),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ProjectDetailScreen(project: ProjectEntity(title: "test"))
+              )
+            );
+          },
+          trailing: Container(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(
+                  _bloc.countNotDoneTaskInProject(project).toString(),
+                  style: TextStyle(fontSize: 17)
+                ),
+                IconButton(
+                  icon: Icon(Icons.clear),
+                  onPressed: () {
+                    _bloc.deleteProject(project);
+                  }
+                )
+              ]
+            )
+          )
+        );
+      }
     );
   }
 
@@ -219,9 +240,10 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                         ),
                         onPressed: () {
                           if (_key.currentState.validate()) {
-                            ProjectEntity project = ProjectEntity(
+                            ProjectModel project = ProjectModel(
                               title: _titleController.text.trim(),
-                              description: _descriptionController.text.trim()
+                              description: _descriptionController.text.trim(),
+                              categoryId: widget.category.id
                             );
                             Navigator.of(context).pop(project);
                           }

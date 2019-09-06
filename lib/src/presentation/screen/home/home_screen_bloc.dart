@@ -1,6 +1,7 @@
 import 'dart:async';
 
-import 'package:tasks/src/domain/entities/category_entity.dart';
+import 'package:tasks/src/data/models/category_model.dart';
+import 'package:tasks/src/data/repositories/category_repository.dart';
 
 class HomeScreenBloc {
   final _controllerOfHome = StreamController.broadcast();
@@ -11,19 +12,24 @@ class HomeScreenBloc {
   Sink get sinkOfCategories => _controllerOfCategories.sink;
   Stream get streamOfCategories => _controllerOfCategories.stream;
 
-  List<CategoryEntity> _categories = [];
+  CategoryRepository _repository = CategoryRepository();
+  CategoryRepository get repository => _repository;
 
-  void addCategory(CategoryEntity category) {
-    _categories.add(category);
+  void addCategory(CategoryModel category) {
+    _repository.add(category);
     _sinkingCategories();
   }
 
-  void removeCategory(CategoryEntity category) {
-    _categories.remove(category);
+  void deleteCategory(CategoryModel category) {
+    _repository.delete(category);
     _sinkingCategories();
   }
 
-  void _sinkingCategories() => sinkOfCategories.add(_categories);
+  void _sinkingCategories() {
+    _repository.all().then((categories) {
+      sinkOfCategories.add(categories);
+    });
+  }
 
   void dispose() {
     _controllerOfCategories.close();
