@@ -1,38 +1,56 @@
 import 'dart:async';
 import 'package:sqflite/sqflite.dart';
 import 'package:tasks/src/data/database_creator.dart';
-import 'package:tasks/src/data/models/category_model.dart';
+import 'package:tasks/src/data/repositories/project_repository.dart';
 
 class CategoryRepository {
-  Future<List<CategoryModel>> all() async {
+  ProjectRepository _projectRepository;
+
+  CategoryRepository() {
+    _projectRepository = ProjectRepository();
+  }
+
+  /// Get all categories.
+  Future<List<Map<String, dynamic>>> all() async {
     Database db = await DatabaseCreator().database;
-    List<CategoryModel> categories = [];
-    List<Map<String, dynamic>> records = await db.rawQuery("SELECT * FROM Category");
-    records.forEach((record) {
-      categories.add(CategoryModel.from(record));
+    List<Map<String, dynamic>> result = await db.rawQuery("SELECT * FROM Category");
+    return result;
+  }
+
+  /// Get category with id.
+  Future<Map<String, dynamic>> getCategoryById(int id) async {
+    Database db = await DatabaseCreator().database;
+    List<Map<String, dynamic>> result = await db.rawQuery("SELECT * FROM Category WHERE id = ?", [id]);
+    if (result.length > 0) {
+      return result[0];
+    }
+
+    return null;
+  }
+
+  /// Add new category.
+  Future<bool> add(Map<String, dynamic> object) async {
+    Database db = await DatabaseCreator().database;
+    int result = await db.insert('Category', object);
+    return result != 0 ? true : false;
+  }
+
+  /// Delete category with id.
+  Future<bool> delete(int id) async {
+    Database db = await DatabaseCreator().database;
+    _projectRepository.getProjectsByCategoryId(id).then((projects) {
+      projects.forEach((project) {
+        _projectRepository.delete(project['id']);
+      });
     });
-    return categories;
+    int result = await db.delete('Category', where: 'id = ?', whereArgs: [id]);
+    return result != 0 ? true : false;
   }
 
-  Future<CategoryModel> getById(int id) async {
+  /// Update category with id.
+  Future<bool> update(Map<String, dynamic> object) async {
     Database db = await DatabaseCreator().database;
-    dynamic result = await db.rawQuery("SELECT * FROM Category WHERE id = ?", [id]);
-    return CategoryModel.from(result);
-  }
-
-  Future<CategoryModel> add(CategoryModel category) async {
-    Database db = await DatabaseCreator().database;
-    await db.insert('Category', category.toMap());
-    return category;
-  }
-
-  Future<int> delete(CategoryModel category) async {
-    Database db = await DatabaseCreator().database;
-    int id = await db.delete('Category', where: 'id = ?', whereArgs: [category.id]);
-    return id;
-  }
-
-  Future<CategoryModel> update(CategoryModel category) async {
-    return category;
+    int result = await db.update('Category', object, where: 'id = ?', whereArgs: [object['id']]);
+    return result != 0 ? true : false;
   }
 }

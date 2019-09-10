@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tasks/src/presentation/screen/home/home_screen.dart';
+import 'package:tasks/src/presentation/pages/home/home_page.dart';
 
 class App extends StatelessWidget {
   @override
@@ -7,7 +7,7 @@ class App extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Tasks",
-      home: HomeScreen(),
+      home: HomePage(),
       theme: ThemeData(
         primaryColor: Colors.white,
         appBarTheme: AppBarTheme(

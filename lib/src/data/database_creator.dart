@@ -31,6 +31,7 @@ class DatabaseCreator {
     return database;
   }
 
+  // Create database file
   void _onCreate(Database db, int version) async {
     await db.execute('''CREATE TABLE Category(
       id INTEGER PRIMARY KEY,
@@ -44,12 +45,13 @@ class DatabaseCreator {
     await db.execute('''CREATE TABLE Task(
       id INTEGER PRIMARY KEY,
       title TEXT NOT NULL,
-      description TEXT,
-      projectId INTEGER NOT NULL)''');
+      done INTEGER NOT NULL,
+      projectId INTEGER NOT NULL,
+      note TEXT)''');
     await db.execute('''CREATE TABLE Step(
       id INTEGER PRIMARY KEY,
       title TEXT NOT NULL,
-      description TEXT,
+      done INTEGER NOT NULL,
       taskId INTEGER NOT NULL)''');
   }
 }
