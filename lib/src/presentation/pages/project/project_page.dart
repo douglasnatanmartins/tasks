@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tasks/src/data/models/category_model.dart';
 import 'package:tasks/src/data/models/project_model.dart';
 import 'package:tasks/src/data/models/task_model.dart';
 import 'package:tasks/src/presentation/pages/project/project_page_bloc.dart';

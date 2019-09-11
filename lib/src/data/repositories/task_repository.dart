@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:sqflite/sqflite.dart';
 import 'package:tasks/src/data/database_creator.dart';
-import 'package:tasks/src/data/models/task_model.dart';
 import 'package:tasks/src/data/repositories/step_repository.dart';
 
 class TaskRepository {
