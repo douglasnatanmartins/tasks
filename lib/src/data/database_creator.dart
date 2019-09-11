@@ -34,22 +34,22 @@ class DatabaseCreator {
   // Create database file
   void _onCreate(Database db, int version) async {
     await db.execute('''CREATE TABLE Category(
-      id INTEGER PRIMARY KEY,
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
       title TEXT,
       description TEXT)''');
     await db.execute('''CREATE TABLE Project(
-      id INTEGER PRIMARY KEY,
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
       title TEXT NOT NULL,
       description TEXT,
       categoryId INTEGER NOT NULL)''');
     await db.execute('''CREATE TABLE Task(
-      id INTEGER PRIMARY KEY,
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
       title TEXT NOT NULL,
       done INTEGER NOT NULL,
       projectId INTEGER NOT NULL,
       note TEXT)''');
     await db.execute('''CREATE TABLE Step(
-      id INTEGER PRIMARY KEY,
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
       title TEXT NOT NULL,
       done INTEGER NOT NULL,
       taskId INTEGER NOT NULL)''');
