@@ -41,8 +41,10 @@ class _ProjectPageState extends State<ProjectPage> {
   }
 
   Widget _headerPage(ProjectModel object) {
+    Widget _title = Text(object.title);
+
     return AppBar(
-      title: Text(object.title)
+      title: _title
     );
   }
 

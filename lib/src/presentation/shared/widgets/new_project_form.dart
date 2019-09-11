@@ -28,9 +28,9 @@ class _NewProjectFormState extends State<NewProjectForm> {
   Widget build(BuildContext context) {
     return Dialog(
       child: Container(
-        width: 360,
-        height: 280,
-        padding: EdgeInsets.all(10.0),
+        width: 450,
+        height: 250,
+        padding: EdgeInsets.all(20.0),
         child: Form(
           key: _key,
           child: Column(

@@ -72,13 +72,7 @@ class _TaskPageState extends State<TaskPage> {
             child: CircularProgressIndicator()
           );
         } else {
-          if (snapshot.hasData) {
-            return _buildListView(snapshot.data);
-          } else {
-            return Center(
-              child: Text('Empty')
-            );
-          }
+          return _buildListView(snapshot.data);
         }
       }
     );
@@ -147,7 +141,11 @@ class _TaskPageState extends State<TaskPage> {
       ),
       controller: _controller,
       keyboardType: TextInputType.multiline,
-      maxLines: 3
+      maxLines: 3,
+      onChanged: (string) {
+        task.note = _controller.text;
+        _bloc.updateTask(task);
+      }
     );
   }
 }

@@ -14,6 +14,11 @@ class _NewCategoryFormState extends State<NewCategoryForm> {
   final _descriptionController = new TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   void dispose() {
     _titleController.dispose();
     _descriptionController.dispose();
@@ -24,9 +29,9 @@ class _NewCategoryFormState extends State<NewCategoryForm> {
   Widget build(BuildContext context) {
     return Dialog(
       child: Container(
-        width: 360,
-        height: 280,
-        padding: EdgeInsets.all(20),
+        width: 450,
+        height: 250,
+        padding: EdgeInsets.all(20.0),
         child: Form(
           key: _key,
           child: Column(

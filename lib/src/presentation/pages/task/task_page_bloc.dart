@@ -5,19 +5,26 @@ import 'package:tasks/src/core/contracts/bloc_contract.dart';
 import 'package:tasks/src/data/models/step_model.dart';
 import 'package:tasks/src/data/models/task_model.dart';
 import 'package:tasks/src/data/repositories/step_repository.dart';
+import 'package:tasks/src/data/repositories/task_repository.dart';
 
 class TaskPageBloc implements BlocContract {
   final _controllerSteps = StreamController();
   Sink get sinkSteps => _controllerSteps.sink;
   Stream get streamSteps => _controllerSteps.stream;
+  TaskRepository _taskRepository;
   StepRepository _stepRepository;
 
   TaskModel _task;
 
   TaskPageBloc({@required TaskModel task}) {
     _task = task;
+    _taskRepository = TaskRepository();
     _stepRepository = StepRepository();
     refreshSteps();
+  }
+
+  void updateTask(TaskModel task) {
+    _taskRepository.update(task.toMap());
   }
 
   void addStep(StepModel step) {

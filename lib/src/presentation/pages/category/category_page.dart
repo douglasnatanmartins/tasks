@@ -40,7 +40,7 @@ class _CategoryPageState extends State<CategoryPage> {
       initialData: widget.category,
       stream: _bloc.streamCategory,
       builder: (context, snapshot) {
-        if (snapshot.hasData && snapshot.data is CategoryModel) {
+        if (snapshot.hasData) {
           final CategoryModel category = snapshot.data;
           return Scaffold(
             appBar: _headerPage(category),
@@ -64,7 +64,7 @@ class _CategoryPageState extends State<CategoryPage> {
       title: Text(category.title),
       actions: <Widget>[
         FlatButton(
-          textColor: Colors.red,
+          textColor: Colors.white,
           child: Icon(Icons.delete),
           onPressed: () async {
             final result = await showDialog(
@@ -74,7 +74,7 @@ class _CategoryPageState extends State<CategoryPage> {
                   content: Text("Are you want delete this category?"),
                   actions: <Widget>[
                     FlatButton(
-                      color: Colors.red,
+                      color: Theme.of(context).errorColor,
                       child: Text(
                         "Yes",
                         style: TextStyle(color: Colors.white)
@@ -97,7 +97,7 @@ class _CategoryPageState extends State<CategoryPage> {
               }
             );
 
-            if (result) {
+            if (result != null && result) {
               _bloc.deleteCategory(category);
               Navigator.of(context).pop();
             }
@@ -119,7 +119,7 @@ class _CategoryPageState extends State<CategoryPage> {
                 Text(
                   'Projects',
                   style: TextStyle(
-                    fontSize: 18.0,
+                    fontSize: 20.0,
                     fontWeight: FontWeight.bold
                   )
                 ),
@@ -196,7 +196,7 @@ class _CategoryPageState extends State<CategoryPage> {
                 );
               } else {
                 return Center(
-                  child: Text('Empty')
+                  child: Text('Empty Project')
                 );
               }
             }

@@ -49,33 +49,31 @@ class _HomePageState extends State<HomePage> {
         Container(
           padding: EdgeInsets.only(left: 10.0, right: 10.0),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Expanded(
-                flex: 3,
-                child: Text(
-                  'Categories',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold
-                  )
+              Text(
+                'Categories',
+                style: TextStyle(
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.bold
                 )
               ),
-              Expanded(
-                child: FlatButton(
-                  child: Icon(Icons.add),
-                  onPressed: () async {
-                    final result = await showDialog(
-                      context: context,
-                      builder: (context) {
-                        return NewCategoryForm();
-                      }
-                    );
-
-                    if (result is CategoryModel) {
-                      _bloc.addCategory(result);
+              FlatButton(
+                color: Colors.green,
+                textColor: Colors.white,
+                child: Icon(Icons.add),
+                onPressed: () async {
+                  final result = await showDialog(
+                    context: context,
+                    builder: (context) {
+                      return NewCategoryForm();
                     }
+                  );
+
+                  if (result is CategoryModel) {
+                    _bloc.addCategory(result);
                   }
-                )
+                }
               )
             ]
           )
@@ -98,6 +96,7 @@ class _HomePageState extends State<HomePage> {
                 itemBuilder: (context, index) {
                   final CategoryModel category = categories[index];
                   return ListTile(
+                    leading: Icon(Icons.category),
                     title: Text(category.title),
                     subtitle: Text(category.description),
                     onTap: () {
