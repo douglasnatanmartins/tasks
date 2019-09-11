@@ -4,6 +4,7 @@ import 'package:tasks/src/data/models/project_model.dart';
 import 'package:tasks/src/data/models/task_model.dart';
 import 'package:tasks/src/presentation/pages/project/project_page_bloc.dart';
 import 'package:tasks/src/presentation/pages/task/task_page.dart';
+import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
 import 'package:tasks/src/presentation/shared/widgets/new_task_form.dart';
 
 class ProjectPage extends StatefulWidget {
@@ -92,9 +93,7 @@ class _ProjectPageState extends State<ProjectPage> {
           if (snapshot.hasData && snapshot.data.isNotEmpty) {
             return _buildListView(snapshot.data);
           } else {
-            return Center(
-              child: Text('Empty Task')
-            );
+            return EmptyContentBox(message: 'not task found');
           }
         }
       }
@@ -102,10 +101,19 @@ class _ProjectPageState extends State<ProjectPage> {
   }
 
   Widget _buildListView(List<TaskModel> tasks) {
-    return ListView.builder(
+    return ListView.separated(
+      separatorBuilder: (content, index) {
+        return Divider(
+          color: Colors.grey,
+        );
+      },
       itemCount: tasks.length,
       itemBuilder: (context, int index) {
         final task = tasks[index];
+        TextDecoration _decoration = TextDecoration.none;
+        if (task.done) {
+          _decoration = TextDecoration.lineThrough;
+        }
         return ListTile(
           leading: Checkbox(
             value: task.done,
@@ -114,15 +122,25 @@ class _ProjectPageState extends State<ProjectPage> {
               _bloc.updateTask(task);
             }
           ),
-          title: Text(task.title),
+          title: Text(
+            task.title,
+            style: TextStyle(
+              decoration: _decoration
+            )
+          ),
           trailing: PopupMenuButton(
             itemBuilder: (context) {
               return [
                 PopupMenuItem(
                   value: 'delete',
                   child: ListTile(
-                    leading: Icon(Icons.delete),
-                    title: Text('Delete')
+                    leading: Icon(
+                      Icons.delete,
+                      color: Theme.of(context).errorColor
+                    ),
+                    title: Text(
+                      'Delete',
+                    )
                   )
                 )
               ];

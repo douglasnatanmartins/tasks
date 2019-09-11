@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tasks/src/data/models/category_model.dart';
 import 'package:tasks/src/presentation/pages/category/category_page.dart';
 import 'package:tasks/src/presentation/pages/home/home_page_bloc.dart';
+import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
 import 'package:tasks/src/presentation/shared/widgets/new_category_form.dart';
 
 class HomePage extends StatefulWidget {
@@ -113,9 +114,7 @@ class _HomePageState extends State<HomePage> {
                 }
               );
             } else {
-              return Center(
-                child: Text('Empty')
-              );
+              return EmptyContentBox(message: 'no category found');
             }
           }
         )
