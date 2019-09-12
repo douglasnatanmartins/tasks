@@ -174,12 +174,28 @@ class _CategoryPageState extends State<CategoryPage> {
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
                             Text('0'),
-                            IconButton(
-                              icon: Icon(Icons.remove),
-                              color: Colors.red,
-                              onPressed: () {
-                                _bloc.deleteProject(project);
-                              }
+                            PopupMenuButton(
+                              itemBuilder: (context) {
+                                return [
+                                  PopupMenuItem(
+                                    value: 'delete',
+                                    child: ListTile(
+                                      leading: Icon(
+                                        Icons.delete,
+                                        color: Theme.of(context).errorColor
+                                      ),
+                                      title: Text(
+                                        'Delete',
+                                      )
+                                    )
+                                  )
+                                ];
+                              },
+                              onSelected: (action) {
+                                if (action == 'delete') {
+                                  _bloc.deleteProject(project);
+                                }
+                              },
                             )
                           ]
                         )

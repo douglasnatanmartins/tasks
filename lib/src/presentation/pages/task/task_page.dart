@@ -122,7 +122,7 @@ class _TaskPageState extends State<TaskPage> {
         }
       ),
       trailing: IconButton(
-        icon: Icon(Icons.remove),
+        icon: Icon(Icons.clear),
         color: Colors.red,
         onPressed: () {
           if (step.id != null) {

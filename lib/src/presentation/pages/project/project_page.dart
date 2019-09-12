@@ -127,28 +127,12 @@ class _ProjectPageState extends State<ProjectPage> {
               decoration: _decoration
             )
           ),
-          trailing: PopupMenuButton(
-            itemBuilder: (context) {
-              return [
-                PopupMenuItem(
-                  value: 'delete',
-                  child: ListTile(
-                    leading: Icon(
-                      Icons.delete,
-                      color: Theme.of(context).errorColor
-                    ),
-                    title: Text(
-                      'Delete',
-                    )
-                  )
-                )
-              ];
-            },
-            onSelected: (action) {
-              if (action == 'delete') {
-                _bloc.deleteTask(task);
-              }
-            },
+          trailing: IconButton(
+            color: Theme.of(context).errorColor,
+            icon: Icon(Icons.remove_circle),
+            onPressed: () {
+              _bloc.deleteTask(task);
+            }
           ),
           onTap: () {
             Navigator.push(
