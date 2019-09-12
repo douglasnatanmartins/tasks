@@ -173,7 +173,6 @@ class _CategoryPageState extends State<CategoryPage> {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
-                            Text('0'),
                             PopupMenuButton(
                               itemBuilder: (context) {
                                 return [

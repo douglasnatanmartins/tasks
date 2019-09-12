@@ -26,28 +26,36 @@ class CategoryPageBloc implements BlocContract {
     refreshProjects();
   }
 
+  /// Action to delete this category
   void deleteCategory(CategoryModel category) {
     _categoryRepository.delete(category.id);
   }
 
+  /// Add new a project
   void addProject(ProjectModel project) {
-    _projectRepository.add(project.toMap());
-    refreshProjects();
+    _projectRepository.add(project.toMap()).then((_) {
+      refreshProjects();
+    });
   }
 
+  /// Delete a project.
   void deleteProject(ProjectModel project) {
-    _projectRepository.delete(project.id);
-    refreshProjects();
+    _projectRepository.delete(project.id).then((_) {
+      refreshProjects();
+    });
   }
 
+  /// Update project object.
   void updateProject(ProjectModel project) {
-    _projectRepository.update(project.toMap());
-    refreshProjects();
+    _projectRepository.update(project.toMap()).then((_) {
+      refreshProjects();
+    });
   }
 
   /// Refresh category.
   void refreshCategory() {
     _categoryRepository.getCategoryById(_category.id).then((category) {
+      // Sink category to stream
       sinkCategory.add(CategoryModel.from(category));
     });
   }
@@ -59,6 +67,8 @@ class CategoryPageBloc implements BlocContract {
       projects.forEach((project) {
         data.add(ProjectModel.from(project));
       });
+
+      // Sink data to stream
       sinkProjects.add(data);
     });
   }

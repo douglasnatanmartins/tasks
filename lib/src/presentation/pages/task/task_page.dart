@@ -44,21 +44,18 @@ class _TaskPageState extends State<TaskPage> {
   }
 
   Widget _bodyPage(TaskModel task) {
-    return SingleChildScrollView(
-      child: Container(
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            Container(
-              height: 360,
-              child: _buildContent()
-            ),
-            Container(
-              padding: EdgeInsets.only(left: 10.0, right: 10.0),
-              child: _buildNote(task)
-            )
-          ],
-        )
+    return Container(
+      padding: EdgeInsets.only(top: 0, bottom: 15.0),
+      child: Column(
+        children: <Widget>[
+          Expanded(
+            child: _buildContent()
+          ),
+          Container(
+            padding: EdgeInsets.only(left: 10.0, right: 10.0),
+            child: _buildNote(task)
+          )
+        ],
       )
     );
   }
@@ -135,17 +132,35 @@ class _TaskPageState extends State<TaskPage> {
 
   Widget _buildNote(TaskModel task) {
     final _controller = TextEditingController(text: task.note);
-    return TextField(
-      decoration: InputDecoration(
-        labelText: 'Note'
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(
+          color: Colors.black.withOpacity(0.2)
+        ),
+        borderRadius: BorderRadius.circular(5.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            blurRadius: 3.0,
+            offset: Offset(0.5, 4)
+          )
+        ]
       ),
-      controller: _controller,
-      keyboardType: TextInputType.multiline,
-      maxLines: 3,
-      onChanged: (string) {
-        task.note = _controller.text;
-        _bloc.updateTask(task);
-      }
+      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+      child: TextField(
+        decoration: InputDecoration.collapsed(
+          hintText: 'Note',
+          border: InputBorder.none
+        ),
+        controller: _controller,
+        keyboardType: TextInputType.multiline,
+        maxLines: 3,
+        onChanged: (string) {
+          task.note = _controller.text;
+          _bloc.updateTask(task);
+        }
+      )
     );
   }
 }
