@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:tasks/src/data/models/category_model.dart';
 import 'package:tasks/src/presentation/pages/category/category_page.dart';
 import 'package:tasks/src/presentation/pages/home/home_page_bloc.dart';
@@ -27,6 +28,7 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
   }
 
+  /// Build the home page.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +37,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  /// Create app bar for scaffold widget.
+  /// Build header this page.
   Widget _headerPage() {
     return AppBar(
       title: Text('Tasks'),
@@ -43,6 +45,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  /// Build body this page.
   Widget _bodyPage() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -79,12 +82,13 @@ class _HomePageState extends State<HomePage> {
             ]
           )
         ),
-        _buildListView()
+        _mainContent()
       ]
     );
   }
 
-  Widget _buildListView() {
+  /// Build main content this page.
+  Widget _mainContent() {
     return Container(
       child: Expanded(
         child: StreamBuilder(
@@ -92,33 +96,41 @@ class _HomePageState extends State<HomePage> {
           builder: (context, snapshot) {
             if (snapshot.hasData && snapshot.data.isNotEmpty) {
               final List<CategoryModel> categories = snapshot.data;
-              return ListView.builder(
-                itemCount: categories.length,
-                itemBuilder: (context, index) {
-                  final CategoryModel category = categories[index];
-                  return ListTile(
-                    leading: Icon(Icons.category),
-                    title: Text(category.title),
-                    subtitle: Text(category.description),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CategoryPage(category: category)
-                        )
-                      ).then((_) {
-                        _bloc.refreshCategories();
-                      });
-                    }
-                  );
-                }
-              );
+              return _buildListView(categories);
             } else {
               return EmptyContentBox(message: 'no category found');
             }
           }
         )
       )
+    );
+  }
+
+  /// Build the listview to show categories.
+  Widget _buildListView(List<CategoryModel> categories) {
+    return ListView.builder(
+      itemCount: categories.length,
+      itemBuilder: (context, index) {
+        final CategoryModel category = categories[index];
+        return _buildChildrenInListView(category);
+      }
+    );
+  }
+
+  /// Build a children in listview.
+  Widget _buildChildrenInListView(CategoryModel category) {
+    return ListTile(
+      leading: Icon(Icons.category),
+      title: Text(category.title),
+      subtitle: Text(category.description),
+      onTap: () { // Open a category page.
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CategoryPage(category: category)
+          )
+        ).then((_) => _bloc.refreshCategories());
+      }
     );
   }
 }

@@ -5,9 +5,12 @@ import 'package:tasks/src/presentation/pages/home/home_page.dart';
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // Set device orientation.
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
     final primaryColor = Color.fromRGBO(7, 104, 159, 1.0);
     final errorColor = Color.fromRGBO(255, 126, 103, 1.0);
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Tasks",

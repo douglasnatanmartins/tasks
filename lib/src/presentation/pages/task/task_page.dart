@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:tasks/src/data/models/step_model.dart';
 import 'package:tasks/src/data/models/task_model.dart';
 import 'package:tasks/src/presentation/pages/task/task_page_bloc.dart';
@@ -29,6 +30,7 @@ class _TaskPageState extends State<TaskPage> {
     super.dispose();
   }
 
+  /// Build a task page.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,30 +39,33 @@ class _TaskPageState extends State<TaskPage> {
     );
   }
 
+  /// Build header this page.
   Widget _headerPage(TaskModel task) {
     return AppBar(
       title: Text(task.title)
     );
   }
 
+  /// Build body this page.
   Widget _bodyPage(TaskModel task) {
     return Container(
       padding: EdgeInsets.only(top: 0, bottom: 15.0),
       child: Column(
         children: <Widget>[
           Expanded(
-            child: _buildContent()
+            child: _mainContent()
           ),
           Container(
             padding: EdgeInsets.only(left: 10.0, right: 10.0),
-            child: _buildNote(task)
+            child: _buildNoteForm(task)
           )
         ],
       )
     );
   }
 
-  Widget _buildContent() {
+  /// Build main content this page.
+  Widget _mainContent() {
     return StreamBuilder(
       stream: _bloc.streamSteps,
       builder: (context, AsyncSnapshot snapshot) {
@@ -75,21 +80,25 @@ class _TaskPageState extends State<TaskPage> {
     );
   }
 
+  /// Build a listview to show steps of task.
   Widget _buildListView(List<StepModel> steps) {
     List<ListTile> tiles = [];
 
     steps.forEach((step) {
-      tiles.add(_buildRow(step));
+      tiles.add(_buildChildrenInListView(step));
     });
 
-    tiles.add(_buildRow(StepModel(id: null, title: '', done: false, taskId: widget.task.id)));
+    tiles.add(_buildChildrenInListView(
+      StepModel(id: null, title: '', done: false, taskId: widget.task.id)
+    ));
 
     return ListView(
       children: tiles
     );
   }
 
-  Widget _buildRow(StepModel step) {
+  /// Build a children in listview.
+  Widget _buildChildrenInListView(StepModel step) {
     TextEditingController _controller = TextEditingController(text: step.title);
 
     return ListTile(
@@ -130,7 +139,8 @@ class _TaskPageState extends State<TaskPage> {
     );
   }
 
-  Widget _buildNote(TaskModel task) {
+  /// Build the task note form.
+  Widget _buildNoteForm(TaskModel task) {
     final _controller = TextEditingController(text: task.note);
     return Container(
       decoration: BoxDecoration(

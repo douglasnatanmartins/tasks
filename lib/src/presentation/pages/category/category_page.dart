@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:tasks/src/data/models/category_model.dart';
 import 'package:tasks/src/data/models/project_model.dart';
 import 'package:tasks/src/presentation/pages/category/category_page_bloc.dart';
@@ -35,66 +36,36 @@ class _CategoryPageState extends State<CategoryPage> {
     super.dispose();
   }
 
+  /// Build a category page.
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
       initialData: widget.category,
       stream: _bloc.streamCategory,
       builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          final CategoryModel category = snapshot.data;
-          return Scaffold(
-            appBar: _headerPage(category),
-            body: _bodyPage(category)
-          );
-        } else {
-          return Scaffold(
-            body: Container(
-              child: Center(
-                child: Text('Something Wrong!')
-              )
-            )
-          );
-        }
+        final CategoryModel category = snapshot.data;
+        return Scaffold(
+          appBar: _headerPage(category),
+          body: _bodyPage(category)
+        );
       }
     );
   }
 
+  /// Build header this page.
   Widget _headerPage(CategoryModel category) {
     return AppBar(
       title: Text(category.title),
       actions: <Widget>[
+        // Delete category button.
         FlatButton(
           textColor: Colors.white,
           child: Icon(Icons.delete),
-          onPressed: () async {
+          onPressed: () async { // Show dialog to confirm the user wants delete.
             final result = await showDialog(
               context: context,
               builder: (context) {
-                return AlertDialog(
-                  content: Text("Are you want delete this category?"),
-                  actions: <Widget>[
-                    FlatButton(
-                      color: Theme.of(context).errorColor,
-                      child: Text(
-                        "Yes",
-                        style: TextStyle(color: Colors.white)
-                      ),
-                      onPressed: () {
-                        Navigator.of(context).pop(true);
-                      }
-                    ),
-                    FlatButton(
-                      child: Text(
-                        "Cancel",
-                        style: TextStyle(color: Colors.grey)
-                      ),
-                      onPressed: () {
-                        Navigator.of(context).pop(false);
-                      }
-                    )
-                  ]
-                );
+                return _dialogWhenDeleteCategory();
               }
             );
 
@@ -108,6 +79,37 @@ class _CategoryPageState extends State<CategoryPage> {
     );
   }
 
+  /// Build dialog when delete category.
+  Widget _dialogWhenDeleteCategory() {
+    return AlertDialog(
+      content: Text("Are you want delete this category?"),
+      actions: <Widget>[
+        // Yes Button.
+        FlatButton(
+          color: Theme.of(context).errorColor,
+          child: Text(
+            "Yes",
+            style: TextStyle(color: Colors.white)
+          ),
+          onPressed: () { // When the user pressed YES button.
+            Navigator.of(context).pop(true);
+          }
+        ),
+        // Cancel button.
+        FlatButton(
+          child: Text(
+            "Cancel",
+            style: TextStyle(color: Colors.grey)
+          ),
+          onPressed: () { // When the user pressed CANCEL button.
+            Navigator.of(context).pop(false);
+          }
+        )
+      ]
+    );
+  }
+
+  /// Build body this page.
   Widget _bodyPage(CategoryModel category) {
     return Container(
       child: Column(
@@ -128,7 +130,7 @@ class _CategoryPageState extends State<CategoryPage> {
                   color: Colors.green,
                   textColor: Colors.white,
                   child: Icon(Icons.add),
-                  onPressed: () async {
+                  onPressed: () async { // Show new project dialog.
                     final result = await showDialog(
                       context: context,
                       builder: (context) {
@@ -144,13 +146,15 @@ class _CategoryPageState extends State<CategoryPage> {
               ],
             )
           ),
-          _buildListView()
+          // The main content this page.
+          _mainContent()
         ]
       )
     );
   }
 
-  Widget _buildListView() {
+  /// Build main content this page.
+  Widget _mainContent() {
     return Container(
       child: Expanded(
         child: StreamBuilder(
@@ -161,55 +165,8 @@ class _CategoryPageState extends State<CategoryPage> {
                 child: CircularProgressIndicator()
               );
             } else {
-              if (snapshot.data.isNotEmpty) {
-                final List<ProjectModel> projects = snapshot.data;
-                return ListView.builder(
-                  itemCount: projects.length,
-                  itemBuilder: (context, index) {
-                    ProjectModel project = projects[index];
-                    return ListTile(
-                      title: Text(project.title),
-                      trailing: Container(
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            PopupMenuButton(
-                              itemBuilder: (context) {
-                                return [
-                                  PopupMenuItem(
-                                    value: 'delete',
-                                    child: ListTile(
-                                      leading: Icon(
-                                        Icons.delete,
-                                        color: Theme.of(context).errorColor
-                                      ),
-                                      title: Text(
-                                        'Delete',
-                                      )
-                                    )
-                                  )
-                                ];
-                              },
-                              onSelected: (action) {
-                                if (action == 'delete') {
-                                  _bloc.deleteProject(project);
-                                }
-                              },
-                            )
-                          ]
-                        )
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ProjectPage(project: project)
-                          )
-                        );
-                      }
-                    );
-                  }
-                );
+              if (snapshot.data.isNotEmpty) { // Has the stream data.
+                return _buildListView(snapshot.data);
               } else {
                 return EmptyContentBox(message: 'not project found');
               }
@@ -217,6 +174,62 @@ class _CategoryPageState extends State<CategoryPage> {
           }
         )
       )
+    );
+  }
+
+  /// Build the listview to show projects.
+  Widget _buildListView(List<ProjectModel> projects) {
+    return ListView.builder(
+      itemCount: projects.length,
+      itemBuilder: (context, index) {
+        ProjectModel project = projects[index];
+        return _buildChildrenInListView(project);
+      }
+    );
+  }
+
+  /// Build a children in listview.
+  Widget _buildChildrenInListView(ProjectModel project) {
+    return ListTile(
+      title: Text(project.title),
+      trailing: Container(
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            PopupMenuButton(
+              itemBuilder: (context) {
+                return [
+                  PopupMenuItem(
+                    value: 'delete',
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.delete,
+                        color: Theme.of(context).errorColor
+                      ),
+                      title: Text(
+                        'Delete',
+                      )
+                    )
+                  )
+                ];
+              },
+              onSelected: (action) {
+                if (action == 'delete') {
+                  _bloc.deleteProject(project);
+                }
+              },
+            )
+          ]
+        )
+      ),
+      onTap: () { // Open a project page.
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProjectPage(project: project)
+          )
+        );
+      }
     );
   }
 }
