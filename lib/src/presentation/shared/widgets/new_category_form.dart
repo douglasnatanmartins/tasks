@@ -43,27 +43,23 @@ class _NewCategoryFormState extends State<NewCategoryForm> {
                   fontWeight: FontWeight.w600
                 )
               ),
-              Flexible(
-                child: TextFormField(
-                  autofocus: true,
-                  controller: _titleController,
-                  decoration: InputDecoration(
-                    labelText: "Title"
-                  ),
-                  validator: (value) {
-                    if (value.trim().isEmpty) {
-                      return "Please enter category title.";
-                    }
-                    return null;
-                  },
-                )
+              TextFormField(
+                autofocus: true,
+                controller: _titleController,
+                decoration: InputDecoration(
+                  labelText: "Title"
+                ),
+                validator: (value) {
+                  if (value.trim().isEmpty) {
+                    return "Please enter category title.";
+                  }
+                  return null;
+                },
               ),
-              Flexible(
-                child: TextFormField(
-                  controller: _descriptionController,
-                  decoration: InputDecoration(
-                    labelText: "Description"
-                  )
+              TextFormField(
+                controller: _descriptionController,
+                decoration: InputDecoration(
+                  labelText: "Description"
                 )
               ),
               Expanded(

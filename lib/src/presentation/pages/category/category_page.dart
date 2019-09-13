@@ -6,6 +6,7 @@ import 'package:tasks/src/presentation/pages/category/category_page_bloc.dart';
 import 'package:tasks/src/presentation/pages/project/project_page.dart';
 import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
 import 'package:tasks/src/presentation/shared/widgets/new_project_form.dart';
+import 'package:tasks/src/presentation/shared/widgets/project_card.dart';
 
 class CategoryPage extends StatefulWidget {
   final CategoryModel category;
@@ -129,7 +130,7 @@ class _CategoryPageState extends State<CategoryPage> {
                 FlatButton(
                   color: Colors.green,
                   textColor: Colors.white,
-                  child: Icon(Icons.add),
+                  child: Icon(Icons.add_circle),
                   onPressed: () async { // Show new project dialog.
                     final result = await showDialog(
                       context: context,
@@ -179,50 +180,26 @@ class _CategoryPageState extends State<CategoryPage> {
 
   /// Build the listview to show projects.
   Widget _buildListView(List<ProjectModel> projects) {
-    return ListView.builder(
-      itemCount: projects.length,
-      itemBuilder: (context, index) {
-        ProjectModel project = projects[index];
-        return _buildChildrenInListView(project);
-      }
+    List<Widget> children = [];
+    projects.forEach((project) {
+      children.add(_buildChildrenInListView(project));
+    });
+
+    return CustomScrollView(
+      slivers: <Widget>[
+        SliverGrid.count(
+          crossAxisCount: 2,
+          children: children
+        )
+      ]
     );
   }
 
   /// Build a children in listview.
   Widget _buildChildrenInListView(ProjectModel project) {
-    return ListTile(
-      title: Text(project.title),
-      trailing: Container(
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            PopupMenuButton(
-              itemBuilder: (context) {
-                return [
-                  PopupMenuItem(
-                    value: 'delete',
-                    child: ListTile(
-                      leading: Icon(
-                        Icons.delete,
-                        color: Theme.of(context).errorColor
-                      ),
-                      title: Text(
-                        'Delete',
-                      )
-                    )
-                  )
-                ];
-              },
-              onSelected: (action) {
-                if (action == 'delete') {
-                  _bloc.deleteProject(project);
-                }
-              },
-            )
-          ]
-        )
-      ),
-      onTap: () { // Open a project page.
+    return GestureDetector(
+      child: ProjectCard(project: project),
+      onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(

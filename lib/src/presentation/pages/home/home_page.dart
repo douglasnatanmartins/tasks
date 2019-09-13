@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:tasks/src/data/models/category_model.dart';
-import 'package:tasks/src/presentation/pages/category/category_page.dart';
-import 'package:tasks/src/presentation/pages/home/home_page_bloc.dart';
-import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
-import 'package:tasks/src/presentation/shared/widgets/new_category_form.dart';
+import 'package:tasks/src/presentation/pages/board/board_page.dart';
+import 'package:tasks/src/presentation/pages/categories/categories_page.dart';
+import 'package:tasks/src/presentation/ui_colors.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -14,123 +12,85 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  HomePageBloc _bloc;
+  int selected = 0;
 
-  @override
-  void initState() {
-    super.initState();
-    _bloc = HomePageBloc();
-  }
+  final pages = [
+    BoardPage(),
+    CategoriesPage()
+  ];
 
-  @override
-  void dispose() {
-    _bloc.dispose();
-    super.dispose();
-  }
-
-  /// Build the home page.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _headerPage(),
-      body: _bodyPage()
-    );
-  }
-
-  /// Build header this page.
-  Widget _headerPage() {
-    return AppBar(
-      title: Text('Tasks'),
-      centerTitle: true
-    );
-  }
-
-  /// Build body this page.
-  Widget _bodyPage() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Container(
-          padding: EdgeInsets.only(left: 10.0, right: 10.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(100),
+        child: Container(
+          padding: EdgeInsets.only(top: 25.0, left: 20.0, right: 20.0),
+          decoration: BoxDecoration(
+            color: Colors.indigo,
+            border: Border.all(
+              color: Colors.indigo,
+              width: 0.0
+            )
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(
-                'Categories',
-                style: TextStyle(
-                  fontSize: 24.0,
-                  fontWeight: FontWeight.bold
-                )
-              ),
-              FlatButton(
-                color: Colors.green,
-                textColor: Colors.white,
-                child: Icon(Icons.add),
-                onPressed: () async {
-                  final result = await showDialog(
-                    context: context,
-                    builder: (context) {
-                      return NewCategoryForm();
-                    }
-                  );
-
-                  if (result is CategoryModel) {
-                    _bloc.addCategory(result);
-                  }
-                }
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Column(
+                    children: <Widget>[
+                      Text(
+                        'Hello Steve',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20.0
+                        )
+                      ),
+                      Text(
+                        'You have 8 tasks in today',
+                        style: TextStyle(
+                          color: Colors.white.withOpacity(0.8)
+                        )
+                      )
+                    ],
+                  ),
+                  IconButton(
+                    color: Colors.white,
+                    icon: Icon(Icons.settings),
+                    onPressed: () {}
+                  )
+                ]
               )
             ]
           )
-        ),
-        _mainContent()
-      ]
-    );
-  }
-
-  /// Build main content this page.
-  Widget _mainContent() {
-    return Container(
-      child: Expanded(
-        child: StreamBuilder(
-          stream: _bloc.streamCategories,
-          builder: (context, snapshot) {
-            if (snapshot.hasData && snapshot.data.isNotEmpty) {
-              final List<CategoryModel> categories = snapshot.data;
-              return _buildListView(categories);
-            } else {
-              return EmptyContentBox(message: 'no category found');
-            }
-          }
         )
-      )
-    );
-  }
-
-  /// Build the listview to show categories.
-  Widget _buildListView(List<CategoryModel> categories) {
-    return ListView.builder(
-      itemCount: categories.length,
-      itemBuilder: (context, index) {
-        final CategoryModel category = categories[index];
-        return _buildChildrenInListView(category);
-      }
-    );
-  }
-
-  /// Build a children in listview.
-  Widget _buildChildrenInListView(CategoryModel category) {
-    return ListTile(
-      leading: Icon(Icons.category),
-      title: Text(category.title),
-      subtitle: Text(category.description),
-      onTap: () { // Open a category page.
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => CategoryPage(category: category)
+      ),
+      body: pages[selected],
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        selectedFontSize: 14.0,
+        selectedItemColor: UIColors.BlueDark,
+        selectedLabelStyle: TextStyle(color: UIColors.BlueDark),
+        unselectedFontSize: 12.0,
+        currentIndex: selected,
+        onTap: (int selected) {
+          setState(() {
+            this.selected = selected;
+          });
+        },
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            title: Text('Home')
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.style),
+            title: Text('Categories')
           )
-        ).then((_) => _bloc.refreshCategories());
-      }
+        ]
+      ),
     );
   }
 }

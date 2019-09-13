@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'package:tasks/src/presentation/pages/home/home_page.dart';
 
 class App extends StatelessWidget {
+  final String _title = 'Tasks';
+
+  /// Build the application.
   @override
   Widget build(BuildContext context) {
     // Set device orientation.
@@ -13,7 +17,7 @@ class App extends StatelessWidget {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: "Tasks",
+      title: _title,
       home: HomePage(),
       theme: ThemeData(
         primaryColor: primaryColor,
