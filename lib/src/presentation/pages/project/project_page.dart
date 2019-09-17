@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-
 import 'package:tasks/src/data/models/project_model.dart';
 import 'package:tasks/src/data/models/task_model.dart';
+import 'package:tasks/src/presentation/pages/home/home_page_bloc.dart';
 import 'package:tasks/src/presentation/pages/project/project_page_bloc.dart';
 import 'package:tasks/src/presentation/pages/task/task_page.dart';
 import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
 import 'package:tasks/src/presentation/shared/widgets/new_task_form.dart';
+import 'package:tasks/src/provider.dart';
 
 class ProjectPage extends StatefulWidget {
   final ProjectModel project;
@@ -139,10 +140,14 @@ class _ProjectPageState extends State<ProjectPage> {
         )
       ),
       trailing: IconButton(
-        color: Theme.of(context).errorColor,
-        icon: Icon(Icons.remove_circle),
+        icon: Icon(
+          Icons.star,
+          color: task.important ? Colors.yellow.shade600 : null
+        ),
         onPressed: () {
-          _bloc.deleteTask(task);
+          task.important = !task.important;
+          _bloc.updateTask(task);
+          Provider.of<HomePageBloc>(context).announceImportantTasks();
         }
       ),
       onTap: () { // Open a task page.

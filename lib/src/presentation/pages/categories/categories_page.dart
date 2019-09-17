@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 
 import 'package:tasks/src/data/models/category_model.dart';
 import 'package:tasks/src/presentation/pages/category/category_page.dart';
-import 'package:tasks/src/presentation/pages/categories/categories_page_bloc.dart';
+import 'package:tasks/src/presentation/pages/home/home_page_bloc.dart';
 import 'package:tasks/src/presentation/shared/widgets/category_card.dart';
 import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
-import 'package:tasks/src/presentation/shared/widgets/new_category_form.dart';
+import 'package:tasks/src/presentation/ui_colors.dart';
+import 'package:tasks/src/provider.dart';
 
 class CategoriesPage extends StatefulWidget {
   @override
@@ -15,17 +16,14 @@ class CategoriesPage extends StatefulWidget {
 }
 
 class _CategoriesPageState extends State<CategoriesPage> {
-  CategoriesPageBloc _bloc;
-
   @override
   void initState() {
     super.initState();
-    _bloc = CategoriesPageBloc();
+    Provider.of<HomePageBloc>(context).refreshCategories();
   }
 
   @override
   void dispose() {
-    _bloc.dispose();
     super.dispose();
   }
 
@@ -34,7 +32,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.indigo
+        color: UIColors.Blue
       ),
       child: _bodyPage()
     );
@@ -47,35 +45,13 @@ class _CategoriesPageState extends State<CategoriesPage> {
       children: <Widget>[
         Container(
           padding: EdgeInsets.only(left: 10.0, right: 10.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                'Categories',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24.0,
-                  fontWeight: FontWeight.w600
-                )
-              ),
-              FlatButton(
-                color: Colors.white,
-                textColor: Colors.green,
-                child: Icon(Icons.add),
-                onPressed: () async {
-                  final result = await showDialog(
-                    context: context,
-                    builder: (context) {
-                      return NewCategoryForm();
-                    }
-                  );
-
-                  if (result is CategoryModel) {
-                    _bloc.addCategory(result);
-                  }
-                }
-              )
-            ]
+          child: Text(
+            'Categories',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 24.0,
+              fontWeight: FontWeight.w600
+            )
           )
         ),
         _mainContent()
@@ -88,7 +64,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
     return Container(
       child: Expanded(
         child: StreamBuilder(
-          stream: _bloc.streamCategories,
+          stream: Provider.of<HomePageBloc>(context).streamCategories,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
@@ -131,7 +107,9 @@ class _CategoriesPageState extends State<CategoriesPage> {
           MaterialPageRoute(
             builder: (context) => CategoryPage(category: category)
           )
-        ).then((_) => _bloc.refreshCategories());
+        ).then((_) {
+          Provider.of<HomePageBloc>(context).refreshCategories();
+        });
       }
     );
   }

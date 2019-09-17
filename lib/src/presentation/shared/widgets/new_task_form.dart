@@ -64,7 +64,8 @@ class _NewTaskFormState extends State<NewTaskForm> {
               final task = TaskModel(
                 title: _controller.value.text.trim(),
                 done: false,
-                projectId: widget.projectId
+                projectId: widget.projectId,
+                important: false
               );
               Navigator.of(context).pop(task);
             }

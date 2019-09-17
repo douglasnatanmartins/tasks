@@ -47,7 +47,8 @@ class DatabaseCreator {
       title TEXT NOT NULL,
       done INTEGER NOT NULL,
       projectId INTEGER NOT NULL,
-      note TEXT)''');
+      note TEXT,
+      important INTEGER NOT NULL)''');
     await db.execute('''CREATE TABLE Step(
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       title TEXT NOT NULL,

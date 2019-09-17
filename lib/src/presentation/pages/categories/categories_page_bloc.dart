@@ -13,7 +13,7 @@ class CategoriesPageBloc implements BlocContract {
 
   CategoriesPageBloc() {
     _repository = CategoryRepository();
-    refreshCategories();
+    //refreshCategories();
   }
 
   void addCategory(CategoryModel category) {

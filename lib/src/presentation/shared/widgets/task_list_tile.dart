@@ -32,7 +32,6 @@ class TaskListTile extends StatelessWidget {
         leading: this.leading,
         title: this.title,
         trailing: this.trailing
-        
       )
     );
   }
