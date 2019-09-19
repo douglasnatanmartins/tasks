@@ -7,6 +7,7 @@ import 'package:tasks/src/presentation/pages/project/project_page.dart';
 import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
 import 'package:tasks/src/presentation/shared/widgets/new_project_form.dart';
 import 'package:tasks/src/presentation/shared/widgets/project_card.dart';
+import 'package:tasks/src/presentation/ui_colors.dart';
 
 class CategoryPage extends StatefulWidget {
   final CategoryModel category;
@@ -23,17 +24,18 @@ class CategoryPage extends StatefulWidget {
 }
 
 class _CategoryPageState extends State<CategoryPage> {
-  CategoryPageBloc _bloc;
+  CategoryPageBloc bloc;
 
   @override
   void initState() {
     super.initState();
-    _bloc = CategoryPageBloc(category: widget.category);
+    this.bloc = CategoryPageBloc(category: widget.category);
+    this.bloc.refreshProjects();
   }
 
   @override
   void dispose() {
-    _bloc.dispose();
+    this.bloc.dispose();
     super.dispose();
   }
 
@@ -42,41 +44,126 @@ class _CategoryPageState extends State<CategoryPage> {
   Widget build(BuildContext context) {
     return StreamBuilder(
       initialData: widget.category,
-      stream: _bloc.streamCategory,
+      stream: this.bloc.streamCategory,
       builder: (context, snapshot) {
         final CategoryModel category = snapshot.data;
-        return Scaffold(
-          appBar: _headerPage(category),
-          body: _bodyPage(category)
-        );
+        return buildPage(context, category);
       }
     );
   }
 
-  /// Build header this page.
-  Widget _headerPage(CategoryModel category) {
-    return AppBar(
-      title: Text(category.title),
-      actions: <Widget>[
-        // Delete category button.
-        FlatButton(
-          textColor: Colors.white,
-          child: Icon(Icons.delete),
-          onPressed: () async { // Show dialog to confirm the user wants delete.
-            final result = await showDialog(
-              context: context,
-              builder: (context) {
-                return _dialogWhenDeleteCategory();
-              }
-            );
-
-            if (result != null && result) {
-              _bloc.deleteCategory(category);
-              Navigator.of(context).pop();
+  Widget buildPage(BuildContext context, CategoryModel category) {
+    return Scaffold(
+      body: bodyPage(category),
+      floatingActionButton: FloatingActionButton(
+        elevation: 0,
+        backgroundColor: UIColors.Green,
+        child: Icon(Icons.add),
+        onPressed: () async {
+          final result = await showDialog(
+            context: context,
+            builder: (context) {
+              return NewProjectForm(category.id);
             }
+          );
+
+          if (result is ProjectModel) {
+            this.bloc.addProject(result);
           }
-        )
-      ]
+        }
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    );
+  }
+
+  /// Build body this page.
+  Widget bodyPage(CategoryModel category) {
+    return Container(
+      child: Column(
+        children: <Widget>[
+          // Header this page.
+          headerPage(category),
+          // The main content this page.
+          bodyContent()
+        ]
+      )
+    );
+  }
+
+  /// Build header this page.
+  Widget headerPage(CategoryModel category) {
+    return Container(
+      padding: EdgeInsets.only(top: 35.0),
+      decoration: BoxDecoration(
+        color: UIColors.Blue
+      ),
+      height: 150.0,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              // Back button.
+              FlatButton(
+                padding: EdgeInsets.all(10.0),
+                shape: CircleBorder(),
+                textColor: UIColors.Blue,
+                color: Colors.white,
+                child: Icon(Icons.arrow_back),
+                onPressed: () => Navigator.of(context).pop()
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      category.title,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 22.0,
+                        fontWeight: FontWeight.w600
+                      )
+                    )
+                  ]
+                )
+              ),
+              FlatButton(
+                padding: EdgeInsets.all(12.0),
+                shape: CircleBorder(side: BorderSide(color: Colors.white, width: 4.0)),
+                color: UIColors.Blue,
+                textColor: Colors.white,
+                child: Icon(Icons.delete),
+                onPressed: () async { // Show dialog to confirm the user wants delete.
+                  final result = await showDialog(
+                    context: context,
+                    builder: (context) {
+                      return _dialogWhenDeleteCategory();
+                    }
+                  );
+
+                  if (result != null && result) {
+                    this.bloc.deleteCategory(category);
+                    Navigator.of(context).pop();
+                  }
+                }
+              )
+            ]
+          ),
+          SizedBox(height: 10.0),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+            child: Text(
+              'Projects',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 20.0,
+                fontWeight: FontWeight.w600
+              )
+            )
+          )
+        ]
+      )
     );
   }
 
@@ -110,56 +197,12 @@ class _CategoryPageState extends State<CategoryPage> {
     );
   }
 
-  /// Build body this page.
-  Widget _bodyPage(CategoryModel category) {
-    return Container(
-      child: Column(
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.only(left: 10.0, right: 10.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  'Projects',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold
-                  )
-                ),
-                FlatButton(
-                  color: Colors.green,
-                  textColor: Colors.white,
-                  child: Icon(Icons.add_circle),
-                  onPressed: () async { // Show new project dialog.
-                    final result = await showDialog(
-                      context: context,
-                      builder: (context) {
-                        return NewProjectForm(category.id);
-                      }
-                    );
-
-                    if (result is ProjectModel) {
-                      _bloc.addProject(result);
-                    }
-                  }
-                )
-              ],
-            )
-          ),
-          // The main content this page.
-          _mainContent()
-        ]
-      )
-    );
-  }
-
   /// Build main content this page.
-  Widget _mainContent() {
+  Widget bodyContent() {
     return Container(
       child: Expanded(
         child: StreamBuilder(
-          stream: _bloc.streamProjects,
+          stream: this.bloc.streamProjects,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
@@ -180,18 +223,13 @@ class _CategoryPageState extends State<CategoryPage> {
 
   /// Build the listview to show projects.
   Widget _buildListView(List<ProjectModel> projects) {
-    List<Widget> children = [];
-    projects.forEach((project) {
-      children.add(_buildChildrenInListView(project));
-    });
-
-    return CustomScrollView(
-      slivers: <Widget>[
-        SliverGrid.count(
-          crossAxisCount: 2,
-          children: children
-        )
-      ]
+    return ListView.builder(
+      padding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 5.0),
+      itemCount: projects.length,
+      itemBuilder: (BuildContext context, int index) {
+        final project = projects[index];
+        return _buildChildrenInListView(project);
+      }
     );
   }
 

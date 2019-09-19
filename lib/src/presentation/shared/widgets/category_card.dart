@@ -10,14 +10,14 @@ class CategoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+      margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 12.0),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8.0)
+        borderRadius: BorderRadius.circular(15.0)
       ),
       elevation: 5.0,
       color: Colors.white,
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+        padding: EdgeInsets.symmetric(horizontal: 18.0, vertical: 18.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -28,14 +28,14 @@ class CategoryCard extends StatelessWidget {
             Text(
               category.description,
               style: TextStyle(
-                color: UIColors.TextSubHeader
+                color: UIColors.Grey
               )
             ),
             SizedBox(height: 5),
             Text(
               category.title,
               style: TextStyle(
-                color: UIColors.TextHeader,
+                color: UIColors.Blue,
                 fontSize: 28.0
               )
             )

@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
+
 import 'package:tasks/src/data/models/project_model.dart';
 import 'package:tasks/src/data/models/task_model.dart';
-import 'package:tasks/src/presentation/pages/home/home_page_bloc.dart';
 import 'package:tasks/src/presentation/pages/project/project_page_bloc.dart';
 import 'package:tasks/src/presentation/pages/task/task_page.dart';
 import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
 import 'package:tasks/src/presentation/shared/widgets/new_task_form.dart';
-import 'package:tasks/src/provider.dart';
+import 'package:tasks/src/presentation/ui_colors.dart';
 
 class ProjectPage extends StatefulWidget {
   final ProjectModel project;
 
-  ProjectPage({@required this.project});
+  ProjectPage({Key key, @required this.project}): super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -20,95 +20,143 @@ class ProjectPage extends StatefulWidget {
 }
 
 class _ProjectPageState extends State<ProjectPage> {
-  ProjectPageBloc _bloc;
+  ProjectPageBloc bloc;
 
   @override
   void initState() {
     super.initState();
-    _bloc = ProjectPageBloc(project: widget.project);
+    this.bloc = ProjectPageBloc(project: widget.project);
+    this.bloc.refreshTasks();
   }
 
   @override
   void dispose() {
-    _bloc.dispose();
+    this.bloc.dispose();
     super.dispose();
   }
 
   /// Build a project page.
   @override
   Widget build(BuildContext context) {
+    return buildPage(context, widget.project);
+  }
+
+  Widget buildPage(BuildContext context, ProjectModel project) {
     return Scaffold(
-      appBar: _headerPage(widget.project),
-      body: _bodyPage(widget.project)
+      backgroundColor: UIColors.Green,
+      body: bodyPage(project),
+      floatingActionButton: FloatingActionButton(
+        elevation: 0,
+        shape: CircleBorder(
+          side: BorderSide(
+            color: Colors.white,
+            width: 4.0
+          )
+        ),
+        child: Icon(Icons.add),
+        backgroundColor: UIColors.LightGreen,
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return NewTaskForm(projectId: project.id);
+            }
+          ).then((task) => this.bloc.addTask(task));
+        },
+      ),
     );
   }
 
   /// Build header this page.
-  Widget _headerPage(ProjectModel object) {
-    Widget _title = Text(object.title);
-
-    return AppBar(
-      title: _title
-    );
-  }
-
-  /// Build body this page.
-  Widget _bodyPage(ProjectModel object) {
+  Widget headerPage(ProjectModel object) {
     return Container(
-      child: Column(
+      height: 100.0,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Expanded(
-            child: _mainContent()
+          FlatButton(
+            padding: EdgeInsets.all(10.0),
+            color: Colors.white,
+            shape: CircleBorder(),
+            child: Icon(Icons.arrow_back),
+            onPressed: () => Navigator.of(this.context).pop()
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              FlatButton(
-                color: Colors.green,
-                textColor: Colors.white,
-                child: Icon(Icons.add),
-                onPressed: () { // Show new task dialog.
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return NewTaskForm(projectId: object.id);
-                    }
-                  ).then((task) => _bloc.addTask(task));
-                }
+          Expanded(
+            child: Text(
+              object.title,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18.0,
+                fontWeight: FontWeight.w600
               )
-            ]
+            )
+          ),
+          FlatButton(
+            padding: EdgeInsets.all(12.0),
+            shape: CircleBorder(
+              side: BorderSide(
+                color: Colors.white,
+                width: 4.0
+              )
+            ),
+            child: Icon(Icons.edit),
+            textColor: Colors.white,
+            onPressed: () {}
           )
         ]
       )
     );
   }
 
+  /// Build body this page.
+  Widget bodyPage(ProjectModel object) {
+    return Container(
+      margin: EdgeInsets.only(top: 15.0),
+      child: Column(
+        children: <Widget>[
+          headerPage(object),
+          bodyContent()
+        ]
+      )
+    );
+  }
+
   /// Build main content this page.
-  Widget _mainContent() {
-    return StreamBuilder(
-      stream: _bloc.streamTasks,
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-            child: CircularProgressIndicator()
-          );
-        } else {
-          if (snapshot.hasData && snapshot.data.isNotEmpty) {
-            return _buildListView(snapshot.data);
-          } else {
-            return EmptyContentBox(message: 'not task found');
+  Widget bodyContent() {
+    return Container(
+      child: Expanded(
+        child: StreamBuilder(
+          stream: this.bloc.streamTasks,
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: CircularProgressIndicator()
+              );
+            } else {
+              if (snapshot.hasData && snapshot.data.isNotEmpty) {
+                return _buildListView(snapshot.data);
+              } else {
+                return EmptyContentBox(
+                  message: 'not task found',
+                  textColor: Colors.white.withOpacity(0.75),
+                );
+              }
+            }
           }
-        }
-      }
+        )
+      )
     );
   }
 
   /// Build a listview to show tasks.
   Widget _buildListView(List<TaskModel> tasks) {
     return ListView.separated(
+      padding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
       itemCount: tasks.length,
       separatorBuilder: (content, index) {
-        return Divider(color: Colors.grey);
+        return Divider(
+          color: Colors.white.withOpacity(0.85),
+        );
       },
       itemBuilder: (context, int index) {
         final task = tasks[index];
@@ -127,15 +175,18 @@ class _ProjectPageState extends State<ProjectPage> {
 
     return ListTile(
       leading: Checkbox(
+        checkColor: UIColors.Green,
+        activeColor: Colors.white,
         value: task.done,
         onChanged: (bool checked) {
           task.done = checked;
-          _bloc.updateTask(task);
+          this.bloc.updateTask(task);
         }
       ),
       title: Text(
         task.title,
         style: TextStyle(
+          color: Colors.white,
           decoration: _decoration
         )
       ),
@@ -146,17 +197,17 @@ class _ProjectPageState extends State<ProjectPage> {
         ),
         onPressed: () {
           task.important = !task.important;
-          _bloc.updateTask(task);
-          Provider.of<HomePageBloc>(context).announceImportantTasks();
+          this.bloc.updateTask(task);
         }
       ),
-      onTap: () { // Open a task page.
-        Navigator.push(
-          context,
+      onTap: () async { // Open a task page.
+        Navigator.of(this.context).push(
           MaterialPageRoute(
             builder: (context) => TaskPage(task: task)
           )
-        );
+        ).then((_) {
+          this.bloc.refreshTasks();
+        });
       },
     );
   }

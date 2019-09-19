@@ -23,7 +23,6 @@ class CategoryPageBloc implements BlocContract {
     this._category = category;
     _categoryRepository = CategoryRepository();
     _projectRepository = ProjectRepository();
-    refreshProjects();
   }
 
   /// Action to delete this category

@@ -1,34 +1,89 @@
 import 'package:flutter/material.dart';
+
 import 'package:tasks/src/data/models/task_model.dart';
-import 'package:tasks/src/presentation/pages/home/home_page_bloc.dart';
+import 'package:tasks/src/presentation/pages/important/important_page_bloc.dart';
+import 'package:tasks/src/presentation/shared/widgets/bottom_navigation.dart';
 import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
+import 'package:tasks/src/presentation/shared/widgets/header_home.dart';
 import 'package:tasks/src/presentation/shared/widgets/task_list_tile.dart';
 import 'package:tasks/src/presentation/ui_colors.dart';
-import 'package:tasks/src/provider.dart';
 
-class BoardPage extends StatefulWidget {
+class ImportantPage extends StatefulWidget {
+  ImportantPage({Key key}): super(key: key);
+
   @override
   State<StatefulWidget> createState() {
-    return _BoardPageState();
+    return _ImportantPageState();
   }
 }
 
-class _BoardPageState extends State<BoardPage> {
+class _ImportantPageState extends State<ImportantPage> {
+  final int id = 0;
+  ImportantPageBloc bloc;
+
   @override
   void initState() {
     super.initState();
-    Provider.of<HomePageBloc>(context).refreshTasks();
+    this.bloc = ImportantPageBloc();
+    this.bloc.refreshImportantTasks();
   }
 
   @override
   void dispose() {
+    this.bloc.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    return buildPage(context);
+  }
+
+  Widget buildPage(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        child: bodyPage()
+      ),
+      bottomNavigationBar: Hero(
+        tag: 'bottom-navigation-bar.',
+        child: BottomNavigation(context: context, current: this.id)
+      )
+    );
+  }
+
+  Widget bodyPage() {
+    return Column(
+      children: <Widget>[
+        Container(
+          height: 120.0,
+          padding: EdgeInsets.fromLTRB(20.0, 30.0, 20.0, 10.0),
+          decoration: BoxDecoration(
+            color: UIColors.Blue
+          ),
+          child: StreamBuilder(
+            stream: this.bloc.streamImportantTasks,
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (snapshot.hasData) {
+                return HeaderHome(importantTasks: snapshot.data.length);
+              }
+
+              return HeaderHome();
+            }
+          )
+        ),
+        Container(
+          child: Expanded(
+            child: bodyContent()
+          )
+        )
+      ]
+    );
+  }
+
+  Widget bodyContent() {
     return StreamBuilder(
-      stream: Provider.of<HomePageBloc>(context).streamTasks,
+      stream: this.bloc.streamImportantTasks,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
@@ -50,6 +105,7 @@ class _BoardPageState extends State<BoardPage> {
     List<dynamic> source = ['Important'];
     source.addAll(data);
     return ListView.builder(
+      padding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
       itemCount: source.length,
       itemBuilder: (BuildContext context, int index) {
         return _buildChildrenInListView(source[index]);
@@ -71,7 +127,7 @@ class _BoardPageState extends State<BoardPage> {
       child: Text(
         title,
         style: TextStyle(
-          color: UIColors.TextSubHeader,
+          color: UIColors.Grey,
           fontSize: 16.0,
           fontWeight: FontWeight.w600
         )
@@ -90,21 +146,20 @@ class _BoardPageState extends State<BoardPage> {
           value: task.done,
           onChanged: (checked) {
             task.done = checked;
-            Provider.of<HomePageBloc>(context).updateTask(task);
+            this.bloc.updateTask(task);
           }
         ),
         title: Text(
           task.title,
           style: TextStyle(
-            color: UIColors.TextHeader,
+            color: UIColors.Blue,
             fontWeight: FontWeight.w600
           )
         )
       ),
       onDismissed: (direction) {
         task.important = false;
-        Provider.of<HomePageBloc>(context).updateTask(task);
-        Provider.of<HomePageBloc>(context).announceImportantTasks();
+        this.bloc.updateTask(task);
       },
     );
   }

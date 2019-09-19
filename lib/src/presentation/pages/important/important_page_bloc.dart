@@ -4,36 +4,37 @@ import 'package:tasks/src/core/contracts/bloc_contract.dart';
 import 'package:tasks/src/data/models/task_model.dart';
 import 'package:tasks/src/data/repositories/task_repository.dart';
 
-class BoardPageBloc implements BlocContract {
-  final _controllerTasks = StreamController<List<TaskModel>>();
-  Sink get sinkTasks => _controllerTasks.sink;
-  Stream get streamTasks => _controllerTasks.stream;
+class ImportantPageBloc implements BlocContract {
+  final _controllerImportantTasks = StreamController<List<TaskModel>>.broadcast();
+  Sink get sinkImportantTasks => _controllerImportantTasks.sink;
+  Stream get streamImportantTasks => _controllerImportantTasks.stream;
 
   TaskRepository _taskRepository;
 
-  BoardPageBloc() {
+  ImportantPageBloc() {
     _taskRepository = TaskRepository();
-    refreshTasks();
   }
 
-  void updateTasks(TaskModel object) {
+  void updateTask(TaskModel object) {
     _taskRepository.update(object.toMap()).then((_) {
-      refreshTasks();
+      refreshImportantTasks();
     });
   }
 
-  void refreshTasks() {
+  void refreshImportantTasks() {
     _taskRepository.allImportantTasks().then((tasks) {
       List<TaskModel> result = [];
       tasks.forEach((task) {
         result.add(TaskModel.from(task));
       });
-      sinkTasks.add(result);
+
+      // Sinking to stream
+      sinkImportantTasks.add(result);
     });
   }
 
   @override
   void dispose() {
-    _controllerTasks.close();
+    _controllerImportantTasks.close();
   }
 }

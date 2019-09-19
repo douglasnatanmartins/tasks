@@ -17,7 +17,7 @@ class TaskListTile extends StatelessWidget {
         borderRadius: BorderRadius.circular(5),
         boxShadow: [
           BoxShadow(
-            color: UIColors.GreyBorder,
+            color: UIColors.Grey,
             blurRadius: 10.0,
             spreadRadius: 0.5,
             offset: Offset(0.0, 0.0)

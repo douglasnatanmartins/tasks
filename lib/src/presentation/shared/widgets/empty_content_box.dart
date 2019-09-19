@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 class EmptyContentBox extends StatelessWidget {
   final String message;
+  final Color textColor;
 
-  EmptyContentBox({this.message});
+  EmptyContentBox({this.message, this.textColor = Colors.black});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class EmptyContentBox extends StatelessWidget {
           Text(
             this.message,
             style: TextStyle(
-              color: Colors.black
+              color: this.textColor
             )
           )
         ]

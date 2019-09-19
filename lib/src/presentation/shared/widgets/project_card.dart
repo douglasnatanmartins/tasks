@@ -10,33 +10,30 @@ class ProjectCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(10.0),
-      padding: EdgeInsets.all(10.0),
+      margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
+      padding: EdgeInsets.all(15.0),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8.0),
-        boxShadow: [
-          BoxShadow(
-            color: UIColors.GreyBorder,
-            blurRadius: 8.0,
-            spreadRadius: 1.0,
-            offset: Offset(0.0, 1.0)
-          )
-        ]
+        color: Colors.grey.withOpacity(0.18),
+        borderRadius: BorderRadius.circular(10.0)
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           Text(
             project.title,
             style: TextStyle(
-              color: UIColors.TextHeader,
-              fontSize: 18.0,
+              color: UIColors.Purple,
+              fontSize: 17.0,
               fontWeight: FontWeight.w600
             )
           ),
+          SizedBox(height: 5.0),
           Text(
-            '24 Tasks'
+            project.description,
+            style: TextStyle(
+              color: Colors.black.withOpacity(0.8)
+            )
           )
         ]
       )

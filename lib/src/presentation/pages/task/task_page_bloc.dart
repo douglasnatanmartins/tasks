@@ -17,14 +17,17 @@ class TaskPageBloc implements BlocContract {
   TaskModel _task;
 
   TaskPageBloc({@required TaskModel task}) {
-    _task = task;
+    this._task = task;
     _taskRepository = TaskRepository();
     _stepRepository = StepRepository();
-    refreshSteps();
   }
 
   void updateTask(TaskModel task) {
     _taskRepository.update(task.toMap());
+  }
+
+  Future<void> deleteTask(TaskModel task) async {
+    await _taskRepository.delete(task.id);
   }
 
   void addStep(StepModel step) {
