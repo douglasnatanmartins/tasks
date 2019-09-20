@@ -77,7 +77,8 @@ class _NewCategoryFormState extends State<NewCategoryForm> {
                       if (_key.currentState.validate()) {
                         CategoryModel category = CategoryModel(
                           title: _titleController.text.trim(),
-                          description: _descriptionController.text.trim()
+                          description: _descriptionController.text.trim(),
+                          created: DateTime.now()
                         );
                         Navigator.of(context).pop(category);
                       }

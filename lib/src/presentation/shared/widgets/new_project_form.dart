@@ -78,7 +78,8 @@ class _NewProjectFormState extends State<NewProjectForm> {
                         ProjectModel project = ProjectModel(
                           title: _titleController.text.trim(),
                           description: _descriptionController.text.trim(),
-                          categoryId: widget.categoryId
+                          categoryId: widget.categoryId,
+                          created: DateTime.now()
                         );
                         Navigator.of(context).pop(project);
                       }

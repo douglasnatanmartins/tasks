@@ -1,3 +1,4 @@
+import 'package:meta/meta.dart';
 import 'package:tasks/src/data/contracts/model_contract.dart';
 
 class ProjectModel implements ModelContract{
@@ -5,11 +6,13 @@ class ProjectModel implements ModelContract{
   String _title;
   String _description;
   int _categoryId;
+  DateTime _created;
 
-  int get id => _id;
-  String get title => _title;
-  String get description => _description;
-  int get categoryId => _categoryId;
+  int get id => this._id;
+  String get title => this._title;
+  String get description => this._description;
+  int get categoryId => this._categoryId;
+  DateTime get created => this._created;
 
   set title(String title) {
     this._title = title;
@@ -24,11 +27,18 @@ class ProjectModel implements ModelContract{
   }
 
   /// Constructor of a project model object.
-  ProjectModel({int id, String title, String description, int categoryId}) {
+  ProjectModel({
+    int id,
+    @required String title,
+    @required String description,
+    @required int categoryId,
+    @required DateTime created
+  }) {
     this._id = id;
     this._title = title;
     this._description = description;
     this._categoryId = categoryId;
+    this._created = created;
   }
 
   /// Constructor of a project model object from a Map object.
@@ -37,6 +47,7 @@ class ProjectModel implements ModelContract{
     this._title = project['title'];
     this._description = project['description'];
     this._categoryId = project['categoryId'];
+    this._created = DateTime.parse(project['created']);
   }
 
   // Returns a map object to representation of this object.
@@ -47,6 +58,7 @@ class ProjectModel implements ModelContract{
     project['title'] = this._title;
     project['description'] = this._description;
     project['categoryId'] = this._categoryId;
+    project['created'] = this._created.toString();
     return project;
   }
 }

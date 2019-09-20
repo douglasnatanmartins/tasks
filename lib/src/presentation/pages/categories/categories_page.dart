@@ -158,7 +158,10 @@ class _CategoriesPageState extends State<CategoriesPage> {
             final List<CategoryModel> categories = snapshot.data;
             return buildListCategories(categories);
           } else {
-            return EmptyContentBox(message: 'no category found');
+            return EmptyContentBox(
+              message: 'no category found',
+              textColor: Colors.white.withOpacity(0.85),
+            );
           }
         }
       }
