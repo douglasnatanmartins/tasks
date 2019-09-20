@@ -1,4 +1,4 @@
-package com.example.tasks;
+package com.tenla.tasks;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;
