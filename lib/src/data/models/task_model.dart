@@ -1,3 +1,4 @@
+import 'package:meta/meta.dart';
 import 'package:tasks/src/data/contracts/model_contract.dart';
 
 class TaskModel implements ModelContract {
@@ -7,6 +8,7 @@ class TaskModel implements ModelContract {
   int _projectId;
   String _note;
   int _important;
+  DateTime _created;
 
   int get id => this._id;
   String get title => this._title;
@@ -14,6 +16,7 @@ class TaskModel implements ModelContract {
   int get projectId => this._projectId;
   String get note => this._note;
   bool get important => this._important == 1 ? true : false;
+  DateTime get created => this._created;
 
   set title(String title) {
     this._title = title;
@@ -36,13 +39,22 @@ class TaskModel implements ModelContract {
   }
 
   /// Constructor of a task model object.
-  TaskModel({int id, String title, bool done, int projectId, String note, bool important}) {
+  TaskModel({
+    int id,
+    @required String title,
+    @required bool done,
+    @required int projectId,
+    String note,
+    bool important,
+    @required DateTime created
+  }) {
     this._id = id;
     this._title = title;
     this._done = done ? 1 : 0;
     this._projectId = projectId;
     this._note = note;
     this._important = important ? 1 : 0;
+    this._created = created;
   }
 
   /// Constructor of a task model object from a Map object.
@@ -53,6 +65,7 @@ class TaskModel implements ModelContract {
     this._projectId = object['projectId'];
     this._note = object['note'];
     this._important = object['important'];
+    this._created = DateTime.parse(object['created']);
   }
 
   /// Returns a map object to representation of this object.
@@ -64,6 +77,7 @@ class TaskModel implements ModelContract {
     object['projectId'] = this._projectId;
     object['note'] = this._note;
     object['important'] = this._important;
+    object['created'] = this.created.toString();
     return object;
   }
 }

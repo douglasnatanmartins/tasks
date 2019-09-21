@@ -65,7 +65,8 @@ class _NewTaskFormState extends State<NewTaskForm> {
                 title: _controller.value.text.trim(),
                 done: false,
                 projectId: widget.projectId,
-                important: false
+                important: false,
+                created: DateTime.now()
               );
               Navigator.of(context).pop(task);
             }
