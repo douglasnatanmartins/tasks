@@ -5,8 +5,8 @@ import 'package:tasks/src/data/models/project_model.dart';
 import 'package:tasks/src/presentation/pages/category/category_page_bloc.dart';
 import 'package:tasks/src/presentation/pages/project/project_page.dart';
 import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
-import 'package:tasks/src/presentation/shared/widgets/new_project_form.dart';
-import 'package:tasks/src/presentation/shared/widgets/project_card.dart';
+import 'package:tasks/src/presentation/shared/forms/new_project_form.dart';
+import 'package:tasks/src/presentation/shared/cards/project_card.dart';
 import 'package:tasks/src/presentation/ui_colors.dart';
 
 class CategoryPage extends StatefulWidget {

@@ -4,9 +4,9 @@ import 'package:tasks/src/data/models/category_model.dart';
 import 'package:tasks/src/presentation/pages/categories/categories_page_bloc.dart';
 import 'package:tasks/src/presentation/pages/category/category_page.dart';
 import 'package:tasks/src/presentation/shared/widgets/bottom_navigation.dart';
-import 'package:tasks/src/presentation/shared/widgets/category_card.dart';
+import 'package:tasks/src/presentation/shared/cards/category_card.dart';
 import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
-import 'package:tasks/src/presentation/shared/widgets/new_category_form.dart';
+import 'package:tasks/src/presentation/shared/forms/new_category_form.dart';
 import 'package:tasks/src/presentation/ui_colors.dart';
 import 'package:tasks/src/utils/date_time_util.dart';
 
