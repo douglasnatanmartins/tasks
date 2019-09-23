@@ -8,7 +8,10 @@ import 'package:tasks/src/presentation/ui_colors.dart';
 class TaskPage extends StatefulWidget {
   final TaskModel task;
 
-  TaskPage({Key key, @required this.task}): super(key: key);
+  TaskPage({
+    Key key,
+    @required this.task
+  }): assert(task != null), super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -47,8 +50,7 @@ class _TaskPageState extends State<TaskPage> {
 
   /// Build body this page.
   Widget bodyPage(TaskModel task) {
-    return Container(
-      margin: EdgeInsets.only(top: 25.0),
+    return SafeArea(
       child: Column(
         children: <Widget>[
           headerPage(task),
@@ -67,15 +69,18 @@ class _TaskPageState extends State<TaskPage> {
   /// Build header this page.
   Widget headerPage(TaskModel task) {
     return Container(
-      height: 100.0,
+      padding: EdgeInsets.symmetric(vertical: 15.0),
       child: Row(
         children: <Widget>[
-          FlatButton(
-            padding: EdgeInsets.all(10.0),
-            color: Colors.white,
-            shape: CircleBorder(),
-            child: Icon(Icons.arrow_back),
-            onPressed: () => Navigator.of(this.context).pop()
+          Hero(
+            tag: 'previous-screen-button',
+            child: FlatButton(
+              padding: EdgeInsets.all(10.0),
+              color: Colors.white,
+              shape: CircleBorder(),
+              child: Icon(Icons.arrow_back),
+              onPressed: () => Navigator.of(this.context).pop()
+            )
           ),
           Expanded(
             child: editorTitleTask(task)

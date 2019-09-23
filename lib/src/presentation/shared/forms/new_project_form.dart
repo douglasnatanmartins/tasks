@@ -1,96 +1,138 @@
 import 'package:flutter/material.dart';
 import 'package:tasks/src/data/models/project_model.dart';
+import 'package:tasks/src/presentation/ui_colors.dart';
 
 class NewProjectForm extends StatefulWidget {
   final int categoryId;
 
-  NewProjectForm(this.categoryId);
+  NewProjectForm({
+    Key key,
+    @required this.categoryId
+  }): assert(categoryId != null), super(key: key);
 
   @override
-  State<StatefulWidget> createState() {
-    return _NewProjectFormState();
-  }
+  State<StatefulWidget> createState() => _NewProjectFormState();
 }
 
 class _NewProjectFormState extends State<NewProjectForm> {
-  final _key = GlobalKey<FormState>();
+  final key = GlobalKey<FormState>();
   final _titleController = new TextEditingController();
   final _descriptionController = new TextEditingController();
 
   @override
   void dispose() {
-    _titleController.dispose();
-    _descriptionController.dispose();
+    this._titleController.dispose();
+    this._descriptionController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0)
+      ),
       child: Container(
-        width: 450,
-        height: 250,
-        padding: EdgeInsets.all(20.0),
-        child: Form(
-          key: _key,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                "New List",
+        height: 340.0,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 0.0),
+              child: Text(
+                'Add new project',
                 style: TextStyle(
-                  fontSize: 16,
+                  color: UIColors.DarkGreen,
+                  fontSize: 20.0,
                   fontWeight: FontWeight.w600
                 )
-              ),
-              TextFormField(
-                autofocus: true,
-                controller: _titleController,
-                decoration: InputDecoration(
-                  labelText: "Title"
-                ),
-                validator: (value) {
-                  if (value.trim().isEmpty) {
-                    return "Please enter project title.";
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                  controller: _descriptionController,
-                  decoration: InputDecoration(
-                    labelText: "Description"
-                  )
-              ),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.bottomRight,
-                  child: FlatButton(
-                    color: Colors.green,
-                    child: Text(
-                      "Create",
-                      style: TextStyle(
-                        color: Colors.white
-                      )
-                    ),
-                    onPressed: () {
-                      if (_key.currentState.validate()) {
-                        ProjectModel project = ProjectModel(
-                          title: _titleController.text.trim(),
-                          description: _descriptionController.text.trim(),
-                          categoryId: widget.categoryId,
-                          created: DateTime.now()
-                        );
-                        Navigator.of(context).pop(project);
-                      }
-                    }
-                  )
-                )
               )
-            ],
-          )
+            ),
+            SizedBox(height: 30.0),
+            this.buildForm(),
+            Spacer(),
+            this.buildActions(),
+          ]
         )
       )
+    );
+  }
+
+  Widget buildForm() {
+    return Form(
+      key: this.key,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 15.0),
+        child: Column(
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.only(right: 10.0),
+                  child: FlatButton(
+                    shape: CircleBorder(),
+                    padding: EdgeInsets.all(12.0),
+                    color: Colors.grey.withOpacity(0.2),
+                    child: Icon(Icons.create_new_folder),
+                    onPressed: () {}
+                  )
+                ),
+                Expanded(
+                  child: TextFormField(
+                    autofocus: true,
+                    controller: this._titleController,
+                    decoration: InputDecoration(
+                      hintText: 'Title'
+                    ),
+                    validator: (String value) {
+                      if (value.trim().isEmpty) {
+                        return 'Enter this project title.';
+                      }
+                      return null;
+                    },
+                  )
+                )
+              ]
+            ),
+            SizedBox(height: 10),
+            TextFormField(
+                controller: this._descriptionController,
+                decoration: InputDecoration(
+                  hintText: 'Description'
+                )
+            )
+          ]
+        )
+      )
+    );
+  }
+
+  Widget buildActions() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: <Widget>[
+        FlatButton(
+          color: Colors.green,
+          child: Text(
+            'Create',
+            style: TextStyle(
+              color: Colors.white
+            )
+          ),
+          onPressed: () {
+            if (this.key.currentState.validate()) {
+              final ProjectModel project = ProjectModel(
+                title: this._titleController.text.trim(),
+                description: this._descriptionController.text.trim(),
+                categoryId: this.widget.categoryId,
+                created: DateTime.now()
+              );
+              Navigator.of(context).pop(project);
+            }
+          }
+        )
+      ]
     );
   }
 }

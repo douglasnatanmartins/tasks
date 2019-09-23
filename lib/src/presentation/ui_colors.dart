@@ -35,4 +35,10 @@ class UIColors {
   static const Color LightGrey = Color.fromRGBO(234, 234, 234, 1.0);
   static const Color Grey = Color.fromRGBO(191, 191, 191, 1.0);
   static const Color DarkGrey = Color.fromRGBO(106, 106, 106, 1.0);
+
+  static const TextStyle TextHeader = TextStyle(
+    color: DarkPurple,
+    fontSize: 18.0,
+    fontWeight: FontWeight.w600
+  );
 }

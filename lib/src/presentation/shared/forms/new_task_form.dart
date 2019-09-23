@@ -1,70 +1,75 @@
 import 'package:flutter/material.dart';
 import 'package:tasks/src/data/models/task_model.dart';
+import 'package:tasks/src/presentation/ui_colors.dart';
 
 class NewTaskForm extends StatefulWidget {
   final int projectId;
 
-  NewTaskForm({@required this.projectId});
+  NewTaskForm({
+    Key key,
+    @required this.projectId
+  }): assert(projectId != null), super(key: key);
 
   @override
-  State<StatefulWidget> createState() {
-    return _NewTaskFormState();
-  }
+  State<StatefulWidget> createState() => _NewTaskFormState();
 }
 
 class _NewTaskFormState extends State<NewTaskForm> {
-  final _key = GlobalKey<FormState>();
-  TextEditingController _controller;
+  final key = GlobalKey<FormState>();
+  final _controller = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController();
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    this._controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text("New Task"),
+      title: Text(
+        'New Task',
+        style: UIColors.TextHeader
+      ),
       content: Form(
-        key: _key,
+        key: this.key,
         child: TextFormField(
           autofocus: true,
-          controller: _controller,
-          validator: (value) {
+          controller: this._controller,
+          validator: (String value) {
             if (value.trim().isEmpty) {
-              return "Please enter task title";
+              return 'Enter this task title.';
             }
+
             return null;
           }
         )
       ),
       actions: <Widget>[
         FlatButton(
-          child: Text("Cancel"),
+          child: Text('Cancel'),
           onPressed: () {
-            _controller.clear();
-            Navigator.pop(context);
+            this._controller.clear();
+            Navigator.of(context).pop();
           }
         ),
         FlatButton(
           color: Colors.green,
           child: Text(
-            "Add",
+            'Add',
             style: TextStyle(color: Colors.white)
           ),
           onPressed: () {
-            if (_key.currentState.validate()) {
+            if (this.key.currentState.validate()) {
               final task = TaskModel(
                 title: _controller.value.text.trim(),
                 done: false,
-                projectId: widget.projectId,
+                projectId: this.widget.projectId,
                 important: false,
                 created: DateTime.now()
               );

@@ -15,7 +15,7 @@ class ProjectPageBloc implements BlocContract {
 
   ProjectPageBloc({@required ProjectModel project}) {
     this._project = project;
-    _taskRepository = TaskRepository();
+    this._taskRepository = TaskRepository();
   }
 
   void addTask(TaskModel task) {

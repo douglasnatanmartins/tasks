@@ -11,12 +11,13 @@ import 'package:tasks/src/presentation/ui_colors.dart';
 class ProjectPage extends StatefulWidget {
   final ProjectModel project;
 
-  ProjectPage({Key key, @required this.project}): super(key: key);
+  ProjectPage({
+    Key key,
+    @required this.project
+  }): assert(project != null), super(key: key);
 
   @override
-  State<StatefulWidget> createState() {
-    return _ProjectPageState();
-  }
+  State<StatefulWidget> createState() => _ProjectPageState();
 }
 
 class _ProjectPageState extends State<ProjectPage> {
@@ -38,10 +39,10 @@ class _ProjectPageState extends State<ProjectPage> {
   /// Build a project page.
   @override
   Widget build(BuildContext context) {
-    return buildPage(context, widget.project);
+    return buildPage(this.widget.project);
   }
 
-  Widget buildPage(BuildContext context, ProjectModel project) {
+  Widget buildPage(ProjectModel project) {
     return Scaffold(
       backgroundColor: UIColors.Green,
       body: bodyPage(project),
@@ -57,29 +58,48 @@ class _ProjectPageState extends State<ProjectPage> {
         backgroundColor: UIColors.LightGreen,
         onPressed: () {
           showDialog(
-            context: context,
-            builder: (context) {
+            context: this.context,
+            builder: (BuildContext context) {
               return NewTaskForm(projectId: project.id);
             }
-          ).then((task) => this.bloc.addTask(task));
+          ).then((task) {
+            if (task is TaskModel) {
+              this.bloc.addTask(task);
+            }
+          });
         },
       ),
+    );
+  }
+
+  /// Build body this page.
+  Widget bodyPage(ProjectModel object) {
+    return SafeArea(
+      child: Column(
+        children: <Widget>[
+          headerPage(object),
+          bodyContent()
+        ]
+      )
     );
   }
 
   /// Build header this page.
   Widget headerPage(ProjectModel object) {
     return Container(
-      height: 100.0,
+      padding: EdgeInsets.symmetric(vertical: 15.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          FlatButton(
-            padding: EdgeInsets.all(10.0),
-            color: Colors.white,
-            shape: CircleBorder(),
-            child: Icon(Icons.arrow_back),
-            onPressed: () => Navigator.of(this.context).pop()
+          Hero(
+            tag: 'previous-screen-button',
+            child: FlatButton(
+              padding: EdgeInsets.all(10.0),
+              color: Colors.white,
+              shape: CircleBorder(),
+              child: Icon(Icons.arrow_back),
+              onPressed: () => Navigator.of(this.context).pop()
+            )
           ),
           Expanded(
             child: Text(
@@ -103,19 +123,6 @@ class _ProjectPageState extends State<ProjectPage> {
             textColor: Colors.white,
             onPressed: () {}
           )
-        ]
-      )
-    );
-  }
-
-  /// Build body this page.
-  Widget bodyPage(ProjectModel object) {
-    return Container(
-      margin: EdgeInsets.only(top: 15.0),
-      child: Column(
-        children: <Widget>[
-          headerPage(object),
-          bodyContent()
         ]
       )
     );
@@ -158,7 +165,7 @@ class _ProjectPageState extends State<ProjectPage> {
           color: Colors.white.withOpacity(0.85),
         );
       },
-      itemBuilder: (context, int index) {
+      itemBuilder: (BuildContext context, int index) {
         final task = tasks[index];
         return _buildChildrenInListView(task);
       }

@@ -54,6 +54,7 @@ class _CategoryPageState extends State<CategoryPage> {
 
   Widget buildPage(BuildContext context, CategoryModel category) {
     return Scaffold(
+      backgroundColor: UIColors.Blue,
       body: bodyPage(category),
       floatingActionButton: FloatingActionButton(
         elevation: 0,
@@ -63,7 +64,7 @@ class _CategoryPageState extends State<CategoryPage> {
           final result = await showDialog(
             context: context,
             builder: (context) {
-              return NewProjectForm(category.id);
+              return NewProjectForm(categoryId: category.id);
             }
           );
 
@@ -78,7 +79,7 @@ class _CategoryPageState extends State<CategoryPage> {
 
   /// Build body this page.
   Widget bodyPage(CategoryModel category) {
-    return Container(
+    return SafeArea(
       child: Column(
         children: <Widget>[
           // Header this page.
@@ -93,24 +94,24 @@ class _CategoryPageState extends State<CategoryPage> {
   /// Build header this page.
   Widget headerPage(CategoryModel category) {
     return Container(
-      padding: EdgeInsets.only(top: 35.0),
-      decoration: BoxDecoration(
-        color: UIColors.Blue
-      ),
-      height: 150.0,
+      padding: EdgeInsets.symmetric(vertical: 15.0),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Row(
             children: <Widget>[
               // Back button.
-              FlatButton(
-                padding: EdgeInsets.all(10.0),
-                shape: CircleBorder(),
-                textColor: UIColors.Blue,
-                color: Colors.white,
-                child: Icon(Icons.arrow_back),
-                onPressed: () => Navigator.of(context).pop()
+              Hero(
+                tag: 'previous-screen-button',
+                child: FlatButton(
+                  padding: EdgeInsets.all(10.0),
+                  shape: CircleBorder(),
+                  textColor: UIColors.Blue,
+                  color: Colors.white,
+                  child: Icon(Icons.arrow_back),
+                  onPressed: () => Navigator.of(context).pop()
+                )
               ),
               Expanded(
                 child: Column(
@@ -199,8 +200,11 @@ class _CategoryPageState extends State<CategoryPage> {
 
   /// Build main content this page.
   Widget bodyContent() {
-    return Container(
-      child: Expanded(
+    return Expanded(
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white
+        ),
         child: StreamBuilder(
           stream: this.bloc.streamProjects,
           builder: (context, snapshot) {
@@ -236,7 +240,7 @@ class _CategoryPageState extends State<CategoryPage> {
   /// Build a children in listview.
   Widget _buildChildrenInListView(ProjectModel project) {
     return GestureDetector(
-      child: ProjectCard(project: project),
+      child: ProjectCard(project),
       onTap: () {
         Navigator.push(
           context,

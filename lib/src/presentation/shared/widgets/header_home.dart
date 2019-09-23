@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tasks/src/presentation/pages/settings/settings_page.dart';
 import 'package:tasks/src/presentation/ui_colors.dart';
 
 class HeaderHome extends StatelessWidget {
@@ -41,13 +42,22 @@ class HeaderHome extends StatelessWidget {
             )
           ]
         ),
-        FlatButton(
-          shape: CircleBorder(),
-          padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-          child: Icon(Icons.settings),
-          color: Colors.white,
-          textColor: UIColors.Blue,
-          onPressed: () {},
+        Hero(
+          tag: 'on-hero-button',
+          child: FlatButton(
+            shape: CircleBorder(),
+            padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+            child: Icon(Icons.settings),
+            color: Colors.white,
+            textColor: UIColors.Blue,
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) => SettingsPage()
+                )
+              );
+            },
+          )
         )
       ],
     );
