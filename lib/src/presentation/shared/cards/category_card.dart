@@ -34,6 +34,7 @@ class CategoryCard extends StatelessWidget {
             SizedBox(height: 5),
             Text(
               category.title,
+              overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 color: UIColors.Blue,
                 fontSize: 28.0

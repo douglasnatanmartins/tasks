@@ -192,6 +192,7 @@ class _ProjectPageState extends State<ProjectPage> {
       ),
       title: Text(
         task.title,
+        overflow: TextOverflow.ellipsis,
         style: TextStyle(
           color: Colors.white,
           decoration: _decoration
