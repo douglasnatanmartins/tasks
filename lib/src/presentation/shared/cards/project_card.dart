@@ -15,6 +15,7 @@ class ProjectCard extends StatelessWidget {
     children.add(
       Text(
         this.project.title,
+        overflow: TextOverflow.ellipsis,
         style: TextStyle(
           color: UIColors.Blue,
           fontSize: 17.0,
@@ -28,6 +29,7 @@ class ProjectCard extends StatelessWidget {
       children.add(
         Text(
           this.project.description,
+          overflow: TextOverflow.ellipsis,
           style: TextStyle(
             color: Colors.black.withOpacity(0.8)
           )
@@ -62,10 +64,12 @@ class ProjectCard extends StatelessWidget {
               color: UIColors.Orange
             )
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: children
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: children
+            )
           )
         ]
       )
