@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:tasks/src/presentation/pages/categories/categories_page.dart';
-import 'package:tasks/src/presentation/pages/important/important_page.dart';
+import 'package:tasks/src/presentation/pages/home/home_page.dart';
 import 'package:tasks/src/presentation/ui_colors.dart';
 
 class BottomNavigation extends StatelessWidget {
   final int current;
   final BuildContext context;
 
-  final _pages = <Widget>[
-    ImportantPage(),
+  final pages = <Widget>[
+    HomePage(),
     CategoriesPage()
   ];
 
@@ -24,8 +24,8 @@ class BottomNavigation extends StatelessWidget {
       unselectedFontSize: 12.0,
       items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
-          icon: Icon(Icons.info),
-          title: Text('Important')
+          icon: Icon(Icons.home),
+          title: Text('Home')
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.style),
@@ -41,7 +41,7 @@ class BottomNavigation extends StatelessWidget {
       Navigator.of(this.context).pushReplacement(
         MaterialPageRoute(
           builder: (BuildContext context) {
-            return _pages[index];
+            return this.pages[index];
           }
         )
       );

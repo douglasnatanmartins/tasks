@@ -38,30 +38,20 @@ class _TaskPageState extends State<TaskPage> {
   /// Build a task page.
   @override
   Widget build(BuildContext context) {
-    return buildPage();
+    return buildPage(this.widget.task);
   }
 
-  Widget buildPage() {
+  Widget buildPage(TaskModel task) {
     return Scaffold(
       backgroundColor: UIColors.Blue,
-      body: bodyPage(this.widget.task)
-    );
-  }
-
-  /// Build body this page.
-  Widget bodyPage(TaskModel task) {
-    return SafeArea(
-      child: Column(
-        children: <Widget>[
-          headerPage(task),
-          Expanded(
-            child: bodyContent()
-          ),
-          Container(
-            padding: EdgeInsets.only(left: 10.0, right: 10.0),
-            child: _buildNoteForm(task)
-          )
-        ],
+      body: SafeArea(
+        child: Column(
+          children: <Widget>[
+            headerPage(task),
+            bodyPage(),
+            footerPage(task)
+          ],
+        )
       )
     );
   }
@@ -85,26 +75,29 @@ class _TaskPageState extends State<TaskPage> {
           Expanded(
             child: editorTitleTask(task)
           ),
-          FlatButton(
-            padding: EdgeInsets.all(12.0),
-            color: Colors.white,
-            shape: CircleBorder(),
-            child: Icon(Icons.delete),
-            textColor: UIColors.LightRed,
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return _dialogWhenDeleteTask();
-                }
-              ).then((result) {
-                if (result != null && result) {
-                  this.bloc.deleteTask(task).then((_) {
-                    Navigator.of(this.context).pop();
-                  });
-                }
-              });
-            }
+          Hero(
+            tag: 'floating-button',
+            child: FlatButton(
+              padding: EdgeInsets.all(12.0),
+              color: Colors.white,
+              shape: CircleBorder(),
+              child: Icon(Icons.delete),
+              textColor: UIColors.LightRed,
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return _dialogWhenDeleteTask();
+                  }
+                ).then((result) {
+                  if (result != null && result) {
+                    this.bloc.deleteTask(task).then((_) {
+                      Navigator.of(this.context).pop();
+                    });
+                  }
+                });
+              }
+            )
           )
         ]
       )
@@ -117,7 +110,18 @@ class _TaskPageState extends State<TaskPage> {
       child: TextField(
         controller: controller,
         decoration: InputDecoration(
-          border: InputBorder.none
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.white.withOpacity(0.75),
+              width: 0.25
+            )
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.white.withOpacity(0.85),
+              width: 0.5
+            )
+          )
         ),
         style: TextStyle(
           color: Colors.white,
@@ -166,18 +170,20 @@ class _TaskPageState extends State<TaskPage> {
   }
 
   /// Build main content this page.
-  Widget bodyContent() {
-    return StreamBuilder(
-      stream: this.bloc.streamSteps,
-      builder: (context, AsyncSnapshot snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-            child: CircularProgressIndicator()
-          );
-        } else {
-          return _buildListView(snapshot.data);
+  Widget bodyPage() {
+    return Expanded(
+      child: StreamBuilder(
+        stream: this.bloc.streamSteps,
+        builder: (context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator()
+            );
+          } else {
+            return _buildListView(snapshot.data);
+          }
         }
-      }
+      )
     );
   }
 
@@ -252,6 +258,14 @@ class _TaskPageState extends State<TaskPage> {
           }
         }
       ),
+    );
+  }
+
+  Widget footerPage(TaskModel task) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 10.0),
+      padding: EdgeInsets.symmetric(horizontal: 10.0),
+      child: _buildNoteForm(task)
     );
   }
 

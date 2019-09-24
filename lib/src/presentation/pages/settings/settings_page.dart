@@ -8,6 +8,16 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return buildPage();
   }
@@ -15,17 +25,13 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget buildPage() {
     return Scaffold(
       backgroundColor: UIColors.LightGrey,
-      body: bodyPage()
-    );
-  }
-
-  Widget bodyPage() {
-    return SafeArea(
-      child: Column(
-        children: <Widget>[
-          headerPage(),
-          contentBody()
-        ]
+      body: SafeArea(
+        child: Column(
+          children: <Widget>[
+            headerPage(),
+            bodyPage()
+          ]
+        )
       )
     );
   }
@@ -59,12 +65,41 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  Widget contentBody() {
+  Widget bodyPage() {
     return Expanded(
       child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white
-        )
+        width: MediaQuery.of(context).size.width,
+        color: Colors.white,
+        child: ScrollConfiguration(
+          behavior: ScrollBehavior(),
+          child: SingleChildScrollView(
+            physics: ClampingScrollPhysics(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                ListTile(
+                  title: Container(
+                    padding: EdgeInsets.symmetric(vertical: 5.0),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(color: Colors.grey, width: 0.5)
+                      )
+                    ),
+                    child: Text('About', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600))
+                  )
+                ),
+                ListTile(
+                  title: Text('Version'),
+                  trailing: Text('1.0.0'),
+                ),
+                ListTile(
+                  title: Text('Third-party software'),
+                  trailing: Icon(Icons.arrow_forward),
+                )
+              ]
+            )
+          )
+        ),
       )
     );
   }

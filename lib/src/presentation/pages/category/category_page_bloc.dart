@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:meta/meta.dart';
+
 import 'package:tasks/src/core/contracts/bloc_contract.dart';
 import 'package:tasks/src/data/models/category_model.dart';
 import 'package:tasks/src/data/models/project_model.dart';
@@ -19,10 +19,10 @@ class CategoryPageBloc implements BlocContract {
   ProjectRepository _projectRepository;
   CategoryModel _category;
 
-  CategoryPageBloc({@required CategoryModel category}) {
+  CategoryPageBloc(CategoryModel category) {
     this._category = category;
-    _categoryRepository = CategoryRepository();
-    _projectRepository = ProjectRepository();
+    this._categoryRepository = CategoryRepository();
+    this._projectRepository = ProjectRepository();
   }
 
   /// Action to delete this category

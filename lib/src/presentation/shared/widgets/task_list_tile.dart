@@ -12,15 +12,15 @@ class TaskListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 15.0),
+      margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5),
         boxShadow: [
           BoxShadow(
             color: UIColors.Grey,
-            blurRadius: 10.0,
-            spreadRadius: 0.5,
-            offset: Offset(0.0, 0.0)
+            blurRadius: 8.0,
+            spreadRadius: 1.0,
+            offset: Offset(0.0, 1.0)
           )
         ],
         gradient: LinearGradient(

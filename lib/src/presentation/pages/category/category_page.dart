@@ -29,7 +29,7 @@ class _CategoryPageState extends State<CategoryPage> {
   @override
   void initState() {
     super.initState();
-    this.bloc = CategoryPageBloc(category: widget.category);
+    this.bloc = CategoryPageBloc(this.widget.category);
     this.bloc.refreshProjects();
   }
 
@@ -43,20 +43,28 @@ class _CategoryPageState extends State<CategoryPage> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      initialData: widget.category,
+      initialData: this.widget.category,
       stream: this.bloc.streamCategory,
       builder: (context, snapshot) {
         final CategoryModel category = snapshot.data;
-        return buildPage(context, category);
+        return buildPage(category);
       }
     );
   }
 
-  Widget buildPage(BuildContext context, CategoryModel category) {
+  Widget buildPage(CategoryModel category) {
     return Scaffold(
       backgroundColor: UIColors.Blue,
-      body: bodyPage(category),
+      body: SafeArea(
+        child: Column(
+          children: <Widget>[
+            headerPage(category),
+            bodyPage()
+          ],
+        )
+      ),
       floatingActionButton: FloatingActionButton(
+        heroTag: 'floating-button',
         elevation: 0,
         backgroundColor: UIColors.Green,
         child: Icon(Icons.add),
@@ -74,20 +82,6 @@ class _CategoryPageState extends State<CategoryPage> {
         }
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-    );
-  }
-
-  /// Build body this page.
-  Widget bodyPage(CategoryModel category) {
-    return SafeArea(
-      child: Column(
-        children: <Widget>[
-          // Header this page.
-          headerPage(category),
-          // The main content this page.
-          bodyContent()
-        ]
-      )
     );
   }
 
@@ -199,7 +193,7 @@ class _CategoryPageState extends State<CategoryPage> {
   }
 
   /// Build main content this page.
-  Widget bodyContent() {
+  Widget bodyPage() {
     return Expanded(
       child: Container(
         decoration: BoxDecoration(

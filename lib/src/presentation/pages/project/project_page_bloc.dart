@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:meta/meta.dart';
+
 import 'package:tasks/src/core/contracts/bloc_contract.dart';
 import 'package:tasks/src/data/models/project_model.dart';
 import 'package:tasks/src/data/models/task_model.dart';
@@ -13,7 +13,7 @@ class ProjectPageBloc implements BlocContract {
   TaskRepository _taskRepository;
   ProjectModel _project;
 
-  ProjectPageBloc({@required ProjectModel project}) {
+  ProjectPageBloc(ProjectModel project) {
     this._project = project;
     this._taskRepository = TaskRepository();
   }

@@ -26,12 +26,16 @@ class _ProjectPageState extends State<ProjectPage> {
   @override
   void initState() {
     super.initState();
-    this.bloc = ProjectPageBloc(project: widget.project);
+    // Create business logic component.
+    this.bloc = ProjectPageBloc(this.widget.project);
+
+    // Refresh list tasks.
     this.bloc.refreshTasks();
   }
 
   @override
   void dispose() {
+    // Close business logic component.
     this.bloc.dispose();
     super.dispose();
   }
@@ -45,8 +49,16 @@ class _ProjectPageState extends State<ProjectPage> {
   Widget buildPage(ProjectModel project) {
     return Scaffold(
       backgroundColor: UIColors.Green,
-      body: bodyPage(project),
+      body: SafeArea(
+        child: Column(
+          children: <Widget>[
+            headerPage(project),
+            bodyPage()
+          ],
+        )
+      ),
       floatingActionButton: FloatingActionButton(
+        heroTag: 'floating-button',
         elevation: 0,
         shape: CircleBorder(
           side: BorderSide(
@@ -69,18 +81,6 @@ class _ProjectPageState extends State<ProjectPage> {
           });
         },
       ),
-    );
-  }
-
-  /// Build body this page.
-  Widget bodyPage(ProjectModel object) {
-    return SafeArea(
-      child: Column(
-        children: <Widget>[
-          headerPage(object),
-          bodyContent()
-        ]
-      )
     );
   }
 
@@ -129,9 +129,9 @@ class _ProjectPageState extends State<ProjectPage> {
   }
 
   /// Build main content this page.
-  Widget bodyContent() {
-    return Container(
-      child: Expanded(
+  Widget bodyPage() {
+    return Expanded(
+      child: Container(
         child: StreamBuilder(
           stream: this.bloc.streamTasks,
           builder: (BuildContext context, AsyncSnapshot snapshot) {

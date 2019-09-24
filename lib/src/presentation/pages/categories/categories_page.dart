@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tasks/src/data/models/category_model.dart';
 import 'package:tasks/src/presentation/pages/categories/categories_page_bloc.dart';
 import 'package:tasks/src/presentation/pages/category/category_page.dart';
+import 'package:tasks/src/presentation/pages/settings/settings_page.dart';
 import 'package:tasks/src/presentation/shared/widgets/bottom_navigation.dart';
 import 'package:tasks/src/presentation/shared/cards/category_card.dart';
 import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
@@ -45,8 +46,16 @@ class _CategoriesPageState extends State<CategoriesPage> {
   Widget buildPage(BuildContext context) {
     return Scaffold(
       backgroundColor: UIColors.Blue,
-      body: bodyPage(),
+      body: SafeArea(
+        child: Column(
+          children: <Widget>[
+            pageHeader(),
+            pageBody()
+          ]
+        )
+      ),
       floatingActionButton: FloatingActionButton(
+        heroTag: 'floating-button',
         shape: CircleBorder(
           side: BorderSide(
             color: UIColors.Blue,
@@ -78,93 +87,104 @@ class _CategoriesPageState extends State<CategoriesPage> {
     );
   }
 
-  /// Build body this page.
-  Widget bodyPage() {
-    return Container(
-      margin: EdgeInsets.only(top: 30.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 20.0),
-            height: 120.0,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  DateTimeUtil.currentDay,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 30.0
-                  )
-                ),
-                Text(
-                  '${DateTimeUtil.currentDate} ${DateTimeUtil.currentMonth}',
-                  style: TextStyle(
-                    color: Colors.white.withOpacity(0.85),
-                    fontSize: 25.0
-                  )
-                ),
-                SizedBox(height: 15.0),
-                StreamBuilder(
-                  stream: this.bloc.streamCategories,
-                  builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    String description = '...';
-                    if (snapshot.hasData) {
-                      final data = snapshot.data;
-                      if (data.isEmpty) {
-                        description = 'You not have category';
-                      } else if (data.length == 1) {
-                        description = 'You have 1 category';
-                      } else {
-                        description = 'You have ${data.length} categories';
-                      }
-                    }
-
-                    return Text(
-                      description,
-                      style: TextStyle(
-                        color: Colors.white.withOpacity(0.75),
-                        fontSize: 18.0
-                      )
-                    );
-                  }
+  /// Build header this page.
+  Widget pageHeader() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 20.0),
+          height: 140.0,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                DateTimeUtil.currentDay,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 30.0
                 )
-              ]
-            )
-          ),
-          Container(
-            child: Expanded(
-              child: bodyContent()
-            )
+              ),
+              Text(
+                '${DateTimeUtil.currentDate} ${DateTimeUtil.currentMonth}',
+                style: TextStyle(
+                  color: Colors.white.withOpacity(0.85),
+                  fontSize: 25.0
+                )
+              ),
+              SizedBox(height: 15.0),
+              StreamBuilder(
+                stream: this.bloc.streamCategories,
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  String description = '...';
+                  if (snapshot.hasData) {
+                    final data = snapshot.data;
+                    if (data.isEmpty) {
+                      description = 'You not have category';
+                    } else if (data.length == 1) {
+                      description = 'You have 1 category';
+                    } else {
+                      description = 'You have ${data.length} categories';
+                    }
+                  }
+
+                  return Text(
+                    description,
+                    style: TextStyle(
+                      color: Colors.white.withOpacity(0.75),
+                      fontSize: 18.0
+                    )
+                  );
+                }
+              )
+            ]
           )
-        ]
-      )
+        ),
+        Hero(
+          tag: 'on-hero-button',
+          child: FlatButton(
+            shape: CircleBorder(),
+            padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+            child: Icon(Icons.settings),
+            color: Colors.white,
+            textColor: UIColors.Blue,
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) => SettingsPage()
+                )
+              );
+            },
+          )
+        )
+      ]
     );
   }
 
-  /// Build main content this page.
-  Widget bodyContent() {
-    return StreamBuilder(
-      stream: this.bloc.streamCategories,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-            child: CircularProgressIndicator()
-          );
-        } else {
-          if (snapshot.hasData && snapshot.data.isNotEmpty) {
-            final List<CategoryModel> categories = snapshot.data;
-            return buildListCategories(categories);
-          } else {
-            return EmptyContentBox(
-              message: 'no category found',
-              textColor: Colors.white.withOpacity(0.85),
+  /// Build body this page.
+  Widget pageBody() {
+    return Expanded(
+      child: StreamBuilder(
+        stream: this.bloc.streamCategories,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator()
             );
+          } else {
+            if (snapshot.hasData && snapshot.data.isNotEmpty) {
+              final List<CategoryModel> categories = snapshot.data;
+              return buildListCategories(categories);
+            } else {
+              return EmptyContentBox(
+                message: 'no category found',
+                textColor: Colors.white.withOpacity(0.85),
+              );
+            }
           }
         }
-      }
+      )
     );
   }
 
