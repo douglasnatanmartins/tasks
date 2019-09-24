@@ -114,6 +114,7 @@ class _CategoryPageState extends State<CategoryPage> {
                   children: <Widget>[
                     Text(
                       category.title,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 22.0,

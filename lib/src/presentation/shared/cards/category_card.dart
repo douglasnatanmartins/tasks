@@ -27,6 +27,8 @@ class CategoryCard extends StatelessWidget {
             ),
             Text(
               category.description,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2,
               style: TextStyle(
                 color: UIColors.DarkGrey
               )
