@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tasks/src/app.dart';
+import 'package:tasks/src/presentation/pages/settings/settings_page_bloc.dart';
 import 'package:tasks/src/presentation/ui_colors.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -7,13 +9,17 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  SettingsPageBloc bloc;
+
   @override
   void initState() {
     super.initState();
+    this.bloc = SettingsPageBloc();
   }
 
   @override
   void dispose() {
+    this.bloc.dispose();
     super.dispose();
   }
 
@@ -90,7 +96,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
                 ListTile(
                   title: Text('Version'),
-                  trailing: Text('1.0.0'),
+                  trailing: Text(App.of(context).version),
                 ),
                 ListTile(
                   title: Text('Third-party software'),

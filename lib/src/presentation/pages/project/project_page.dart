@@ -104,6 +104,7 @@ class _ProjectPageState extends State<ProjectPage> {
           Expanded(
             child: Text(
               object.title,
+              overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 18.0,

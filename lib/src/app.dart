@@ -1,11 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:package_info/package_info.dart';
 
 import 'package:tasks/src/presentation/pages/home/home_page.dart';
 import 'package:tasks/src/presentation/ui_colors.dart';
 
 class App extends StatelessWidget {
   final String title = 'Tenla: Tasks';
+  final PackageInfo information;
+
+  App({
+    Key key,
+    this.information
+  }): assert(information != null), super(key: key);
+
+  static of(BuildContext context) {
+    return (context.ancestorWidgetOfExactType(App) as App).information;
+  }
 
   /// Build the application.
   @override
