@@ -12,15 +12,15 @@ class HomePage extends StatefulWidget {
   HomePage({Key key}): super(key: key);
 
   @override
-  State<StatefulWidget> createState() {
-    return _HomePageState();
-  }
+  State<StatefulWidget> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  final int id = 0;
+  // Business Logic Component
   HomePageBloc bloc;
+  final int id = 0;
 
+  /// Called when this state inserted into tree.
   @override
   void initState() {
     super.initState();
@@ -28,103 +28,104 @@ class _HomePageState extends State<HomePage> {
     this.bloc.refreshImportantTasks();
   }
 
+  /// Called when this state removed from the tree.
   @override
   void dispose() {
     this.bloc.dispose();
     super.dispose();
   }
 
+  /// Build this widget.
   @override
   Widget build(BuildContext context) {
-    return buildPage();
+    return this.buildPage();
   }
 
+  /// Build a home page.
   Widget buildPage() {
     return Scaffold(
       backgroundColor: UIColors.Blue,
-      body: Container(
-        height: MediaQuery.of(this.context).size.height,
-        child: bodyPage()
+      body: SafeArea(
+        child: Column(
+          children: <Widget>[
+            this.headerPage(),
+            this.bodyPage()
+          ],
+        )
       ),
       bottomNavigationBar: BottomNavigation(context: this.context, current: this.id)
     );
   }
 
-  Widget bodyPage() {
-    return SafeArea(
-      child: Column(
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-            child: StreamBuilder(
-              stream: this.bloc.streamImportantTasks,
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                if (snapshot.hasData) {
-                  return HeaderHome(importantTasks: snapshot.data.length);
-                }
+  /// Build header this page.
+  Widget headerPage() {
+    return StreamBuilder(
+      stream: this.bloc.streamImportantTasks,
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.hasData) {
+          return HeaderHome(importantTasks: snapshot.data.length);
+        }
 
-                return HeaderHome();
-              }
-            )
-          ),
-          Expanded(
-            child: bodyContent()
-          )
-        ]
-      )
+        return HeaderHome();
+      }
     );
   }
 
-  Widget bodyContent() {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white
-      ),
-      child: StreamBuilder(
-        stream: this.bloc.streamImportantTasks,
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator()
-            );
-          } else {
-            if (snapshot.hasData && snapshot.data.isNotEmpty) {
-              List<TaskModel> data = snapshot.data;
-              return _buildListView(data);
+  /// Build body this page.
+  Widget bodyPage() {
+    return Expanded(
+      child: Container(
+        color: Colors.white,
+        child: StreamBuilder(
+          stream: this.bloc.streamImportantTasks,
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: CircularProgressIndicator()
+              );
             } else {
-              return EmptyContentBox(message: 'not important task');
+              if (snapshot.hasData && snapshot.data.isNotEmpty) {
+                List<TaskModel> data = snapshot.data;
+                return this.buildListView(data);
+              } else {
+                return EmptyContentBox(message: 'not important task');
+              }
             }
           }
-        }
-      )
+        )
+      ),
     );
   }
 
-  Widget _buildListView(List<TaskModel> data) {
+  /// Build the list view.
+  Widget buildListView(List<TaskModel> data) {
     List<dynamic> source = ['Important'];
     source.addAll(data);
     return ListView.builder(
       padding: EdgeInsets.all(0.0),
       itemCount: source.length,
       itemBuilder: (BuildContext context, int index) {
-        return _buildChildrenInListView(source[index]);
+        return this._buildChildrenInListView(source[index]);
       }
     );
   }
 
+  /// Build children in list view.
   Widget _buildChildrenInListView(dynamic data) {
     if (data is String) {
-      return _buildListTileHeader(data);
+      return this._buildListTileHeader(data);
     } else {
-      return _buildListTile(data);
+      return this._buildListTile(data);
     }
   }
 
+  /// Build header type in list view.
   Widget _buildListTileHeader(String title) {
     return Container(
       margin: EdgeInsets.only(top: 15, left: 20.0, right: 20.0, bottom: 20.0),
       child: Text(
         title,
+        overflow: TextOverflow.ellipsis,
         style: TextStyle(
           color: UIColors.Grey,
           fontSize: 16.0,
@@ -134,6 +135,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  /// Build item type in list view.
   Widget _buildListTile(TaskModel task) {
     TextDecoration decoration = TextDecoration.none;
 
@@ -156,6 +158,7 @@ class _HomePageState extends State<HomePage> {
         ),
         title: Text(
           task.title,
+          overflow: TextOverflow.ellipsis,
           style: TextStyle(
             color: UIColors.Blue,
             fontWeight: FontWeight.w600,

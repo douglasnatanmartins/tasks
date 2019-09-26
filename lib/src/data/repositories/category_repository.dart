@@ -1,14 +1,9 @@
 import 'dart:async';
 import 'package:sqflite/sqflite.dart';
 import 'package:tasks/src/data/database_creator.dart';
-import 'package:tasks/src/data/repositories/project_repository.dart';
 
 class CategoryRepository {
-  ProjectRepository _projectRepository;
-
-  CategoryRepository() {
-    _projectRepository = ProjectRepository();
-  }
+  CategoryRepository();
 
   /// Get all categories.
   Future<List<Map<String, dynamic>>> all() async {
@@ -38,11 +33,6 @@ class CategoryRepository {
   /// Delete category with id.
   Future<bool> delete(int id) async {
     Database db = await DatabaseCreator().database;
-    _projectRepository.getProjectsByCategoryId(id).then((projects) {
-      projects.forEach((project) {
-        _projectRepository.delete(project['id']);
-      });
-    });
     int result = await db.delete('Category', where: 'id = ?', whereArgs: [id]);
     return result != 0 ? true : false;
   }

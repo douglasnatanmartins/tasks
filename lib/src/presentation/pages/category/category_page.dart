@@ -18,14 +18,14 @@ class CategoryPage extends StatefulWidget {
   }): assert(category != null), super(key: key);
 
   @override
-  State<StatefulWidget> createState() {
-    return _CategoryPageState();
-  }
+  State<StatefulWidget> createState() => _CategoryPageState();
 }
 
 class _CategoryPageState extends State<CategoryPage> {
+  // Business Logic Component.
   CategoryPageBloc bloc;
 
+  /// Called when this state inserted into tree.
   @override
   void initState() {
     super.initState();
@@ -33,33 +33,35 @@ class _CategoryPageState extends State<CategoryPage> {
     this.bloc.refreshProjects();
   }
 
+  /// Called when this state removed from the tree.
   @override
   void dispose() {
     this.bloc.dispose();
     super.dispose();
   }
 
-  /// Build a category page.
+  /// Build this widget.
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
       initialData: this.widget.category,
       stream: this.bloc.streamCategory,
-      builder: (context, snapshot) {
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
         final CategoryModel category = snapshot.data;
-        return buildPage(category);
+        return this.buildPage(category);
       }
     );
   }
 
+  /// Build a category page.
   Widget buildPage(CategoryModel category) {
     return Scaffold(
       backgroundColor: UIColors.Blue,
       body: SafeArea(
         child: Column(
           children: <Widget>[
-            headerPage(category),
-            bodyPage()
+            this.headerPage(category),
+            this.bodyPage()
           ],
         )
       ),
@@ -193,7 +195,7 @@ class _CategoryPageState extends State<CategoryPage> {
     );
   }
 
-  /// Build main content this page.
+  /// Build body this page.
   Widget bodyPage() {
     return Expanded(
       child: Container(
@@ -209,7 +211,7 @@ class _CategoryPageState extends State<CategoryPage> {
               );
             } else {
               if (snapshot.data.isNotEmpty) { // Has the stream data.
-                return _buildListView(snapshot.data);
+                return this.buildListView(snapshot.data);
               } else {
                 return EmptyContentBox(message: 'not project found');
               }
@@ -221,13 +223,13 @@ class _CategoryPageState extends State<CategoryPage> {
   }
 
   /// Build the listview to show projects.
-  Widget _buildListView(List<ProjectModel> projects) {
+  Widget buildListView(List<ProjectModel> projects) {
     return ListView.builder(
       padding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 5.0),
       itemCount: projects.length,
       itemBuilder: (BuildContext context, int index) {
         final project = projects[index];
-        return _buildChildrenInListView(project);
+        return this._buildChildrenInListView(project);
       }
     );
   }
@@ -237,8 +239,7 @@ class _CategoryPageState extends State<CategoryPage> {
     return GestureDetector(
       child: ProjectCard(project),
       onTap: () {
-        Navigator.push(
-          context,
+        Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => ProjectPage(project: project)
           )

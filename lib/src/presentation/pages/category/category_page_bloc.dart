@@ -6,11 +6,14 @@ import 'package:tasks/src/data/models/project_model.dart';
 import 'package:tasks/src/data/repositories/category_repository.dart';
 import 'package:tasks/src/data/repositories/project_repository.dart';
 
+/// Category Page Business Logic Component.
 class CategoryPageBloc implements BlocContract {
+  // Stream of the category.
   final _controllerCategory = StreamController<CategoryModel>();
   Sink get sinkCategory => _controllerCategory.sink;
   Stream get streamCategory => _controllerCategory.stream;
 
+  // Stream of project in the category.
   final _controllerProjects = StreamController<List<ProjectModel>>();
   Sink get sinkProjects => _controllerProjects.sink;
   Stream get streamProjects => _controllerProjects.stream;
@@ -27,54 +30,54 @@ class CategoryPageBloc implements BlocContract {
 
   /// Action to delete this category
   void deleteCategory(CategoryModel category) {
-    _categoryRepository.delete(category.id);
+    this._categoryRepository.delete(category.id);
   }
 
   /// Add new a project
   void addProject(ProjectModel project) {
-    _projectRepository.add(project.toMap()).then((_) {
-      refreshProjects();
+    this._projectRepository.add(project.toMap()).then((_) {
+      this.refreshProjects();
     });
   }
 
   /// Delete a project.
   void deleteProject(ProjectModel project) {
-    _projectRepository.delete(project.id).then((_) {
-      refreshProjects();
+    this._projectRepository.delete(project.id).then((_) {
+      this.refreshProjects();
     });
   }
 
   /// Update project object.
   void updateProject(ProjectModel project) {
-    _projectRepository.update(project.toMap()).then((_) {
-      refreshProjects();
+    this._projectRepository.update(project.toMap()).then((_) {
+      this.refreshProjects();
     });
   }
 
-  /// Refresh category.
+  /// Refresh the category.
   void refreshCategory() {
-    _categoryRepository.getCategoryById(_category.id).then((category) {
-      // Sink category to stream
-      sinkCategory.add(CategoryModel.from(category));
+    this._categoryRepository.getCategoryById(_category.id).then((category) {
+      // Sink the category to stream
+      this.sinkCategory.add(CategoryModel.from(category));
     });
   }
 
-  /// Refresh list projects.
+  /// Refresh project list.
   void refreshProjects() {
-    _projectRepository.getProjectsByCategoryId(this._category.id).then((projects) {
+    this._projectRepository.getProjectsByCategoryId(this._category.id).then((projects) {
       List<ProjectModel> data = [];
       projects.forEach((project) {
         data.add(ProjectModel.from(project));
       });
 
-      // Sink data to stream
-      sinkProjects.add(data);
+      // Sink project list to stream.
+      this.sinkProjects.add(data);
     });
   }
 
   @override
   void dispose() {
-    _controllerCategory.close();
-    _controllerProjects.close();
+    this._controllerCategory.close();
+    this._controllerProjects.close();
   }
 }

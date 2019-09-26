@@ -20,36 +20,40 @@ class TaskPage extends StatefulWidget {
 }
 
 class _TaskPageState extends State<TaskPage> {
+  // Business Logic Component.
   TaskPageBloc bloc;
 
+  /// Called when this state inserted into tree.
   @override
   void initState() {
     super.initState();
-    this.bloc = TaskPageBloc(task: widget.task);
+    this.bloc = TaskPageBloc(this.widget.task);
     this.bloc.refreshSteps();
   }
 
+  /// Called when this state removed from tree.
   @override
   void dispose() {
     this.bloc.dispose();
     super.dispose();
   }
 
-  /// Build a task page.
+  /// Build this widget.
   @override
   Widget build(BuildContext context) {
-    return buildPage(this.widget.task);
+    return this.buildPage(this.widget.task);
   }
 
+  /// Build a task page.
   Widget buildPage(TaskModel task) {
     return Scaffold(
       backgroundColor: UIColors.Blue,
       body: SafeArea(
         child: Column(
           children: <Widget>[
-            headerPage(task),
-            bodyPage(),
-            footerPage(task)
+            this.headerPage(task),
+            this.bodyPage(),
+            this.footerPage(task)
           ],
         )
       )
@@ -86,7 +90,7 @@ class _TaskPageState extends State<TaskPage> {
               onPressed: () {
                 showDialog(
                   context: context,
-                  builder: (context) {
+                  builder: (BuildContext context) {
                     return _dialogWhenDeleteTask();
                   }
                 ).then((result) {
@@ -104,6 +108,7 @@ class _TaskPageState extends State<TaskPage> {
     );
   }
 
+  /// Build editable title.
   Widget editorTitleTask(TaskModel task) {
     final TextEditingController controller = TextEditingController(text: task.title);
     return Container(
@@ -174,13 +179,13 @@ class _TaskPageState extends State<TaskPage> {
     return Expanded(
       child: StreamBuilder(
         stream: this.bloc.streamSteps,
-        builder: (context, AsyncSnapshot snapshot) {
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
               child: CircularProgressIndicator()
             );
           } else {
-            return _buildListView(snapshot.data);
+            return this.buildListView(snapshot.data);
           }
         }
       )
@@ -188,14 +193,14 @@ class _TaskPageState extends State<TaskPage> {
   }
 
   /// Build a listview to show steps of task.
-  Widget _buildListView(List<StepModel> steps) {
+  Widget buildListView(List<StepModel> steps) {
     List<ListTile> tiles = [];
 
     steps.forEach((step) {
-      tiles.add(_buildChildrenInListView(step));
+      tiles.add(this._buildChildrenInListView(step));
     });
 
-    tiles.add(_buildChildrenInListView(
+    tiles.add(this._buildChildrenInListView(
       StepModel(id: null, title: '', done: false, taskId: widget.task.id)
     ));
 
@@ -213,7 +218,7 @@ class _TaskPageState extends State<TaskPage> {
       leading: Checkbox(
         activeColor: Colors.white.withOpacity(0),
         value: step.done,
-        onChanged: (checked) {
+        onChanged: (bool checked) {
           if (step.id != null) {
             step.done = checked;
             this.bloc.updateStep(step);
@@ -238,7 +243,7 @@ class _TaskPageState extends State<TaskPage> {
         style: TextStyle(
           color: Colors.white
         ),
-        onSubmitted: (text) {
+        onSubmitted: (String text) {
           if (text.trim().isNotEmpty) {
             step.title = text.trim();
             if (step.id != null) {
@@ -261,11 +266,12 @@ class _TaskPageState extends State<TaskPage> {
     );
   }
 
+  /// Build footer this page.
   Widget footerPage(TaskModel task) {
     return Container(
       margin: EdgeInsets.only(bottom: 10.0),
       padding: EdgeInsets.symmetric(horizontal: 10.0),
-      child: _buildNoteForm(task)
+      child: this._buildNoteForm(task)
     );
   }
 
@@ -296,7 +302,7 @@ class _TaskPageState extends State<TaskPage> {
         controller: _controller,
         keyboardType: TextInputType.multiline,
         maxLines: 3,
-        onChanged: (string) {
+        onChanged: (String value) {
           task.note = _controller.text;
           this.bloc.updateTask(task);
         }

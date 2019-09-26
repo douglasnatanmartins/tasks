@@ -42,13 +42,6 @@ class StepRepository {
     return result != 0 ? true : false;
   }
 
-  /// Delete all step with task id.
-  Future<bool> deleteStepsByTaskId(int taskId) async {
-    Database db = await DatabaseCreator().database;
-    int result = await db.delete('Step', where: 'taskId = ?', whereArgs: [taskId]);
-    return result != 0 ? true : false;
-  }
-
   /// Update step with id.
   Future<bool> update(Map<String, dynamic> object) async {
     Database db = await DatabaseCreator().database;

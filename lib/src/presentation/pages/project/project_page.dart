@@ -23,16 +23,18 @@ class ProjectPage extends StatefulWidget {
 class _ProjectPageState extends State<ProjectPage> {
   ProjectPageBloc bloc;
 
+  /// Called when this state inserted into tree.
   @override
   void initState() {
     super.initState();
     // Create business logic component.
     this.bloc = ProjectPageBloc(this.widget.project);
 
-    // Refresh list tasks.
+    // Refresh task list.
     this.bloc.refreshTasks();
   }
 
+  /// Called when this state removed from the tree.
   @override
   void dispose() {
     // Close business logic component.
@@ -40,20 +42,21 @@ class _ProjectPageState extends State<ProjectPage> {
     super.dispose();
   }
 
-  /// Build a project page.
+  /// Build this widget.
   @override
   Widget build(BuildContext context) {
-    return buildPage(this.widget.project);
+    return this.buildPage(this.widget.project);
   }
 
+  /// Build a project page.
   Widget buildPage(ProjectModel project) {
     return Scaffold(
       backgroundColor: UIColors.Green,
       body: SafeArea(
         child: Column(
           children: <Widget>[
-            headerPage(project),
-            bodyPage()
+            this.headerPage(project),
+            this.bodyPage()
           ],
         )
       ),
@@ -129,7 +132,7 @@ class _ProjectPageState extends State<ProjectPage> {
     );
   }
 
-  /// Build main content this page.
+  /// Build body this page.
   Widget bodyPage() {
     return Expanded(
       child: Container(
@@ -142,7 +145,7 @@ class _ProjectPageState extends State<ProjectPage> {
               );
             } else {
               if (snapshot.hasData && snapshot.data.isNotEmpty) {
-                return _buildListView(snapshot.data);
+                return this.buildListView(snapshot.data);
               } else {
                 return EmptyContentBox(
                   message: 'not task found',
@@ -157,18 +160,18 @@ class _ProjectPageState extends State<ProjectPage> {
   }
 
   /// Build a listview to show tasks.
-  Widget _buildListView(List<TaskModel> tasks) {
+  Widget buildListView(List<TaskModel> tasks) {
     return ListView.separated(
       padding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
       itemCount: tasks.length,
-      separatorBuilder: (content, index) {
+      separatorBuilder: (BuildContext content, int index) {
         return Divider(
           color: Colors.white.withOpacity(0.85),
         );
       },
       itemBuilder: (BuildContext context, int index) {
         final task = tasks[index];
-        return _buildChildrenInListView(task);
+        return this._buildChildrenInListView(task);
       }
     );
   }
@@ -209,10 +212,10 @@ class _ProjectPageState extends State<ProjectPage> {
           this.bloc.updateTask(task);
         }
       ),
-      onTap: () async { // Open a task page.
+      onTap: () { // Open a task page.
         Navigator.of(this.context).push(
           MaterialPageRoute(
-            builder: (context) => TaskPage(task: task)
+            builder: (BuildContext context) => TaskPage(task: task)
           )
         ).then((_) {
           this.bloc.refreshTasks();

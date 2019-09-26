@@ -1,14 +1,9 @@
 import 'dart:async';
 import 'package:sqflite/sqflite.dart';
 import 'package:tasks/src/data/database_creator.dart';
-import 'package:tasks/src/data/repositories/step_repository.dart';
 
 class TaskRepository {
-  StepRepository _stepRepository;
-
-  TaskRepository() {
-    _stepRepository = StepRepository();
-  }
+  TaskRepository();
 
   /// Get all tasks.
   Future<List<Map<String, dynamic>>> all() async {
@@ -52,22 +47,8 @@ class TaskRepository {
   /// Delete task by id.
   Future<bool> delete(int id) async {
     Database db = await DatabaseCreator().database;
-    // Delete all steps owned by task.
-    await _stepRepository.deleteStepsByTaskId(id);
-    // After delete task.
     int result = await db.delete('Task', where: 'id = ?', whereArgs: [id]);
     return result != 0 ? true : false;
-  }
-
-  /// Delete all tasks with project id.
-  Future<bool> deleteTasksByProjectId(int projectId) async {
-    Database db = await DatabaseCreator().database;
-    List<Map<String, dynamic>> tasks = await db.query('Task', where: 'projectId = ?', whereArgs: [projectId]);
-    bool result = false;
-    tasks.forEach((task) async {
-      result = await delete(task['id']);
-    });
-    return result;
   }
 
   /// Update task with id.

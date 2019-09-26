@@ -15,15 +15,15 @@ class CategoriesPage extends StatefulWidget {
   CategoriesPage({Key key}): super(key: key);
 
   @override
-  State<StatefulWidget> createState() {
-    return _CategoriesPageState();
-  }
+  State<StatefulWidget> createState() => _CategoriesPageState();
 }
 
 class _CategoriesPageState extends State<CategoriesPage> {
-  final int id = 1;
+  /// Business Logic Component.
   CategoriesPageBloc bloc;
+  final int id = 1;
 
+  /// Called when this state inserted into tree.
   @override
   void initState() {
     super.initState();
@@ -31,26 +31,28 @@ class _CategoriesPageState extends State<CategoriesPage> {
     this.bloc.refreshCategories();
   }
 
+  /// Called when this state removed from the tree.
   @override
   void dispose() {
     this.bloc.dispose();
     super.dispose();
   }
 
-  /// Build the home page.
+  /// Build this widget.
   @override
   Widget build(BuildContext context) {
     return this.buildPage(context);
   }
 
+  /// Build a categories list page.
   Widget buildPage(BuildContext context) {
     return Scaffold(
       backgroundColor: UIColors.Blue,
       body: SafeArea(
         child: Column(
           children: <Widget>[
-            pageHeader(),
-            pageBody()
+            this.pageHeader(),
+            this.pageBody()
           ]
         )
       ),
@@ -167,7 +169,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
     return Expanded(
       child: StreamBuilder(
         stream: this.bloc.streamCategories,
-        builder: (context, snapshot) {
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
               child: CircularProgressIndicator()
@@ -175,7 +177,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
           } else {
             if (snapshot.hasData && snapshot.data.isNotEmpty) {
               final List<CategoryModel> categories = snapshot.data;
-              return buildListCategories(categories);
+              return this.buildListCategories(categories);
             } else {
               return EmptyContentBox(
                 message: 'no category found',
@@ -196,7 +198,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
       ),
       itemCount: categories.length,
       itemBuilder: (BuildContext context, int index) {
-        return _buildChildrenInList(categories[index]);
+        return this._buildChildrenInList(categories[index]);
       }
     );
   }
@@ -206,10 +208,9 @@ class _CategoriesPageState extends State<CategoriesPage> {
     return GestureDetector(
       child: CategoryCard(category: category),
       onTap: () {
-        Navigator.push(
-          context,
+        Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => CategoryPage(category: category)
+            builder: (BuildContext context) => CategoryPage(category: category)
           )
         ).then((_) {
           this.bloc.refreshCategories();

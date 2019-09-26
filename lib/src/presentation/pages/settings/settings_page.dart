@@ -9,23 +9,27 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  // Business Logic Component.
   SettingsPageBloc bloc;
 
+  /// Called when this state inserted into tree.
   @override
   void initState() {
     super.initState();
     this.bloc = SettingsPageBloc();
   }
 
+  /// Called when this state removed from the tree.
   @override
   void dispose() {
     this.bloc.dispose();
     super.dispose();
   }
 
+  /// Build this widget.
   @override
   Widget build(BuildContext context) {
-    return buildPage();
+    return this.buildPage();
   }
 
   Widget buildPage() {
@@ -34,14 +38,15 @@ class _SettingsPageState extends State<SettingsPage> {
       body: SafeArea(
         child: Column(
           children: <Widget>[
-            headerPage(),
-            bodyPage()
+            this.headerPage(),
+            this.bodyPage()
           ]
         )
       )
     );
   }
 
+  /// Build header this page.
   Widget headerPage() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
@@ -71,6 +76,7 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
+  /// Build body this page.
   Widget bodyPage() {
     return Expanded(
       child: Container(
@@ -101,6 +107,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 ListTile(
                   title: Text('Third-party software'),
                   trailing: Icon(Icons.arrow_forward),
+                  onTap: () {}
                 )
               ]
             )
