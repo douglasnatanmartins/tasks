@@ -36,7 +36,7 @@ class StepModel implements ModelContract {
     this._id = object['id'];
     this._title = object['title'];
     this._done = object['done'];
-    this._taskId = object['taskId'];
+    this._taskId = object['task_id'];
   }
 
   /// Returns a map object to representation of this object.
@@ -46,7 +46,7 @@ class StepModel implements ModelContract {
     object['id'] = this._id;
     object['title'] = this._title;
     object['done'] = this._done;
-    object['taskId'] = this._taskId;
+    object['task_id'] = this._taskId;
     return object;
   }
 }

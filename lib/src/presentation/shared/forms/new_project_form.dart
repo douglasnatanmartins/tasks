@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tasks/src/data/models/project_model.dart';
+import 'package:tasks/src/presentation/shared/pickers/color_picker/color_picker.dart';
 import 'package:tasks/src/presentation/ui_colors.dart';
 
 class NewProjectForm extends StatefulWidget {
@@ -18,6 +19,7 @@ class _NewProjectFormState extends State<NewProjectForm> {
   final key = GlobalKey<FormState>();
   final _titleController = new TextEditingController();
   final _descriptionController = new TextEditingController();
+  Color _colorProject = Colors.grey;
 
   @override
   void dispose() {
@@ -50,6 +52,22 @@ class _NewProjectFormState extends State<NewProjectForm> {
             ),
             SizedBox(height: 30.0),
             this.buildForm(),
+            SizedBox(height: 20.0),
+            ColorPicker(
+              colors: <Color>[
+                Color.fromRGBO(120, 10, 30, 1),
+                Color.fromRGBO(200, 50, 40, 1),
+                Color.fromRGBO(20, 150, 40, 1),
+                Color.fromRGBO(40, 150, 40, 1),
+                Color.fromRGBO(20, 110, 40, 1),
+                Color.fromRGBO(10, 150, 40, 1),
+                Color.fromRGBO(10, 120, 40, 1),
+                Color.fromRGBO(40, 120, 30, 1),
+              ],
+              onChange: (Color selected) {
+                this._colorProject = selected;
+              },
+            ),
             Spacer(),
             this.buildActions(),
           ]
@@ -126,7 +144,8 @@ class _NewProjectFormState extends State<NewProjectForm> {
                 title: this._titleController.text.trim(),
                 description: this._descriptionController.text.trim(),
                 categoryId: this.widget.categoryId,
-                created: DateTime.now()
+                created: DateTime.now(),
+                color: this._colorProject,
               );
               Navigator.of(context).pop(project);
             }

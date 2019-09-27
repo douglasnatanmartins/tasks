@@ -61,7 +61,7 @@ class ProjectCard extends StatelessWidget {
             child: Icon(
               Icons.folder,
               size: 30.0,
-              color: UIColors.Orange
+              color: project.color
             )
           ),
           Expanded(

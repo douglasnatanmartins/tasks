@@ -62,7 +62,7 @@ class TaskModel implements ModelContract {
     this._id = object['id'];
     this._title = object['title'];
     this._done = object['done'];
-    this._projectId = object['projectId'];
+    this._projectId = object['project_id'];
     this._note = object['note'];
     this._important = object['important'];
     this._created = DateTime.parse(object['created']);
@@ -74,7 +74,7 @@ class TaskModel implements ModelContract {
     object['id'] = this._id;
     object['title'] = this._title;
     object['done'] = this._done;
-    object['projectId'] = this._projectId;
+    object['project_id'] = this._projectId;
     object['note'] = this._note;
     object['important'] = this._important;
     object['created'] = this.created.toString();

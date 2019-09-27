@@ -83,9 +83,10 @@ class DatabaseCreator {
         id INTEGER PRIMARY KEY,
         title TEXT NOT NULL,
         description TEXT,
+        color TEXT DEFAULT 'grey',
         created TEXT NOT NULL,
-        categoryId INTEGER NOT NULL,
-        FOREIGN KEY (categoryId) REFERENCES Category(id) ON DELETE CASCADE
+        category_id INTEGER NOT NULL,
+        FOREIGN KEY (category_id) REFERENCES Category(id) ON DELETE CASCADE
       )
     ''');
 
@@ -97,9 +98,10 @@ class DatabaseCreator {
         done INTEGER NOT NULL,
         note TEXT,
         important INTEGER NOT NULL,
+        due_date TEXT,
         created TEXT NOT NULL,
-        projectId INTEGER NOT NULL,
-        FOREIGN KEY (projectId) REFERENCES Project(id) ON DELETE CASCADE
+        project_id INTEGER NOT NULL,
+        FOREIGN KEY (project_id) REFERENCES Project(id) ON DELETE CASCADE
       )
     ''');
 
@@ -109,8 +111,8 @@ class DatabaseCreator {
         id INTEGER PRIMARY KEY,
         title TEXT NOT NULL,
         done INTEGER NOT NULL,
-        taskId INTEGER NOT NULL,
-        FOREIGN KEY (taskId) REFERENCES Task(id) ON DELETE CASCADE
+        task_id INTEGER NOT NULL,
+        FOREIGN KEY (task_id) REFERENCES Task(id) ON DELETE CASCADE
       )
     ''');
   }

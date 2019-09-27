@@ -13,7 +13,7 @@ class StepRepository {
   /// Get all steps with task id.
   Future<List<Map<String, dynamic>>> getStepsByTaskId(int stepId) async {
     Database db = await DatabaseCreator().database;
-    List<Map<String, dynamic>> result = await db.rawQuery("SELECT * FROM Step WHERE taskId = ?", [stepId]);
+    List<Map<String, dynamic>> result = await db.rawQuery("SELECT * FROM Step WHERE task_id = ?", [stepId]);
     return result;
   }
 

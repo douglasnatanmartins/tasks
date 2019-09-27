@@ -22,7 +22,7 @@ class TaskRepository {
   /// Get all tasks with project id.
   Future<List<Map<String, dynamic>>> getTasksByProjectId(int projectId) async {
     Database db = await DatabaseCreator().database;
-    List<Map<String, dynamic>> result = await db.rawQuery("SELECT * FROM Task WHERE projectId = ?", [projectId]);
+    List<Map<String, dynamic>> result = await db.rawQuery("SELECT * FROM Task WHERE project_id = ?", [projectId]);
     return result;
   }
 

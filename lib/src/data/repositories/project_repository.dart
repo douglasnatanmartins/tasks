@@ -15,7 +15,7 @@ class ProjectRepository {
   /// Get all project with category id.
   Future<List<Map<String, dynamic>>> getProjectsByCategoryId(int categoryId) async {
     Database db = await DatabaseCreator().database;
-    List<Map<String, dynamic>> result = await db.rawQuery("SELECT * FROM Project WHERE categoryId = ?", [categoryId]);
+    List<Map<String, dynamic>> result = await db.rawQuery("SELECT * FROM Project WHERE category_id = ?", [categoryId]);
     return result;
   }
 

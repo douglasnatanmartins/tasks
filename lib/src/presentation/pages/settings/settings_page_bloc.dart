@@ -5,6 +5,5 @@ class SettingsPageBloc implements BlocContract {
   SettingsPageBloc();
 
   @override
-  void dispose() {
-  }
+  void dispose() {}
 }

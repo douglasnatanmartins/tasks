@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:meta/meta.dart';
 
 import 'package:tasks/src/core/contracts/bloc_contract.dart';
 import 'package:tasks/src/data/models/step_model.dart';
