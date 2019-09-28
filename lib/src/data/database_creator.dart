@@ -83,7 +83,7 @@ class DatabaseCreator {
         id INTEGER PRIMARY KEY,
         title TEXT NOT NULL,
         description TEXT,
-        color TEXT DEFAULT 'grey',
+        color TEXT NOT NULL,
         created TEXT NOT NULL,
         category_id INTEGER NOT NULL,
         FOREIGN KEY (category_id) REFERENCES Category(id) ON DELETE CASCADE
@@ -98,7 +98,6 @@ class DatabaseCreator {
         done INTEGER NOT NULL,
         note TEXT,
         important INTEGER NOT NULL,
-        due_date TEXT,
         created TEXT NOT NULL,
         project_id INTEGER NOT NULL,
         FOREIGN KEY (project_id) REFERENCES Project(id) ON DELETE CASCADE

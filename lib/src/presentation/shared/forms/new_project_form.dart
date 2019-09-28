@@ -55,14 +55,11 @@ class _NewProjectFormState extends State<NewProjectForm> {
             SizedBox(height: 20.0),
             ColorPicker(
               colors: <Color>[
-                Color.fromRGBO(120, 10, 30, 1),
-                Color.fromRGBO(200, 50, 40, 1),
-                Color.fromRGBO(20, 150, 40, 1),
-                Color.fromRGBO(40, 150, 40, 1),
-                Color.fromRGBO(20, 110, 40, 1),
-                Color.fromRGBO(10, 150, 40, 1),
-                Color.fromRGBO(10, 120, 40, 1),
-                Color.fromRGBO(40, 120, 30, 1),
+                UIColors.Blue,
+                UIColors.Green,
+                UIColors.Orange,
+                UIColors.Red,
+                UIColors.Purple
               ],
               onChange: (Color selected) {
                 this._colorProject = selected;

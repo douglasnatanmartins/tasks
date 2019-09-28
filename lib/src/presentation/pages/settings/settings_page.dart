@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:package_info/package_info.dart';
 import 'package:tasks/src/app.dart';
 import 'package:tasks/src/presentation/pages/settings/settings_page_bloc.dart';
 import 'package:tasks/src/presentation/ui_colors.dart';
@@ -11,12 +12,19 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   // Business Logic Component.
   SettingsPageBloc bloc;
+  PackageInfo app;
 
   /// Called when this state inserted into tree.
   @override
   void initState() {
     super.initState();
     this.bloc = SettingsPageBloc();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    app = App.of(this.context);
   }
 
   /// Called when this state removed from the tree.
@@ -102,7 +110,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
                 ListTile(
                   title: Text('Version'),
-                  trailing: Text(App.of(context).version),
+                  trailing: Text(this.app.version),
                 ),
                 ListTile(
                   title: Text('Third-party software'),

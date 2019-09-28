@@ -18,63 +18,67 @@ class CategoryPageBloc implements BlocContract {
   Sink get sinkProjects => _controllerProjects.sink;
   Stream get streamProjects => _controllerProjects.stream;
 
-  CategoryRepository _categoryRepository;
-  ProjectRepository _projectRepository;
-  CategoryModel _category;
+  CategoryRepository categoryRepository;
+  ProjectRepository projectRepository;
+  CategoryModel category;
 
   CategoryPageBloc(CategoryModel category) {
-    this._category = category;
-    this._categoryRepository = CategoryRepository();
-    this._projectRepository = ProjectRepository();
+    this.category = category;
+    this.categoryRepository = CategoryRepository();
+    this.projectRepository = ProjectRepository();
   }
 
   /// Action to delete this category
-  void deleteCategory(CategoryModel category) {
-    this._categoryRepository.delete(category.id);
+  Future<bool> deleteCategory(CategoryModel category) async {
+    return await this.categoryRepository.delete(category.id);
   }
 
   /// Add new a project
-  void addProject(ProjectModel project) {
-    this._projectRepository.add(project.toMap()).then((_) {
+  Future<bool> addProject(ProjectModel project) async {
+    bool result = await this.projectRepository.add(project.toMap());
+    if (result) {
       this.refreshProjects();
-    });
+    }
+    return result;
   }
 
   /// Delete a project.
-  void deleteProject(ProjectModel project) {
-    this._projectRepository.delete(project.id).then((_) {
+  Future<bool> deleteProject(ProjectModel project) async {
+    bool result = await this.projectRepository.delete(project.id);
+    if (result) {
       this.refreshProjects();
-    });
+    }
+    return result;
   }
 
   /// Update project object.
-  void updateProject(ProjectModel project) {
-    this._projectRepository.update(project.toMap()).then((_) {
+  Future<bool> updateProject(ProjectModel project) async {
+    bool result = await this.projectRepository.update(project.toMap());
+    if (result) {
       this.refreshProjects();
-    });
+    }
+    return result;
   }
 
   /// Refresh the category.
-  void refreshCategory() {
-    this._categoryRepository.getCategoryById(_category.id).then((category) {
-      // Sink the category to stream
-      this.sinkCategory.add(CategoryModel.from(category));
-    });
+  Future<void> refreshCategory() async {
+    final data = await this.categoryRepository.getCategoryById(this.category.id);
+    if (data != null) {
+      this.sinkCategory.add(CategoryModel.from(data));
+    }
   }
 
   /// Refresh project list.
-  void refreshProjects() {
-    this._projectRepository.getProjectsByCategoryId(this._category.id).then((projects) {
-      List<ProjectModel> data = [];
-      projects.forEach((project) {
-        data.add(ProjectModel.from(project));
-      });
-
-      // Sink project list to stream.
-      this.sinkProjects.add(data);
+  Future<void> refreshProjects() async {
+    final data = await this.projectRepository.getProjectsByCategoryId(this.category.id);
+    List<ProjectModel> projects = [];
+    data.forEach((Map<String, dynamic> project) {
+      projects.add(ProjectModel.from(project));
     });
+    this.sinkProjects.add(projects);
   }
 
+  /// Dispose this business logic component.
   @override
   void dispose() {
     this._controllerCategory.close();

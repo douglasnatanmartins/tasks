@@ -11,49 +11,52 @@ class ProjectPageBloc implements BlocContract {
   Sink get sinkTasks => _controllerTasks.sink;
   Stream get streamTasks => _controllerTasks.stream;
 
-  TaskRepository _taskRepository;
-  ProjectModel _project;
+  TaskRepository taskRepository;
+  ProjectModel project;
 
   ProjectPageBloc(ProjectModel project) {
-    this._project = project;
-    this._taskRepository = TaskRepository();
+    this.project = project;
+    this.taskRepository = TaskRepository();
   }
 
   /// Add a task into database.
-  void addTask(TaskModel task) {
-    this._taskRepository.add(task.toMap()).then((result) {
-      this.refreshTasks();
-    });
+  Future<bool> addTask(TaskModel task) async {
+    bool result = await this.taskRepository.add(task.toMap());
+    if (result) {
+      await this.refreshTasks();
+    }
+    return result;
   }
 
   /// Delete a task from database.
-  void deleteTask(TaskModel task) {
-    this._taskRepository.delete(task.id).then((result) {
-      this.refreshTasks();
-    });
+  Future<bool> deleteTask(TaskModel task) async {
+    bool result = await this.taskRepository.delete(task.id);
+    if (result) {
+      await this.refreshTasks();
+    }
+    return result;
   }
 
   /// Update a task.
-  void updateTask(TaskModel task) {
-    this._taskRepository.update(task.toMap()).then((result) {
-      this.refreshTasks();
-    });
+  Future<bool> updateTask(TaskModel task) async {
+    bool result = await this.taskRepository.update(task.toMap());
+    if (result) {
+      await this.refreshTasks();
+    }
+    return result;
   }
 
   /// Refresh task list in the project.
-  void refreshTasks() {
-    this._taskRepository.getTasksByProjectId(this._project.id).then((tasks) {
-      List<TaskModel> data = [];
-
-      tasks.forEach((task) {
-        data.add(TaskModel.from(task));
-      });
-
-      // Sinking task list in the project to stream.
-      sinkTasks.add(data);
+  Future<void> refreshTasks() async {
+    final data = await this.taskRepository.getTasksByProjectId(this.project.id);
+    List<TaskModel> tasks = [];
+    data.forEach((Map<String, dynamic> task) {
+      tasks.add(TaskModel.from(task));
     });
+    this.sinkTasks.add(tasks);
   }
 
+  /// Dispose this business logic component.
   @override
   void dispose() {
     this._controllerTasks.close();

@@ -13,59 +13,65 @@ class TaskPageBloc implements BlocContract {
   Sink get sinkSteps => _controllerSteps.sink;
   Stream get streamSteps => _controllerSteps.stream;
 
-  TaskRepository _taskRepository;
-  StepRepository _stepRepository;
+  TaskRepository taskRepository;
+  StepRepository stepRepository;
 
-  TaskModel _task;
+  TaskModel task;
 
   TaskPageBloc(TaskModel task) {
-    this._task = task;
-    this._taskRepository = TaskRepository();
-    this._stepRepository = StepRepository();
+    this.task = task;
+    this.taskRepository = TaskRepository();
+    this.stepRepository = StepRepository();
   }
 
   /// Update the task.
-  void updateTask(TaskModel task) {
-    this._taskRepository.update(task.toMap());
+  Future<bool> updateTask(TaskModel task) async {
+    bool result = await this.taskRepository.update(task.toMap());
+    return result;
   }
 
-  Future<void> deleteTask(TaskModel task) async {
-    await _taskRepository.delete(task.id);
+  Future<bool> deleteTask(TaskModel task) async {
+    return await this.taskRepository.delete(task.id);
   }
 
   /// Add a step into task.
-  void addStep(StepModel step) {
-    this._stepRepository.add(step.toMap()).then((_) {
+  Future<bool> addStep(StepModel step) async {
+    bool result = await this.stepRepository.add(step.toMap());
+    if (result) {
       this.refreshSteps();
-    });
+    }
+    return result;
   }
 
   /// Update a step.
-  void updateStep(StepModel step) {
-    this._stepRepository.update(step.toMap()).then((_) {
+  Future<bool> updateStep(StepModel step) async {
+    bool result = await this.stepRepository.update(step.toMap());
+    if (result) {
       this.refreshSteps();
-    });
+    }
+    return result;
   }
 
   /// Delete a step.
-  void deleteStep(StepModel step) {
-    this._stepRepository.delete(step.id).then((_) {
+  Future<bool> deleteStep(StepModel step) async {
+    bool result = await this.stepRepository.delete(step.id);
+    if (result) {
       this.refreshSteps();
-    });
+    }
+    return result;
   }
 
   /// Refresh step list in the task.
-  void refreshSteps() {
-    this._stepRepository.getStepsByTaskId(this._task.id).then((steps) {
-      List<StepModel> data = [];
-      steps.forEach((step) {
-        data.add(StepModel.from(step));
-      });
-
-      this.sinkSteps.add(data);
+  Future<void> refreshSteps() async {
+    final data = await this.stepRepository.getStepsByTaskId(this.task.id);
+    List<StepModel> steps = [];
+    data.forEach((Map<String, dynamic> task) {
+      steps.add(StepModel.from(task));
     });
+    this.sinkSteps.add(steps);
   }
 
+  /// Dispose this business logic component.
   @override
   void dispose() {
     this._controllerSteps.close();

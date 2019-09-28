@@ -73,11 +73,10 @@ class _CategoryPageState extends State<CategoryPage> {
         onPressed: () async {
           final result = await showDialog(
             context: context,
-            builder: (context) {
+            builder: (BuildContext context) {
               return NewProjectForm(categoryId: category.id);
             }
           );
-
           if (result is ProjectModel) {
             this.bloc.addProject(result);
           }
@@ -106,9 +105,10 @@ class _CategoryPageState extends State<CategoryPage> {
                   textColor: UIColors.Blue,
                   color: Colors.white,
                   child: Icon(Icons.arrow_back),
-                  onPressed: () => Navigator.of(context).pop()
+                  onPressed: () => Navigator.of(this.context).pop()
                 )
               ),
+              // Header title.
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -126,23 +126,28 @@ class _CategoryPageState extends State<CategoryPage> {
                   ]
                 )
               ),
+              // Delete button.
               FlatButton(
                 padding: EdgeInsets.all(12.0),
-                shape: CircleBorder(side: BorderSide(color: Colors.white, width: 4.0)),
+                shape: CircleBorder(
+                  side: BorderSide(color: Colors.white, width: 4.0)
+                ),
                 color: UIColors.Blue,
                 textColor: Colors.white,
                 child: Icon(Icons.delete),
-                onPressed: () async { // Show dialog to confirm the user wants delete.
+                // Show a dialog to confirm the user wants delete.
+                onPressed: () async {
                   final result = await showDialog(
                     context: context,
-                    builder: (context) {
-                      return _dialogWhenDeleteCategory();
+                    builder: (BuildContext context) {
+                      return this._dialogWhenDeleteCategory();
                     }
                   );
 
                   if (result != null && result) {
-                    this.bloc.deleteCategory(category);
-                    Navigator.of(context).pop();
+                    if (await this.bloc.deleteCategory(category)) {
+                      Navigator.of(this.context).pop();
+                    }
                   }
                 }
               )
@@ -168,13 +173,13 @@ class _CategoryPageState extends State<CategoryPage> {
   /// Build dialog when delete category.
   Widget _dialogWhenDeleteCategory() {
     return AlertDialog(
-      content: Text("Are you want delete this category?"),
+      content: Text('Are you want delete this category?'),
       actions: <Widget>[
         // Yes Button.
         FlatButton(
-          color: Theme.of(context).errorColor,
+          color: Theme.of(this.context).errorColor,
           child: Text(
-            "Yes",
+            'Yes',
             style: TextStyle(color: Colors.white)
           ),
           onPressed: () { // When the user pressed YES button.
@@ -184,7 +189,7 @@ class _CategoryPageState extends State<CategoryPage> {
         // Cancel button.
         FlatButton(
           child: Text(
-            "Cancel",
+            'Cancel',
             style: TextStyle(color: Colors.grey)
           ),
           onPressed: () { // When the user pressed CANCEL button.
@@ -204,7 +209,7 @@ class _CategoryPageState extends State<CategoryPage> {
         ),
         child: StreamBuilder(
           stream: this.bloc.streamProjects,
-          builder: (context, snapshot) {
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
                 child: CircularProgressIndicator()
@@ -239,11 +244,11 @@ class _CategoryPageState extends State<CategoryPage> {
     return GestureDetector(
       child: ProjectCard(project),
       onTap: () {
-        Navigator.of(context).push(
+        Navigator.of(this.context).push(
           MaterialPageRoute(
-            builder: (context) => ProjectPage(project: project)
+            builder: (BuildContext context) => ProjectPage(project: project)
           )
-        );
+        ).then((_) => this.bloc.refreshProjects());
       }
     );
   }

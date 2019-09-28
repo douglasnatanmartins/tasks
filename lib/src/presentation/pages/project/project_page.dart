@@ -51,7 +51,7 @@ class _ProjectPageState extends State<ProjectPage> {
   /// Build a project page.
   Widget buildPage(ProjectModel project) {
     return Scaffold(
-      backgroundColor: UIColors.Green,
+      backgroundColor: project.color,
       body: SafeArea(
         child: Column(
           children: <Widget>[

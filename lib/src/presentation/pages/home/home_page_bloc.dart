@@ -10,33 +10,32 @@ class HomePageBloc implements BlocContract {
   Sink get sinkImportantTasks => _controllerImportantTasks.sink;
   Stream get streamImportantTasks => _controllerImportantTasks.stream;
 
-  TaskRepository _taskRepository;
+  TaskRepository taskRepository;
 
   HomePageBloc() {
-    this._taskRepository = TaskRepository();
+    this.taskRepository = TaskRepository();
   }
 
   /// Update a task.
-  void updateTask(TaskModel object) {
-    this._taskRepository.update(object.toMap()).then((_) {
+  Future<bool> updateTask(TaskModel task) async {
+    bool result = await this.taskRepository.update(task.toMap());
+    if (result) {
       this.refreshImportantTasks();
-    });
+    }
+    return result;
   }
 
   /// Refresh important task list.
-  void refreshImportantTasks() {
-    this._taskRepository.allImportantTasks().then((tasks) {
-      List<TaskModel> result = [];
-
-      tasks.forEach((task) {
-        result.add(TaskModel.from(task));
-      });
-
-      // Sinking important task list to stream.
-      sinkImportantTasks.add(result);
+  Future<void> refreshImportantTasks() async {
+    final data = await this.taskRepository.allImportantTasks();
+    List<TaskModel> tasks = [];
+    data.forEach((Map<String, dynamic> task) {
+      tasks.add(TaskModel.from(task));
     });
+    this.sinkImportantTasks.add(tasks);
   }
 
+  /// Dispose business logic component.
   @override
   void dispose() {
     this._controllerImportantTasks.close();
