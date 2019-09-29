@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'package:tasks/src/data/models/step_model.dart';
 import 'package:tasks/src/data/models/task_model.dart';
 import 'package:tasks/src/presentation/pages/task/task_page_bloc.dart';
+import 'package:tasks/src/presentation/shared/pickers/date_picker/date_picker.dart';
 import 'package:tasks/src/presentation/ui_colors.dart';
 
 class TaskPage extends StatefulWidget {
@@ -87,19 +89,19 @@ class _TaskPageState extends State<TaskPage> {
               shape: CircleBorder(),
               child: Icon(Icons.delete),
               textColor: UIColors.LightRed,
-              onPressed: () {
-                showDialog(
+              onPressed: () async {
+                final result = await showDialog(
                   context: context,
                   builder: (BuildContext context) {
                     return _dialogWhenDeleteTask();
                   }
-                ).then((result) {
-                  if (result != null && result) {
-                    this.bloc.deleteTask(task).then((_) {
-                      Navigator.of(this.context).pop();
-                    });
+                );
+
+                if (result != null && result) {
+                  if (await this.bloc.deleteTask(task)) {
+                    Navigator.of(this.context).pop();
                   }
-                });
+                }
               }
             )
           )
@@ -268,10 +270,23 @@ class _TaskPageState extends State<TaskPage> {
 
   /// Build footer this page.
   Widget footerPage(TaskModel task) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 10.0),
-      padding: EdgeInsets.symmetric(horizontal: 10.0),
-      child: this._buildNoteForm(task)
+    return Column(
+      children: <Widget>[
+        DatePicker(
+          title: 'Add due date',
+          icon: Icons.date_range,
+          initialDate: task.dueDate,
+          onSelected: (DateTime date) {
+            task.dueDate = date;
+            this.bloc.updateTask(task);
+          },
+        ),
+        Container(
+          margin: EdgeInsets.only(bottom: 10.0),
+          padding: EdgeInsets.symmetric(horizontal: 10.0),
+          child: this._buildNoteForm(task)
+        )
+      ],
     );
   }
 

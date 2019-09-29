@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:tasks/src/data/models/task_model.dart';
 import 'package:tasks/src/presentation/ui_colors.dart';
 
@@ -71,9 +73,9 @@ class _NewTaskFormState extends State<NewTaskForm> {
                 done: false,
                 projectId: this.widget.projectId,
                 important: false,
-                created: DateTime.now()
+                createdDate: DateTime.now(),
               );
-              Navigator.of(context).pop(task);
+              Navigator.of(this.context).pop(task);
             }
           }
         )

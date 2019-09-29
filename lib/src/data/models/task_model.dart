@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 import 'package:tasks/src/data/contracts/model_contract.dart';
 
@@ -8,7 +9,8 @@ class TaskModel implements ModelContract {
   int _projectId;
   String _note;
   int _important;
-  DateTime _created;
+  DateTime _createdDate;
+  DateTime _dueDate;
 
   int get id => this._id;
   String get title => this._title;
@@ -16,7 +18,8 @@ class TaskModel implements ModelContract {
   int get projectId => this._projectId;
   String get note => this._note;
   bool get important => this._important == 1 ? true : false;
-  DateTime get created => this._created;
+  DateTime get createdDate => this._createdDate;
+  DateTime get dueDate => this._dueDate;
 
   set title(String title) {
     this._title = title;
@@ -38,6 +41,10 @@ class TaskModel implements ModelContract {
     this._important = important ? 1 : 0;
   }
 
+  set dueDate(DateTime date) {
+    this._dueDate = date;
+  }
+
   /// Constructor of a task model object.
   TaskModel({
     int id,
@@ -46,7 +53,8 @@ class TaskModel implements ModelContract {
     @required int projectId,
     String note,
     bool important,
-    @required DateTime created
+    @required DateTime createdDate,
+    DateTime dueDate
   }) {
     this._id = id;
     this._title = title;
@@ -54,7 +62,8 @@ class TaskModel implements ModelContract {
     this._projectId = projectId;
     this._note = note;
     this._important = important ? 1 : 0;
-    this._created = created;
+    this._createdDate = createdDate;
+    this._dueDate = dueDate;
   }
 
   /// Constructor of a task model object from a Map object.
@@ -65,7 +74,8 @@ class TaskModel implements ModelContract {
     this._projectId = object['project_id'];
     this._note = object['note'];
     this._important = object['important'];
-    this._created = DateTime.parse(object['created']);
+    this._createdDate = DateTime.parse(object['created_date']);
+    this._dueDate = object['due_date'] != null ? DateTime.parse(object['due_date']) : null;
   }
 
   /// Returns a map object to representation of this object.
@@ -77,7 +87,8 @@ class TaskModel implements ModelContract {
     object['project_id'] = this._projectId;
     object['note'] = this._note;
     object['important'] = this._important;
-    object['created'] = this.created.toString();
+    object['created_date'] = this._createdDate.toString();
+    object['due_date'] = this.dueDate != null ? DateFormat('yyyy-MM-dd').format(this._dueDate) : null;
     return object;
   }
 }

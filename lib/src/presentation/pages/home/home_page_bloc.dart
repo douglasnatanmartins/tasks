@@ -1,14 +1,15 @@
 import 'dart:async';
 
+import 'package:intl/intl.dart';
 import 'package:tasks/src/core/contracts/bloc_contract.dart';
 import 'package:tasks/src/data/models/task_model.dart';
 import 'package:tasks/src/data/repositories/task_repository.dart';
 
 /// Home Page Business Logic Component.
 class HomePageBloc implements BlocContract {
-  final _controllerImportantTasks = StreamController<List<TaskModel>>.broadcast();
-  Sink get sinkImportantTasks => _controllerImportantTasks.sink;
-  Stream get streamImportantTasks => _controllerImportantTasks.stream;
+  final _controllerTasks = StreamController<List<dynamic>>.broadcast();
+  Sink get sinkTasks => _controllerTasks.sink;
+  Stream get streamTasks => _controllerTasks.stream;
 
   TaskRepository taskRepository;
 
@@ -19,9 +20,6 @@ class HomePageBloc implements BlocContract {
   /// Update a task.
   Future<bool> updateTask(TaskModel task) async {
     bool result = await this.taskRepository.update(task.toMap());
-    if (result) {
-      this.refreshImportantTasks();
-    }
     return result;
   }
 
@@ -32,12 +30,59 @@ class HomePageBloc implements BlocContract {
     data.forEach((Map<String, dynamic> task) {
       tasks.add(TaskModel.from(task));
     });
-    this.sinkImportantTasks.add(tasks);
+    //this.sinkImportantTasks.add(tasks);
+  }
+
+  Future<void> refreshTasks() async {
+    final data = await this.taskRepository.allTaskWithDueDate();
+    final List<dynamic> tasks = [];
+
+    if (data.length == 0) {
+      this.sinkTasks.add(tasks);
+      return;
+    }
+
+    // Get date with format (YYYY-MM-DD)
+    DateTime today = DateTime.now();
+    today = DateTime(today.year, today.month, today.day);
+
+    DateTime current = today;
+    bool header = true;
+
+    data.forEach((Map<String, dynamic> task) {
+      final dueDate = DateTime.parse(task['due_date']);
+      int present = dueDate.difference(today).inDays;
+
+      if (present >= 0) {
+        final TaskModel model = TaskModel.from(task);
+        int difference = current.difference(model.dueDate).inDays;
+
+        if (difference != 0) {
+          header = true;
+          current = model.dueDate;
+        }
+
+        if (header) {
+          if (present == 0) {
+            tasks.add('Today');
+          } else if (present == 1) {
+            tasks.add('Tomorrow');
+          } else {
+            tasks.add(DateFormat.yMMMd().format(current));
+          }
+          header = false;
+        }
+
+        tasks.add(TaskModel.from(task));
+      }
+    });
+
+    this.sinkTasks.add(tasks);
   }
 
   /// Dispose business logic component.
   @override
   void dispose() {
-    this._controllerImportantTasks.close();
+    this._controllerTasks.close();
   }
 }

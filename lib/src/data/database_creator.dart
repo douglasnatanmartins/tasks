@@ -98,7 +98,8 @@ class DatabaseCreator {
         done INTEGER NOT NULL,
         note TEXT,
         important INTEGER NOT NULL,
-        created TEXT NOT NULL,
+        created_date TEXT NOT NULL,
+        due_date TEXT,
         project_id INTEGER NOT NULL,
         FOREIGN KEY (project_id) REFERENCES Project(id) ON DELETE CASCADE
       )

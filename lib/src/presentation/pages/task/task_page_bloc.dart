@@ -30,6 +30,7 @@ class TaskPageBloc implements BlocContract {
     return result;
   }
 
+  /// Delete the task.
   Future<bool> deleteTask(TaskModel task) async {
     return await this.taskRepository.delete(task.id);
   }

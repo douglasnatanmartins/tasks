@@ -12,6 +12,18 @@ class TaskRepository {
     return result;
   }
 
+  /// Get all tasks with due date.
+  Future<List<Map<String, dynamic>>> allTaskWithDueDate() async {
+    Database db = await DatabaseCreator().database;
+    List<Map<String, dynamic>> result = await db.rawQuery('''
+      SELECT *
+      FROM Task
+      WHERE due_date IS NOT NULL
+      ORDER BY due_date ASC
+    ''');
+    return result;
+  }
+
   /// Get all important tasks.
   Future<List<Map<String, dynamic>>> allImportantTasks() async {
     Database db = await DatabaseCreator().database;

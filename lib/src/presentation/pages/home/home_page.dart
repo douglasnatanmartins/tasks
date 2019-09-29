@@ -25,7 +25,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     this.bloc = HomePageBloc();
-    this.bloc.refreshImportantTasks();
+    this.bloc.refreshTasks();
   }
 
   /// Called when this state removed from the tree.
@@ -60,7 +60,7 @@ class _HomePageState extends State<HomePage> {
   /// Build header this page.
   Widget headerPage() {
     return StreamBuilder(
-      stream: this.bloc.streamImportantTasks,
+      stream: this.bloc.streamTasks,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.hasData) {
           return HeaderHome(importantTasks: snapshot.data.length);
@@ -77,7 +77,7 @@ class _HomePageState extends State<HomePage> {
       child: Container(
         color: Colors.white,
         child: StreamBuilder(
-          stream: this.bloc.streamImportantTasks,
+          stream: this.bloc.streamTasks,
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
@@ -85,7 +85,7 @@ class _HomePageState extends State<HomePage> {
               );
             } else {
               if (snapshot.hasData && snapshot.data.isNotEmpty) {
-                List<TaskModel> data = snapshot.data;
+                List<dynamic> data = snapshot.data;
                 return this.buildListView(data);
               } else {
                 return EmptyContentBox(message: 'not important task');
@@ -98,14 +98,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   /// Build the list view.
-  Widget buildListView(List<TaskModel> data) {
-    List<dynamic> source = ['Important'];
-    source.addAll(data);
+  Widget buildListView(List<dynamic> data) {
     return ListView.builder(
       padding: EdgeInsets.all(0.0),
-      itemCount: source.length,
+      itemCount: data.length,
       itemBuilder: (BuildContext context, int index) {
-        return this._buildChildrenInListView(source[index]);
+        return this._buildChildrenInListView(data[index]);
       }
     );
   }
@@ -122,13 +120,12 @@ class _HomePageState extends State<HomePage> {
   /// Build header type in list view.
   Widget _buildListTileHeader(String title) {
     return Container(
-      margin: EdgeInsets.only(top: 15, left: 20.0, right: 20.0, bottom: 20.0),
+      margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
       child: Text(
         title,
-        overflow: TextOverflow.ellipsis,
         style: TextStyle(
-          color: UIColors.Grey,
-          fontSize: 16.0,
+          color: UIColors.DarkBlue,
+          fontSize: 17.0,
           fontWeight: FontWeight.w600
         )
       )
@@ -137,37 +134,17 @@ class _HomePageState extends State<HomePage> {
 
   /// Build item type in list view.
   Widget _buildListTile(TaskModel task) {
-    TextDecoration decoration = TextDecoration.none;
-
-    if (task.done) {
-      decoration = TextDecoration.lineThrough;
-    }
-
     return Dismissible(
       direction: DismissDirection.horizontal,
       key: Key(task.id.toString()),
       child: TaskListTile(
-        leading: Checkbox(
-          checkColor: Colors.white,
-          activeColor: Colors.green,
-          value: task.done,
-          onChanged: (bool checked) {
-            task.done = checked;
-            this.bloc.updateTask(task);
-          }
-        ),
-        title: Text(
-          task.title,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            color: UIColors.Blue,
-            fontWeight: FontWeight.w600,
-            decoration: decoration
-          )
-        )
+        task: task,
+        onChanged: (TaskModel changed) {
+          this.bloc.updateTask(changed);
+        }
       ),
       onDismissed: (DismissDirection direction) {
-        task.important = false;
+        task.dueDate = null;
         this.bloc.updateTask(task);
       },
     );
