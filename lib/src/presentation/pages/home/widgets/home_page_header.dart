@@ -2,19 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:tasks/src/presentation/pages/settings/settings_page.dart';
 import 'package:tasks/src/presentation/ui_colors.dart';
 
-class HeaderHome extends StatelessWidget {
-  final int importantTasks;
-  HeaderHome({Key key, this.importantTasks = 0}): super(key: key);
+class HomePageHeader extends StatelessWidget {
+  final int todayTasks;
+
+  HomePageHeader({
+    Key key,
+    this.todayTasks = 0
+  }): super(key: key);
 
   @override
   Widget build(BuildContext context) {
     String description;
-    if (importantTasks == 0) {
-      description = 'You not have important task';
-    } else if (importantTasks == 1) {
-      description = 'You have 1 important task';
+    if (this.todayTasks == 0) {
+      description = 'You not have task in today';
+    } else if (this.todayTasks == 1) {
+      description = 'You have 1 task in today';
     } else {
-      description = 'You have ${this.importantTasks} important tasks';
+      description = 'You have ${this.todayTasks} tasks in today';
     }
 
     return Container(

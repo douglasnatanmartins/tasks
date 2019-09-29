@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-
 import 'package:tasks/src/data/models/step_model.dart';
 import 'package:tasks/src/data/models/task_model.dart';
 import 'package:tasks/src/presentation/pages/task/task_page_bloc.dart';
+import 'package:tasks/src/presentation/pages/task/widgets/note_form_widget.dart';
 import 'package:tasks/src/presentation/shared/pickers/date_picker/date_picker.dart';
 import 'package:tasks/src/presentation/ui_colors.dart';
 
@@ -16,9 +15,7 @@ class TaskPage extends StatefulWidget {
   }): assert(task != null), super(key: key);
 
   @override
-  State<StatefulWidget> createState() {
-    return _TaskPageState();
-  }
+  State<StatefulWidget> createState() => _TaskPageState();
 }
 
 class _TaskPageState extends State<TaskPage> {
@@ -281,47 +278,20 @@ class _TaskPageState extends State<TaskPage> {
             this.bloc.updateTask(task);
           },
         ),
-        Container(
-          margin: EdgeInsets.only(bottom: 10.0),
-          padding: EdgeInsets.symmetric(horizontal: 10.0),
-          child: this._buildNoteForm(task)
-        )
+        this.buildNoteForm(task)
       ],
     );
   }
 
   /// Build the task note form.
-  Widget _buildNoteForm(TaskModel task) {
-    final _controller = TextEditingController(text: task.note);
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(
-          color: Colors.black.withOpacity(0.2)
-        ),
-        borderRadius: BorderRadius.circular(5.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.2),
-            blurRadius: 3.0,
-            offset: Offset(0.5, 4)
-          )
-        ]
-      ),
-      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-      child: TextField(
-        decoration: InputDecoration.collapsed(
-          hintText: 'Note',
-          border: InputBorder.none
-        ),
-        controller: _controller,
-        keyboardType: TextInputType.multiline,
-        maxLines: 3,
-        onChanged: (String value) {
-          task.note = _controller.text;
-          this.bloc.updateTask(task);
-        }
-      )
+  Widget buildNoteForm(TaskModel task) {
+    return NoteFormWidget(
+      note: task.note,
+      onChanged: (String note) {
+        task.note = note;
+        print(note);
+        this.bloc.updateTask(task);
+      }
     );
   }
 }

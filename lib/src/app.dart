@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:package_info/package_info.dart';
 
 import 'package:tasks/src/presentation/pages/home/home_page.dart';
-import 'package:tasks/src/presentation/ui_colors.dart';
 
 class App extends StatelessWidget {
   final String title = 'Tenla: Tasks';
@@ -11,10 +10,12 @@ class App extends StatelessWidget {
 
   App({
     Key key,
-    this.information
-  }): assert(information != null), super(key: key);
-
-  static of(BuildContext context) {
+    @required this.information
+  }): assert(information != null),
+      super(key: key);
+  
+  /// Get the application information.
+  static PackageInfo of(BuildContext context) {
     return (context.ancestorWidgetOfExactType(App) as App).information;
   }
 
@@ -26,11 +27,7 @@ class App extends StatelessWidget {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
-      theme: ThemeData(
-        primaryColor: UIColors.Blue,
-        errorColor: UIColors.Orange,
-      )
+      home: HomePage()
     );
   }
 }

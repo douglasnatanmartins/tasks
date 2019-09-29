@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:tasks/src/data/models/task_model.dart';
 import 'package:tasks/src/presentation/pages/home/home_page_bloc.dart';
+import 'package:tasks/src/presentation/pages/home/widgets/home_page_header.dart';
+import 'package:tasks/src/presentation/pages/home/widgets/home_page_task_list_tile.dart';
 import 'package:tasks/src/presentation/shared/widgets/bottom_navigation.dart';
 import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
-import 'package:tasks/src/presentation/shared/widgets/header_home.dart';
-import 'package:tasks/src/presentation/shared/widgets/task_list_tile.dart';
 import 'package:tasks/src/presentation/ui_colors.dart';
 
 class HomePage extends StatefulWidget {
@@ -62,11 +62,12 @@ class _HomePageState extends State<HomePage> {
     return StreamBuilder(
       stream: this.bloc.streamTasks,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.hasData) {
-          return HeaderHome(importantTasks: snapshot.data.length);
+        if (snapshot.hasData && snapshot.data.isNotEmpty) {
+          final List<TaskModel> today = snapshot.data['Today'];
+          return HomePageHeader(todayTasks: today.length);
         }
 
-        return HeaderHome();
+        return HomePageHeader();
       }
     );
   }
@@ -85,7 +86,7 @@ class _HomePageState extends State<HomePage> {
               );
             } else {
               if (snapshot.hasData && snapshot.data.isNotEmpty) {
-                List<dynamic> data = snapshot.data;
+                Map<String, List<TaskModel>> data = snapshot.data;
                 return this.buildListView(data);
               } else {
                 return EmptyContentBox(message: 'not important task');
@@ -98,27 +99,24 @@ class _HomePageState extends State<HomePage> {
   }
 
   /// Build the list view.
-  Widget buildListView(List<dynamic> data) {
-    return ListView.builder(
+  Widget buildListView(Map<String, List<TaskModel>> data) {
+    List<Widget> children = <Widget>[];
+
+    data.forEach((String name, List<TaskModel> tasks) {
+      children.add(this.buildHeaderListTile(name));
+      tasks.forEach((TaskModel task) {
+        children.add(this.buildItemListTile(task));
+      });
+    });
+
+    return ListView(
       padding: EdgeInsets.all(0.0),
-      itemCount: data.length,
-      itemBuilder: (BuildContext context, int index) {
-        return this._buildChildrenInListView(data[index]);
-      }
+      children: children,
     );
   }
 
-  /// Build children in list view.
-  Widget _buildChildrenInListView(dynamic data) {
-    if (data is String) {
-      return this._buildListTileHeader(data);
-    } else {
-      return this._buildListTile(data);
-    }
-  }
-
   /// Build header type in list view.
-  Widget _buildListTileHeader(String title) {
+  Widget buildHeaderListTile(String title) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
       child: Text(
@@ -133,11 +131,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   /// Build item type in list view.
-  Widget _buildListTile(TaskModel task) {
+  Widget buildItemListTile(TaskModel task) {
     return Dismissible(
       direction: DismissDirection.horizontal,
       key: Key(task.id.toString()),
-      child: TaskListTile(
+      child: HomePageTaskListTile(
         task: task,
         onChanged: (TaskModel changed) {
           this.bloc.updateTask(changed);

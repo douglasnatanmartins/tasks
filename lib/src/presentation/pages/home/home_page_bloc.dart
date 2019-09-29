@@ -7,7 +7,7 @@ import 'package:tasks/src/data/repositories/task_repository.dart';
 
 /// Home Page Business Logic Component.
 class HomePageBloc implements BlocContract {
-  final _controllerTasks = StreamController<List<dynamic>>.broadcast();
+  final _controllerTasks = StreamController<Map<String, List<TaskModel>>>.broadcast();
   Sink get sinkTasks => _controllerTasks.sink;
   Stream get streamTasks => _controllerTasks.stream;
 
@@ -35,7 +35,7 @@ class HomePageBloc implements BlocContract {
 
   Future<void> refreshTasks() async {
     final data = await this.taskRepository.allTaskWithDueDate();
-    final List<dynamic> tasks = [];
+    final Map<String, List<TaskModel>> tasks = {};
 
     if (data.length == 0) {
       this.sinkTasks.add(tasks);
@@ -47,33 +47,34 @@ class HomePageBloc implements BlocContract {
     today = DateTime(today.year, today.month, today.day);
 
     DateTime current = today;
-    bool header = true;
+    bool group = true;
+    String currentGroup;
 
     data.forEach((Map<String, dynamic> task) {
-      final dueDate = DateTime.parse(task['due_date']);
-      int present = dueDate.difference(today).inDays;
+      int present = DateTime.parse(task['due_date']).difference(today).inDays;
 
       if (present >= 0) {
         final TaskModel model = TaskModel.from(task);
         int difference = current.difference(model.dueDate).inDays;
 
         if (difference != 0) {
-          header = true;
+          group = true;
           current = model.dueDate;
         }
 
-        if (header) {
+        if (group) {
           if (present == 0) {
-            tasks.add('Today');
+            currentGroup = 'Today';
           } else if (present == 1) {
-            tasks.add('Tomorrow');
+            currentGroup = 'Tomorrow';
           } else {
-            tasks.add(DateFormat.yMMMd().format(current));
+            currentGroup = DateFormat.yMMMd().format(current);
           }
-          header = false;
+          tasks[currentGroup] = <TaskModel>[];
+          group = false;
         }
 
-        tasks.add(TaskModel.from(task));
+        tasks[currentGroup].add(model);
       }
     });
 
