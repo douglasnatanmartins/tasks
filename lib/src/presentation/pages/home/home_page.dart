@@ -64,7 +64,7 @@ class _HomePageState extends State<HomePage> {
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.hasData && snapshot.data.isNotEmpty) {
           final List<TaskModel> today = snapshot.data['Today'];
-          return HomePageHeader(todayTasks: today.length);
+          return HomePageHeader(todayTasks: today?.length);
         }
 
         return HomePageHeader();
