@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:tasks/src/data/models/category_model.dart';
 import 'package:tasks/src/presentation/pages/categories/categories_page_bloc.dart';
+import 'package:tasks/src/presentation/pages/categories/widgets/category_card_widget.dart';
 import 'package:tasks/src/presentation/pages/category/category_page.dart';
 import 'package:tasks/src/presentation/pages/settings/settings_page.dart';
 import 'package:tasks/src/presentation/shared/widgets/bottom_navigation.dart';
-import 'package:tasks/src/presentation/shared/cards/category_card.dart';
 import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
 import 'package:tasks/src/presentation/shared/forms/new_category_form.dart';
 import 'package:tasks/src/presentation/ui_colors.dart';
@@ -206,7 +206,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
   /// Build a children in listview.
   Widget _buildChildrenInList(CategoryModel category) {
     return GestureDetector(
-      child: CategoryCard(category: category),
+      child: CategoryCardWidget(category: category),
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(

@@ -23,16 +23,6 @@ class HomePageBloc implements BlocContract {
     return result;
   }
 
-  /// Refresh important task list.
-  Future<void> refreshImportantTasks() async {
-    final data = await this.taskRepository.allImportantTasks();
-    List<TaskModel> tasks = [];
-    data.forEach((Map<String, dynamic> task) {
-      tasks.add(TaskModel.from(task));
-    });
-    //this.sinkImportantTasks.add(tasks);
-  }
-
   Future<void> refreshTasks() async {
     final data = await this.taskRepository.allTaskWithDueDate();
     final Map<String, List<TaskModel>> tasks = {};

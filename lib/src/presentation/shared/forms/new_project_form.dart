@@ -17,14 +17,14 @@ class NewProjectForm extends StatefulWidget {
 
 class _NewProjectFormState extends State<NewProjectForm> {
   final key = GlobalKey<FormState>();
-  final _titleController = new TextEditingController();
-  final _descriptionController = new TextEditingController();
-  Color _colorProject = Colors.grey;
+  final titleController = new TextEditingController();
+  final descriptionController = new TextEditingController();
+  Color colorProject = Colors.grey;
 
   @override
   void dispose() {
-    this._titleController.dispose();
-    this._descriptionController.dispose();
+    this.titleController.dispose();
+    this.descriptionController.dispose();
     super.dispose();
   }
 
@@ -61,8 +61,8 @@ class _NewProjectFormState extends State<NewProjectForm> {
                 UIColors.Red,
                 UIColors.Purple
               ],
-              onChange: (Color selected) {
-                this._colorProject = selected;
+              onChanged: (Color selected) {
+                this.colorProject = selected;
               },
             ),
             Spacer(),
@@ -96,7 +96,7 @@ class _NewProjectFormState extends State<NewProjectForm> {
                 Expanded(
                   child: TextFormField(
                     autofocus: true,
-                    controller: this._titleController,
+                    controller: this.titleController,
                     decoration: InputDecoration(
                       hintText: 'Title'
                     ),
@@ -112,7 +112,7 @@ class _NewProjectFormState extends State<NewProjectForm> {
             ),
             SizedBox(height: 10),
             TextFormField(
-                controller: this._descriptionController,
+                controller: this.descriptionController,
                 decoration: InputDecoration(
                   hintText: 'Description'
                 )
@@ -138,11 +138,11 @@ class _NewProjectFormState extends State<NewProjectForm> {
           onPressed: () {
             if (this.key.currentState.validate()) {
               final ProjectModel project = ProjectModel(
-                title: this._titleController.text.trim(),
-                description: this._descriptionController.text.trim(),
+                title: this.titleController.text.trim(),
+                description: this.descriptionController.text.trim(),
                 categoryId: this.widget.categoryId,
                 created: DateTime.now(),
-                color: this._colorProject,
+                color: this.colorProject,
               );
               Navigator.of(context).pop(project);
             }

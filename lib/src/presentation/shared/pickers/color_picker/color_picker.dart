@@ -3,13 +3,15 @@ import 'package:tasks/src/presentation/shared/pickers/color_picker/circle_color.
 
 class ColorPicker extends StatefulWidget {
   final List<Color> colors;
-  final ValueChanged<Color> onChange;
+  final ValueChanged<Color> onChanged;
 
   ColorPicker({
     Key key,
     @required this.colors,
-    @required this.onChange,
-  }): super(key: key);
+    @required this.onChanged,
+  }): assert(colors != null),
+      assert(onChanged != null),
+      super(key: key);
 
   @override
   State<StatefulWidget> createState() => _ColorPickerState();
@@ -49,9 +51,8 @@ class _ColorPickerState extends State<ColorPicker> {
               onTap: () {
                 setState(() {
                   this.current = color;
+                  this.widget.onChanged(color);
                 });
-
-                this.widget.onChange(color);
               }
             );
           }

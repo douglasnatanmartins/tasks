@@ -47,21 +47,23 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
-//    signingConfigs {
-//        release {
-//            keyAlias keystoreProperties['keyAlias']
-//            keyPassword keystoreProperties['keyPassword']
-//            storeFile file(keystoreProperties['storeFile'])
-//            storePassword keystoreProperties['storePassword']
-//        }
-//    }
+    // // When you build application.
+    // signingConfigs {
+    //     release {
+    //         keyAlias keystoreProperties['keyAlias']
+    //         keyPassword keystoreProperties['keyPassword']
+    //         storeFile file(keystoreProperties['storeFile'])
+    //         storePassword keystoreProperties['storePassword']
+    //     }
+    // }
 
-//    buildTypes {
-//        release {
-//            signingConfig signingConfigs.release
-//        }
-//    }
+    // buildTypes {
+    //     release {
+    //         signingConfig signingConfigs.release
+    //     }
+    // }
 
+    // When debug application
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.

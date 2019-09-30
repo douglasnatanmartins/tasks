@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:tasks/src/data/models/category_model.dart';
 import 'package:tasks/src/presentation/ui_colors.dart';
 
-class CategoryCard extends StatelessWidget {
+class CategoryCardWidget extends StatelessWidget {
   final CategoryModel category;
 
-  CategoryCard({this.category});
+  CategoryCardWidget({this.category});
 
   @override
   Widget build(BuildContext context) {
