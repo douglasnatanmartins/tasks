@@ -5,10 +5,12 @@ import 'package:tasks/src/presentation/ui_colors.dart';
 
 class ProjectCard extends StatelessWidget {
   final ProjectModel project;
+  final double progress;
 
   const ProjectCard({
     Key key,
-    @required this.project
+    @required this.project,
+    @required this.progress
   }): assert(project != null),
       super(key: key);
 
@@ -58,24 +60,40 @@ class ProjectCard extends StatelessWidget {
         color: Colors.grey.withOpacity(0.18),
         borderRadius: BorderRadius.circular(10.0)
       ),
-      child: Row(
+      child: Column(
         children: <Widget>[
-          Container(
-            padding: EdgeInsets.only(right: 12.0),
-            child: Icon(
-              Icons.folder,
-              size: 30.0,
-              color: project.color
-            )
+          Row(
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.only(right: 12.0),
+                child: Icon(
+                  Icons.folder,
+                  size: 30.0,
+                  color: project.color
+                )
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: children
+                )
+              )
+            ]
           ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: children
-            )
+          SizedBox(height: 10.0),
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: LinearProgressIndicator(
+                  value: this.progress
+                ),
+              ),
+              SizedBox(width: 10.0),
+              Text((progress * 100).round().toString() + '%')
+            ],
           )
-        ]
+        ],
       )
     );
   }

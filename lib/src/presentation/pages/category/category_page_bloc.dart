@@ -5,6 +5,7 @@ import 'package:tasks/src/data/models/category_model.dart';
 import 'package:tasks/src/data/models/project_model.dart';
 import 'package:tasks/src/data/repositories/category_repository.dart';
 import 'package:tasks/src/data/repositories/project_repository.dart';
+import 'package:tasks/src/data/repositories/task_repository.dart';
 
 /// Category Page Business Logic Component.
 class CategoryPageBloc implements BlocContract {
@@ -14,18 +15,20 @@ class CategoryPageBloc implements BlocContract {
   Stream get streamCategory => _controllerCategory.stream;
 
   // Stream of project in the category.
-  final _controllerProjects = StreamController<List<ProjectModel>>();
+  final _controllerProjects = StreamController<List<Map<String, dynamic>>>();
   Sink get sinkProjects => _controllerProjects.sink;
   Stream get streamProjects => _controllerProjects.stream;
 
   CategoryRepository categoryRepository;
   ProjectRepository projectRepository;
+  TaskRepository taskRepository;
   CategoryModel category;
 
   CategoryPageBloc(CategoryModel category) {
     this.category = category;
     this.categoryRepository = CategoryRepository();
     this.projectRepository = ProjectRepository();
+    this.taskRepository = TaskRepository();
   }
 
   /// Action to delete this category
@@ -60,6 +63,19 @@ class CategoryPageBloc implements BlocContract {
     return result;
   }
 
+  Future<double> getProgressProject(int projectId) async {
+    final data = await this.taskRepository.getTasksByProjectId(projectId);
+    int total = data.length;
+    int completed = 0;
+    data.forEach((task) {
+      if (task['done'] == 1) {
+        completed++;
+      }
+    });
+
+    return completed / total;
+  }
+
   /// Refresh the category.
   Future<void> refreshCategory() async {
     final data = await this.categoryRepository.getCategoryById(this.category.id);
@@ -71,10 +87,17 @@ class CategoryPageBloc implements BlocContract {
   /// Refresh project list.
   Future<void> refreshProjects() async {
     final data = await this.projectRepository.getProjectsByCategoryId(this.category.id);
-    List<ProjectModel> projects = [];
-    data.forEach((Map<String, dynamic> project) {
-      projects.add(ProjectModel.from(project));
-    });
+
+    List<Map<String, dynamic>> projects = [];
+    for (var i = 0; i < data.length; i++) {
+      final model = ProjectModel.from(data[i]);
+      final progress = await this.getProgressProject(model.id);
+      projects.add({
+        'project': model,
+        'progress': progress
+      });
+    }
+
     this.sinkProjects.add(projects);
   }
 

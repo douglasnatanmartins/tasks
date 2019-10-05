@@ -229,21 +229,24 @@ class _CategoryPageState extends State<CategoryPage> {
   }
 
   /// Build the listview to show projects.
-  Widget buildListView(List<ProjectModel> projects) {
+  Widget buildListView(List<Map<String, dynamic>> projects) {
     return ListView.builder(
       padding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 5.0),
       itemCount: projects.length,
       itemBuilder: (BuildContext context, int index) {
         final project = projects[index];
-        return this._buildChildrenInListView(project);
+        return this._buildChildrenInListView(project['project'], project['progress']);
       }
     );
   }
 
   /// Build a children in listview.
-  Widget _buildChildrenInListView(ProjectModel project) {
+  Widget _buildChildrenInListView(ProjectModel project, double progress) {
     return GestureDetector(
-      child: ProjectCard(project: project),
+      child: ProjectCard(
+        project: project,
+        progress: progress,
+      ),
       onTap: () {
         Navigator.of(this.context).push(
           MaterialPageRoute(
