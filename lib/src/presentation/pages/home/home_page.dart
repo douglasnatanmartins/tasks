@@ -47,7 +47,6 @@ class _HomePageState extends State<HomePage> {
   /// Build a home page.
   Widget buildPage() {
     return Scaffold(
-      backgroundColor: UIColors.Blue,
       body: SafeArea(
         child: Column(
           children: <Widget>[
@@ -125,17 +124,58 @@ class _HomePageState extends State<HomePage> {
   /// Build item type in list view.
   Widget buildItemListTile(TaskModel task) {
     return Dismissible(
-      direction: DismissDirection.horizontal,
       key: Key(task.id.toString()),
+      background: Container(
+        margin: EdgeInsets.symmetric(vertical: 5.0),
+        padding: EdgeInsets.symmetric(horizontal: 10.0),
+        color: Colors.red,
+        child: Row(
+          children: <Widget>[
+            Icon(Icons.clear, size: 25.0, color: Colors.white),
+            SizedBox(width: 5.0),
+            Text(
+              'Delete',
+              style: TextStyle(
+                fontSize: 16.0,
+                color: Colors.white
+              )
+            )
+          ],
+        )
+      ),
+      secondaryBackground: Container(
+        margin: EdgeInsets.symmetric(vertical: 5.0),
+        padding: EdgeInsets.symmetric(horizontal: 10.0),
+        color: Colors.blue,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            Icon(Icons.check, size: 25.0, color: Colors.white),
+            SizedBox(width: 5.0),
+            Text(
+              'Completed',
+              style: TextStyle(
+                fontSize: 16.0,
+                color: Colors.white
+              )
+            )
+          ],
+        )
+      ),
+      direction: DismissDirection.horizontal,
       child: ItemListTile(
         task: task,
-        onChanged: (TaskModel changed) {
-          this.bloc.updateTask(changed);
+        onChanged: (bool checked) {
+          task.done = checked;
+          this.bloc.updateTask(task);
         }
       ),
       onDismissed: (DismissDirection direction) {
-        task.dueDate = null;
-        this.bloc.updateTask(task);
+        if (direction == DismissDirection.endToStart) {
+          task.done = true;
+          task.dueDate = null;
+          this.bloc.updateTask(task);
+        }
       },
     );
   }

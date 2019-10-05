@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:tasks/src/data/models/task_model.dart';
-import 'package:tasks/src/presentation/ui_colors.dart';
+import 'package:tasks/src/presentation/pages/task/task_page.dart';
+import 'package:tasks/src/presentation/shared/widgets/circle_checkbox.dart';
 
 class ItemListTile extends StatefulWidget {
   final TaskModel task;
-  final ValueChanged<TaskModel> onChanged;
+  final ValueChanged<bool> onChanged;
 
-  ItemListTile({
+  const ItemListTile({
     Key key,
     @required this.task,
     @required this.onChanged
@@ -19,41 +21,63 @@ class ItemListTile extends StatefulWidget {
 }
 
 class _ItemListTileState extends State<ItemListTile> {
+  TaskModel task;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    this.task = this.widget.task;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final task = this.widget.task;
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+      margin: EdgeInsets.symmetric(horizontal: 0, vertical: 5.0),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(5),
-        boxShadow: [
-          BoxShadow(
-            color: UIColors.Grey,
-            blurRadius: 7.0,
-            spreadRadius: 1.0,
-            offset: Offset(0.0, 1.0)
-          )
-        ],
+        color: Colors.grey.shade200,
       ),
       child: ListTile(
-        contentPadding: EdgeInsets.symmetric(horizontal: 5.0),
-        leading: Checkbox(
+        contentPadding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
+        leading: CircleCheckbox(
           value: task.done,
-          onChanged: (bool check) {
-            setState(() {
-              task.done = check;
-              this.widget.onChanged(task);
-            });
-          },
+          onChanged: this.widget.onChanged
         ),
-        title: Text(
-          task.title,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            fontWeight: FontWeight.w600
-          )
-        )
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              this.task.title,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontWeight: FontWeight.w600
+              )
+            ),
+            SizedBox(height: 5.0),
+            Row(
+              children: <Widget>[
+                Icon(Icons.date_range, size: 18.0),
+                SizedBox(width: 5.0),
+                Text(
+                  DateFormat.yMEd().format(this.task.dueDate)
+                )
+              ],
+            )
+          ],
+        ),
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (BuildContext context) {
+                return TaskPage(task: this.task);
+              }
+            )
+          );
+        }
       )
     );
   }
