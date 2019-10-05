@@ -39,6 +39,6 @@ class CategoriesPageBloc implements BlocContract {
   @override
   void dispose() {
     this.categoryRepository = null;
-    this._controllerCategories.close();
+    _controllerCategories.close();
   }
 }

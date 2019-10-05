@@ -81,7 +81,7 @@ class CategoryPageBloc implements BlocContract {
   /// Dispose this business logic component.
   @override
   void dispose() {
-    this._controllerCategory.close();
-    this._controllerProjects.close();
+    _controllerCategory.close();
+    _controllerProjects.close();
   }
 }

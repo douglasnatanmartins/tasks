@@ -74,6 +74,6 @@ class HomePageBloc implements BlocContract {
   /// Dispose business logic component.
   @override
   void dispose() {
-    this._controllerTasks.close();
+    _controllerTasks.close();
   }
 }

@@ -59,6 +59,6 @@ class ProjectPageBloc implements BlocContract {
   /// Dispose this business logic component.
   @override
   void dispose() {
-    this._controllerTasks.close();
+    _controllerTasks.close();
   }
 }

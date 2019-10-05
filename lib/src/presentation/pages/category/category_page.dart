@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 import 'package:tasks/src/data/models/category_model.dart';
 import 'package:tasks/src/data/models/project_model.dart';
-import 'package:tasks/src/presentation/pages/category/category_page_bloc.dart';
 import 'package:tasks/src/presentation/pages/project/project_page.dart';
 import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
 import 'package:tasks/src/presentation/shared/forms/new_project_form.dart';
 import 'package:tasks/src/presentation/ui_colors.dart';
 
+import 'category_page_bloc.dart';
 import 'widgets/project_card.dart';
 
 class CategoryPage extends StatefulWidget {

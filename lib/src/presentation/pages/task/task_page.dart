@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:tasks/src/data/models/step_model.dart';
 import 'package:tasks/src/data/models/task_model.dart';
-import 'package:tasks/src/presentation/pages/task/task_page_bloc.dart';
-import 'package:tasks/src/presentation/pages/task/widgets/note_form_widget.dart';
 import 'package:tasks/src/presentation/shared/pickers/date_picker/date_picker.dart';
 import 'package:tasks/src/presentation/ui_colors.dart';
+
+import 'task_page_bloc.dart';
+import 'widgets/note_textfield.dart';
 
 class TaskPage extends StatefulWidget {
   final TaskModel task;
 
-  TaskPage({
+  const TaskPage({
     Key key,
     @required this.task
-  }): assert(task != null), super(key: key);
+  }): assert(task != null),
+      super(key: key);
 
   @override
   State<StatefulWidget> createState() => _TaskPageState();
@@ -285,11 +287,10 @@ class _TaskPageState extends State<TaskPage> {
 
   /// Build the task note form.
   Widget buildNoteForm(TaskModel task) {
-    return NoteFormWidget(
+    return NoteTextField(
       note: task.note,
       onChanged: (String note) {
         task.note = note;
-        print(note);
         this.bloc.updateTask(task);
       }
     );

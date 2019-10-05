@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:tasks/src/data/models/task_model.dart';
 import 'package:tasks/src/presentation/ui_colors.dart';
 
-class HomePageTaskListTile extends StatefulWidget {
+class ItemListTile extends StatefulWidget {
   final TaskModel task;
   final ValueChanged<TaskModel> onChanged;
 
-  HomePageTaskListTile({
+  ItemListTile({
     Key key,
     @required this.task,
     @required this.onChanged
@@ -15,10 +15,10 @@ class HomePageTaskListTile extends StatefulWidget {
       super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _HomePageTaskListTileState();
+  State<ItemListTile> createState() => _ItemListTileState();
 }
 
-class _HomePageTaskListTileState extends State<HomePageTaskListTile> {
+class _ItemListTileState extends State<ItemListTile> {
   @override
   Widget build(BuildContext context) {
     final task = this.widget.task;

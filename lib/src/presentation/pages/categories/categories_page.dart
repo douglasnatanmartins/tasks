@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:tasks/src/data/models/category_model.dart';
-import 'package:tasks/src/presentation/pages/categories/categories_page_bloc.dart';
-import 'package:tasks/src/presentation/pages/categories/widgets/category_card_widget.dart';
 import 'package:tasks/src/presentation/pages/category/category_page.dart';
 import 'package:tasks/src/presentation/pages/settings/settings_page.dart';
 import 'package:tasks/src/presentation/shared/widgets/bottom_navigation.dart';
@@ -11,8 +9,13 @@ import 'package:tasks/src/presentation/shared/forms/new_category_form.dart';
 import 'package:tasks/src/presentation/ui_colors.dart';
 import 'package:tasks/src/utils/date_time_util.dart';
 
+import 'categories_page_bloc.dart';
+import 'widgets/category_card.dart';
+
 class CategoriesPage extends StatefulWidget {
-  CategoriesPage({Key key}): super(key: key);
+  const CategoriesPage({
+    Key key
+  }): super(key: key);
 
   @override
   State<StatefulWidget> createState() => _CategoriesPageState();
@@ -206,7 +209,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
   /// Build a children in listview.
   Widget _buildChildrenInList(CategoryModel category) {
     return GestureDetector(
-      child: CategoryCardWidget(category: category),
+      child: CategoryCard(category: category),
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(

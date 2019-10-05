@@ -75,6 +75,6 @@ class TaskPageBloc implements BlocContract {
   /// Dispose this business logic component.
   @override
   void dispose() {
-    this._controllerSteps.close();
+    _controllerSteps.close();
   }
 }

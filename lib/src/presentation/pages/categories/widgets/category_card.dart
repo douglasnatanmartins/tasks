@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:tasks/src/data/models/category_model.dart';
 import 'package:tasks/src/presentation/ui_colors.dart';
 
-class CategoryCardWidget extends StatelessWidget {
+class CategoryCard extends StatelessWidget {
   final CategoryModel category;
 
-  CategoryCardWidget({this.category});
+  const CategoryCard({
+    Key key,
+    @required this.category
+  }): assert(category != null),
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {

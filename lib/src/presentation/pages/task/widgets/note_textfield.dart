@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 
-class NoteFormWidget extends StatelessWidget {
-  final TextEditingController controller = TextEditingController();
+class NoteTextField extends StatelessWidget {
   final String note;
   final ValueChanged<String> onChanged;
 
-  NoteFormWidget({
+  const NoteTextField({
     Key key,
     @required this.note,
     @required this.onChanged
@@ -14,7 +13,7 @@ class NoteFormWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    controller.text = note;
+    final controller = TextEditingController(text: this.note);
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -37,7 +36,7 @@ class NoteFormWidget extends StatelessWidget {
           hintText: 'Note',
           border: InputBorder.none
         ),
-        controller: this.controller,
+        controller: controller,
         keyboardType: TextInputType.multiline,
         maxLines: 3,
         onChanged: (String value) {

@@ -1,26 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:tasks/src/presentation/pages/settings/settings_page.dart';
-import 'package:tasks/src/presentation/ui_colors.dart';
 
-class HomePageHeader extends StatelessWidget {
-  final int todayTasks;
-
-  HomePageHeader({
+class PageHeader extends StatelessWidget {
+  const PageHeader({
     Key key,
-    this.todayTasks = 0
   }): super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    String description;
-    if (this.todayTasks == 0) {
-      description = 'You not have task in today';
-    } else if (this.todayTasks == 1) {
-      description = 'You have 1 task in today';
-    } else {
-      description = 'You have ${this.todayTasks} tasks in today';
-    }
-
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
       child: Row(
@@ -31,19 +18,10 @@ class HomePageHeader extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                'Tenla: Tasks',
+                'Planned',
                 style: TextStyle(
-                  color: Colors.white,
                   fontSize: 24.0,
                   fontWeight: FontWeight.w600
-                )
-              ),
-              SizedBox(height: 10.0),
-              Text(
-                description,
-                style: TextStyle(
-                  color: Colors.white.withOpacity(0.85),
-                  fontSize: 15.0
                 )
               )
             ]
@@ -54,15 +32,15 @@ class HomePageHeader extends StatelessWidget {
               shape: CircleBorder(),
               padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
               child: Icon(Icons.settings),
-              color: Colors.white,
-              textColor: UIColors.Blue,
+              color: Colors.grey.withOpacity(0.5),
+              textColor: Colors.white,
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (BuildContext context) => SettingsPage()
                   )
                 );
-              },
+              }
             )
           )
         ],

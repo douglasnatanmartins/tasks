@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
 import 'package:tasks/src/app.dart';
-import 'package:tasks/src/presentation/pages/settings/settings_page_bloc.dart';
 import 'package:tasks/src/presentation/ui_colors.dart';
 
+import 'settings_page_bloc.dart';
+
 class SettingsPage extends StatefulWidget {
+  const SettingsPage({
+    Key key
+  }): super(key: key);
+
   @override
   State<StatefulWidget> createState() => _SettingsPageState();
 }

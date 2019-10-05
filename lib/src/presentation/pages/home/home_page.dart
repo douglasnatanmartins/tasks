@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
 
 import 'package:tasks/src/data/models/task_model.dart';
-import 'package:tasks/src/presentation/pages/home/home_page_bloc.dart';
-import 'package:tasks/src/presentation/pages/home/widgets/home_page_header.dart';
-import 'package:tasks/src/presentation/pages/home/widgets/home_page_task_list_tile.dart';
 import 'package:tasks/src/presentation/shared/widgets/bottom_navigation.dart';
 import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
 import 'package:tasks/src/presentation/ui_colors.dart';
 
+import 'home_page_bloc.dart';
+import 'widgets/page_header.dart';
+import 'widgets/item_list_tile.dart';
+
 class HomePage extends StatefulWidget {
-  HomePage({Key key}): super(key: key);
+  const HomePage({
+    Key key
+  }): super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _HomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
@@ -59,17 +62,7 @@ class _HomePageState extends State<HomePage> {
 
   /// Build header this page.
   Widget headerPage() {
-    return StreamBuilder(
-      stream: this.bloc.streamTasks,
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.hasData && snapshot.data.isNotEmpty) {
-          final List<TaskModel> today = snapshot.data['Today'];
-          return HomePageHeader(todayTasks: today?.length);
-        }
-
-        return HomePageHeader();
-      }
-    );
+    return PageHeader();
   }
 
   /// Build body this page.
@@ -86,8 +79,7 @@ class _HomePageState extends State<HomePage> {
               );
             } else {
               if (snapshot.hasData && snapshot.data.isNotEmpty) {
-                Map<String, List<TaskModel>> data = snapshot.data;
-                return this.buildListView(data);
+                return this.buildListView(snapshot.data);
               } else {
                 return EmptyContentBox(message: 'not important task');
               }
@@ -135,7 +127,7 @@ class _HomePageState extends State<HomePage> {
     return Dismissible(
       direction: DismissDirection.horizontal,
       key: Key(task.id.toString()),
-      child: HomePageTaskListTile(
+      child: ItemListTile(
         task: task,
         onChanged: (TaskModel changed) {
           this.bloc.updateTask(changed);

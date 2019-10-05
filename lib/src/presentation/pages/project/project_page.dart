@@ -2,19 +2,21 @@ import 'package:flutter/material.dart';
 
 import 'package:tasks/src/data/models/project_model.dart';
 import 'package:tasks/src/data/models/task_model.dart';
-import 'package:tasks/src/presentation/pages/project/project_page_bloc.dart';
 import 'package:tasks/src/presentation/pages/task/task_page.dart';
 import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
 import 'package:tasks/src/presentation/shared/forms/new_task_form.dart';
 import 'package:tasks/src/presentation/ui_colors.dart';
 
+import 'project_page_bloc.dart';
+
 class ProjectPage extends StatefulWidget {
   final ProjectModel project;
 
-  ProjectPage({
+  const ProjectPage({
     Key key,
     @required this.project
-  }): assert(project != null), super(key: key);
+  }): assert(project != null),
+      super(key: key);
 
   @override
   State<StatefulWidget> createState() => _ProjectPageState();
