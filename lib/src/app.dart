@@ -2,19 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:package_info/package_info.dart';
 
-import 'package:tasks/src/presentation/pages/home/home_page.dart';
+import 'presentation/pages/home/home_page.dart';
 
 class App extends StatelessWidget {
-  final String title = 'Tenla: Tasks';
   final PackageInfo information;
 
-  App({
+  const App({
     Key key,
     @required this.information
   }): assert(information != null),
       super(key: key);
-  
-  /// Get the application information.
+
+  /// Get the object contains application information.
   static PackageInfo of(BuildContext context) {
     return (context.ancestorWidgetOfExactType(App) as App).information;
   }
@@ -27,6 +26,7 @@ class App extends StatelessWidget {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      title: this.information.appName,
       home: HomePage()
     );
   }

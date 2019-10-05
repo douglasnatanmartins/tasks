@@ -6,7 +6,11 @@ import 'package:tasks/src/presentation/ui_colors.dart';
 class ProjectCard extends StatelessWidget {
   final ProjectModel project;
 
-  ProjectCard(this.project);
+  const ProjectCard({
+    Key key,
+    @required this.project
+  }): assert(project != null),
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {
