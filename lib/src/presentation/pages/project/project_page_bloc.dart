@@ -49,10 +49,12 @@ class ProjectPageBloc implements BlocContract {
   /// Refresh task list in the project.
   Future<void> refreshTasks() async {
     final data = await this.taskRepository.getTasksByProjectId(this.project.id);
+
     List<TaskModel> tasks = [];
     data.forEach((Map<String, dynamic> task) {
       tasks.add(TaskModel.from(task));
     });
+
     this.sinkTasks.add(tasks);
   }
 

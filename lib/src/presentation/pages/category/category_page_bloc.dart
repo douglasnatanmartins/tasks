@@ -24,6 +24,7 @@ class CategoryPageBloc implements BlocContract {
   TaskRepository taskRepository;
   CategoryModel category;
 
+  /// Business Logic Component for the Category Page.
   CategoryPageBloc(CategoryModel category) {
     this.category = category;
     this.categoryRepository = CategoryRepository();
@@ -31,7 +32,7 @@ class CategoryPageBloc implements BlocContract {
     this.taskRepository = TaskRepository();
   }
 
-  /// Action to delete this category
+  /// Delete this category.
   Future<bool> deleteCategory(CategoryModel category) async {
     return await this.categoryRepository.delete(category.id);
   }
@@ -48,21 +49,18 @@ class CategoryPageBloc implements BlocContract {
   /// Delete a project.
   Future<bool> deleteProject(ProjectModel project) async {
     bool result = await this.projectRepository.delete(project.id);
-    if (result) {
-      this.refreshProjects();
-    }
+    if (result) this.refreshProjects();
     return result;
   }
 
   /// Update project object.
   Future<bool> updateProject(ProjectModel project) async {
     bool result = await this.projectRepository.update(project.toMap());
-    if (result) {
-      this.refreshProjects();
-    }
+    if (result) this.refreshProjects();
     return result;
   }
 
+  /// Get progress completed of the project.
   Future<double> getProgressProject(int projectId) async {
     final data = await this.taskRepository.getTasksByProjectId(projectId);
     int total = data.length;

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:tasks/src/data/models/category_model.dart';
 import 'package:tasks/src/data/models/project_model.dart';
-import 'package:tasks/src/presentation/pages/project/project_page.dart';
 import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
 import 'package:tasks/src/presentation/shared/forms/new_project_form.dart';
 import 'package:tasks/src/presentation/ui_colors.dart';
@@ -13,13 +12,14 @@ import 'widgets/project_card.dart';
 class CategoryPage extends StatefulWidget {
   final CategoryModel category;
 
-  CategoryPage({
+  const CategoryPage({
     Key key,
     @required this.category
-  }): assert(category != null), super(key: key);
+  }): assert(category != null),
+      super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _CategoryPageState();
+  State<CategoryPage> createState() => _CategoryPageState();
 }
 
 class _CategoryPageState extends State<CategoryPage> {
@@ -57,7 +57,7 @@ class _CategoryPageState extends State<CategoryPage> {
   /// Build a category page.
   Widget buildPage(CategoryModel category) {
     return Scaffold(
-      backgroundColor: UIColors.Blue,
+      backgroundColor: Colors.grey[300],
       body: SafeArea(
         child: Column(
           children: <Widget>[
@@ -66,10 +66,11 @@ class _CategoryPageState extends State<CategoryPage> {
           ],
         )
       ),
+      // Create new project button.
       floatingActionButton: FloatingActionButton(
         heroTag: 'floating-button',
         elevation: 0,
-        backgroundColor: UIColors.Green,
+        backgroundColor: Colors.green[600],
         child: Icon(Icons.add),
         onPressed: () async {
           final result = await showDialog(
@@ -90,6 +91,29 @@ class _CategoryPageState extends State<CategoryPage> {
 
   /// Build header this page.
   Widget headerPage(CategoryModel category) {
+    List<Widget> headerTitle = <Widget>[];
+    headerTitle.add(
+      Text(
+        category.title,
+        overflow: TextOverflow.ellipsis,
+        style: Theme.of(this.context).textTheme.title.copyWith(
+          fontSize: 22.0
+        )
+      )
+    );
+
+    if (category.description != null && category.description.isNotEmpty) {
+      headerTitle.add(
+        Text(
+          category.description,
+          overflow: TextOverflow.ellipsis,
+          style: Theme.of(context).textTheme.subtitle.copyWith(
+            fontWeight: FontWeight.w300
+          )
+        )
+      );
+    }
+
     return Container(
       padding: EdgeInsets.symmetric(vertical: 15.0),
       child: Column(
@@ -104,7 +128,6 @@ class _CategoryPageState extends State<CategoryPage> {
                 child: FlatButton(
                   padding: EdgeInsets.all(10.0),
                   shape: CircleBorder(),
-                  textColor: UIColors.Blue,
                   color: Colors.white,
                   child: Icon(Icons.arrow_back),
                   onPressed: () => Navigator.of(this.context).pop()
@@ -115,17 +138,7 @@ class _CategoryPageState extends State<CategoryPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      category.title,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 22.0,
-                        fontWeight: FontWeight.w600
-                      )
-                    )
-                  ]
+                  children: headerTitle
                 )
               ),
               // Delete button.
@@ -155,18 +168,6 @@ class _CategoryPageState extends State<CategoryPage> {
               )
             ]
           ),
-          SizedBox(height: 10.0),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-            child: Text(
-              'Projects',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20.0,
-                fontWeight: FontWeight.w600
-              )
-            )
-          )
         ]
       )
     );

@@ -39,7 +39,7 @@ class TaskPageBloc implements BlocContract {
   Future<bool> addStep(StepModel step) async {
     bool result = await this.stepRepository.add(step.toMap());
     if (result) {
-      this.refreshSteps();
+      await this.refreshSteps();
     }
     return result;
   }
@@ -48,7 +48,7 @@ class TaskPageBloc implements BlocContract {
   Future<bool> updateStep(StepModel step) async {
     bool result = await this.stepRepository.update(step.toMap());
     if (result) {
-      this.refreshSteps();
+      await this.refreshSteps();
     }
     return result;
   }
@@ -57,7 +57,7 @@ class TaskPageBloc implements BlocContract {
   Future<bool> deleteStep(StepModel step) async {
     bool result = await this.stepRepository.delete(step.id);
     if (result) {
-      this.refreshSteps();
+      await this.refreshSteps();
     }
     return result;
   }

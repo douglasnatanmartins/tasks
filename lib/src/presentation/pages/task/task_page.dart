@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:tasks/src/data/models/step_model.dart';
 import 'package:tasks/src/data/models/task_model.dart';
+import 'package:tasks/src/presentation/pages/task/widgets/editable_title.dart';
 import 'package:tasks/src/presentation/shared/pickers/date_picker/date_picker.dart';
-import 'package:tasks/src/presentation/ui_colors.dart';
+import 'package:tasks/src/presentation/shared/widgets/circle_checkbox.dart';
 
 import 'task_page_bloc.dart';
 import 'widgets/note_textfield.dart';
@@ -17,18 +18,27 @@ class TaskPage extends StatefulWidget {
       super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _TaskPageState();
+  State<TaskPage> createState() => _TaskPageState();
 }
 
 class _TaskPageState extends State<TaskPage> {
   // Business Logic Component.
   TaskPageBloc bloc;
+  TaskModel task;
+  String title;
 
   /// Called when this state inserted into tree.
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     this.bloc = TaskPageBloc(this.widget.task);
+    this.task = this.widget.task;
+    this.title = this.task.title;
     this.bloc.refreshSteps();
   }
 
@@ -42,52 +52,68 @@ class _TaskPageState extends State<TaskPage> {
   /// Build this widget.
   @override
   Widget build(BuildContext context) {
-    return this.buildPage(this.widget.task);
+    return WillPopScope(
+      onWillPop: () async {
+        if (this.title.isNotEmpty) {
+          this.task.title = this.title;
+          await this.bloc.updateTask(this.task);
+        }
+
+        return true;
+      },
+      child: Scaffold(
+        body: this.buildPage()
+      ),
+    );
   }
 
   /// Build a task page.
-  Widget buildPage(TaskModel task) {
-    return Scaffold(
-      backgroundColor: UIColors.Blue,
-      body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            this.headerPage(task),
-            this.bodyPage(),
-            this.footerPage(task)
-          ],
-        )
+  Widget buildPage() {
+    return SafeArea(
+      child: Column(
+        children: <Widget>[
+          this.headerPage(),
+          this.bodyPage(),
+          this.footerPage()
+        ],
       )
     );
   }
 
   /// Build header this page.
-  Widget headerPage(TaskModel task) {
+  Widget headerPage() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 15.0),
       child: Row(
         children: <Widget>[
+          // Back previous screen button.
           Hero(
             tag: 'previous-screen-button',
             child: FlatButton(
               padding: EdgeInsets.all(10.0),
-              color: Colors.white,
+              color: Colors.grey,
               shape: CircleBorder(),
               child: Icon(Icons.arrow_back),
-              onPressed: () => Navigator.of(this.context).pop()
+              onPressed: () async {
+                if (this.title.isNotEmpty) {
+                  this.task.title = this.title;
+                  await this.bloc.updateTask(task);
+                }
+                Navigator.of(this.context).pop();
+              }
             )
           ),
           Expanded(
-            child: editorTitleTask(task)
+            child: editableTitle()
           ),
           Hero(
             tag: 'floating-button',
             child: FlatButton(
               padding: EdgeInsets.all(12.0),
-              color: Colors.white,
+              color: Colors.red,
               shape: CircleBorder(),
               child: Icon(Icons.delete),
-              textColor: UIColors.LightRed,
+              textColor: Colors.white,
               onPressed: () async {
                 final result = await showDialog(
                   context: context,
@@ -110,38 +136,12 @@ class _TaskPageState extends State<TaskPage> {
   }
 
   /// Build editable title.
-  Widget editorTitleTask(TaskModel task) {
-    final TextEditingController controller = TextEditingController(text: task.title);
-    return Container(
-      child: TextField(
-        controller: controller,
-        decoration: InputDecoration(
-          enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(
-              color: Colors.white.withOpacity(0.75),
-              width: 0.25
-            )
-          ),
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(
-              color: Colors.white.withOpacity(0.85),
-              width: 0.5
-            )
-          )
-        ),
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 20.0,
-          fontWeight: FontWeight.w600
-        ),
-        cursorColor: Colors.white,
-        onChanged: (String content) {
-          if (content.trim().length >= 2) {
-            task.title = content;
-            this.bloc.updateTask(task);
-          }
-        },
-      )
+  Widget editableTitle() {
+    return EditableTitle(
+      title: this.task.title,
+      onChanged: (String newTitle) {
+        this.title = newTitle;
+      }
     );
   }
 
@@ -216,8 +216,8 @@ class _TaskPageState extends State<TaskPage> {
     final controller = TextEditingController(text: step.title);
 
     return ListTile(
-      leading: Checkbox(
-        activeColor: Colors.white.withOpacity(0),
+      key: UniqueKey(),
+      leading: CircleCheckbox(
         value: step.done,
         onChanged: (bool checked) {
           if (step.id != null) {
@@ -228,21 +228,21 @@ class _TaskPageState extends State<TaskPage> {
       ),
       title: TextField(
         controller: controller,
-        cursorColor: Colors.white.withOpacity(0.85),
+        cursorColor: Colors.blue.withOpacity(0.85),
         decoration: InputDecoration(
           hintText: "Enter step",
           hintStyle: TextStyle(
-            color: Colors.white.withOpacity(0.5)
+            color: Colors.blue.withOpacity(0.5)
           ),
           border: InputBorder.none,
           focusedBorder: UnderlineInputBorder(
             borderSide: BorderSide(
-              color: Colors.white.withOpacity(0.5)
+              color: Colors.blue.withOpacity(0.5)
             )
           )
         ),
         style: TextStyle(
-          color: Colors.white
+          color: Colors.black.withOpacity(0.85)
         ),
         onSubmitted: (String text) {
           if (text.trim().isNotEmpty) {
@@ -257,7 +257,7 @@ class _TaskPageState extends State<TaskPage> {
       ),
       trailing: IconButton(
         icon: Icon(Icons.clear),
-        color: Colors.white,
+        color: Colors.red,
         onPressed: () {
           if (step.id != null) {
             this.bloc.deleteStep(step);
@@ -268,19 +268,19 @@ class _TaskPageState extends State<TaskPage> {
   }
 
   /// Build footer this page.
-  Widget footerPage(TaskModel task) {
+  Widget footerPage() {
     return Column(
       children: <Widget>[
         DatePicker(
           title: 'Add due date',
           icon: Icons.date_range,
-          initialDate: task.dueDate,
-          onSelected: (DateTime date) {
-            task.dueDate = date;
-            this.bloc.updateTask(task);
+          initialDate: this.task.dueDate,
+          onSelected: (DateTime date) async {
+            this.task.dueDate = date;
+            await this.bloc.updateTask(this.task);
           },
         ),
-        this.buildNoteForm(task)
+        this.buildNoteForm(this.task)
       ],
     );
   }

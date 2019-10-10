@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tasks/src/data/models/task_model.dart';
-import 'package:tasks/src/presentation/pages/task/task_page.dart';
 import 'package:tasks/src/presentation/shared/widgets/circle_checkbox.dart';
 
 class ItemListTile extends StatefulWidget {

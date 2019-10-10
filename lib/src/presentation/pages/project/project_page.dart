@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:tasks/src/data/models/project_model.dart';
 import 'package:tasks/src/data/models/task_model.dart';
-import 'package:tasks/src/presentation/pages/task/task_page.dart';
 import 'package:tasks/src/presentation/shared/widgets/circle_checkbox.dart';
 import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
 import 'package:tasks/src/presentation/shared/forms/new_task_form.dart';
-import 'package:tasks/src/presentation/ui_colors.dart';
 
 import 'project_page_bloc.dart';
 
@@ -20,7 +18,7 @@ class ProjectPage extends StatefulWidget {
       super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _ProjectPageState();
+  State<ProjectPage> createState() => _ProjectPageState();
 }
 
 class _ProjectPageState extends State<ProjectPage> {
@@ -30,10 +28,13 @@ class _ProjectPageState extends State<ProjectPage> {
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     // Create business logic component.
     this.bloc = ProjectPageBloc(this.widget.project);
-
-    // Refresh task list.
     this.bloc.refreshTasks();
   }
 
@@ -69,22 +70,22 @@ class _ProjectPageState extends State<ProjectPage> {
         shape: CircleBorder(
           side: BorderSide(
             color: Colors.white,
-            width: 4.0
+            width: 3.0
           )
         ),
         child: Icon(Icons.add),
-        backgroundColor: UIColors.LightGreen,
-        onPressed: () {
-          showDialog(
+        backgroundColor: Colors.green,
+        onPressed: () async {
+          final result = await showDialog(
             context: this.context,
             builder: (BuildContext context) {
               return NewTaskForm(projectId: project.id);
             }
-          ).then((task) {
-            if (task is TaskModel) {
-              this.bloc.addTask(task);
-            }
-          });
+          );
+
+          if (result is TaskModel) {
+            this.bloc.addTask(result);
+          }
         },
       ),
     );
@@ -118,6 +119,7 @@ class _ProjectPageState extends State<ProjectPage> {
               )
             )
           ),
+          // Edit project button.
           FlatButton(
             padding: EdgeInsets.all(12.0),
             shape: CircleBorder(
@@ -128,7 +130,9 @@ class _ProjectPageState extends State<ProjectPage> {
             ),
             child: Icon(Icons.edit),
             textColor: Colors.white,
-            onPressed: () {}
+            onPressed: () {
+              Navigator.of(this.context).pushNamed('/project/task');
+            }
           )
         ]
       )
@@ -215,7 +219,7 @@ class _ProjectPageState extends State<ProjectPage> {
       ),
       onTap: () { // Open a task page.
         Navigator.of(this.context).pushNamed('/task', arguments: task)
-          .then((_) => this.bloc.refreshTasks());
+          .then((result) => this.bloc.refreshTasks());
       },
     );
   }

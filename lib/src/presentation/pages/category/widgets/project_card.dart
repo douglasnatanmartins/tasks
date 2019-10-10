@@ -31,7 +31,7 @@ class ProjectCard extends StatelessWidget {
     );
 
     if (this.project.description.isNotEmpty) {
-      children.add(SizedBox(height: 5.0));
+      children.add(SizedBox(height: 6.0));
       children.add(
         Text(
           this.project.description,
@@ -48,7 +48,7 @@ class ProjectCard extends StatelessWidget {
       Text(
         'Created: ${DateFormat.yMMMd().format(this.project.created)}',
         style: TextStyle(
-          color: UIColors.DarkGrey
+          color: Colors.black.withOpacity(0.45)
         )
       )
     );
