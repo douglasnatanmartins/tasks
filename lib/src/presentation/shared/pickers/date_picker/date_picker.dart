@@ -12,7 +12,7 @@ class DatePicker extends StatefulWidget {
     @required this.title,
     @required this.icon,
     @required this.onSelected,
-    this.initialDate
+    @required this.initialDate
   }): assert(icon != null),
       assert(title != null),
       assert(onSelected != null),
@@ -30,8 +30,12 @@ class _DatePickerState extends State<DatePicker> {
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     this.selected = this.widget.initialDate;
-    this.title = this.widget.title;
   }
 
   @override
@@ -47,8 +51,12 @@ class _DatePickerState extends State<DatePicker> {
 
     if (this.selected != null) {
       this.title = DateFormat.yMMMd().format(this.selected);
-      this.textColor = Colors.blue;
       deleteButton = this.trailing();
+      if (today.difference(this.selected).inDays <= 0) {
+        this.textColor = Colors.blue;
+      } else {
+        this.textColor = Colors.red;
+      }
     } else {
       this.selected = today;
       this.title = this.widget.title;
@@ -86,7 +94,7 @@ class _DatePickerState extends State<DatePicker> {
             DateTime result = await showDatePicker(
               context: this.context,
               initialDate: this.selected,
-              firstDate: today,
+              firstDate: DateTime(this.selected.year - 10),
               lastDate: DateTime(today.year + 10)
             );
 

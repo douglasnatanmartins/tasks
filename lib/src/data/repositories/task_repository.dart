@@ -27,7 +27,7 @@ class TaskRepository {
   /// Get all important tasks.
   Future<List<Map<String, dynamic>>> allImportantTasks() async {
     Database db = await DatabaseCreator().database;
-    List<Map<String, dynamic>> result = await db.rawQuery('SELECT * FROM Task WHERE important = 1');
+    List<Map<String, dynamic>> result = await db.rawQuery('SELECT * FROM Task WHERE important = 1 ORDER BY due_date ASC');
     return result;
   }
 

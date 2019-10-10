@@ -5,30 +5,35 @@ import 'package:tasks/src/presentation/shared/widgets/bottom_navigation.dart';
 import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
 import 'package:tasks/src/presentation/ui_colors.dart';
 
-import 'home_page_bloc.dart';
+import 'planned_page_bloc.dart';
 import 'widgets/page_header.dart';
 import 'widgets/item_list_tile.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({
+class PlannedPage extends StatefulWidget {
+  const PlannedPage({
     Key key
   }): super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<PlannedPage> createState() => _PlannedPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _PlannedPageState extends State<PlannedPage> {
+  final String route = '/';
   // Business Logic Component
-  HomePageBloc bloc;
-  final int id = 0;
+  PlannedPageBloc bloc;
 
   /// Called when this state inserted into tree.
   @override
   void initState() {
     super.initState();
-    this.bloc = HomePageBloc();
+    this.bloc = PlannedPageBloc();
     this.bloc.refreshTasks();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
   }
 
   /// Called when this state removed from the tree.
@@ -41,21 +46,27 @@ class _HomePageState extends State<HomePage> {
   /// Build this widget.
   @override
   Widget build(BuildContext context) {
-    return this.buildPage();
+    return Scaffold(
+      body: this.buildPage(),
+      bottomNavigationBar: BottomNavigation(
+        context: context,
+        current: this.route,
+        whenPop: () {
+          this.bloc.refreshTasks();
+        },
+      ),
+    );
   }
 
   /// Build a home page.
   Widget buildPage() {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            this.headerPage(),
-            this.bodyPage()
-          ],
-        )
+    return SafeArea(
+      child: Column(
+        children: <Widget>[
+          this.headerPage(),
+          this.bodyPage()
+        ],
       ),
-      bottomNavigationBar: BottomNavigation(context: this.context, current: this.id)
     );
   }
 
@@ -68,7 +79,6 @@ class _HomePageState extends State<HomePage> {
   Widget bodyPage() {
     return Expanded(
       child: Container(
-        color: Colors.white,
         child: StreamBuilder(
           stream: this.bloc.streamTasks,
           builder: (BuildContext context, AsyncSnapshot snapshot) {

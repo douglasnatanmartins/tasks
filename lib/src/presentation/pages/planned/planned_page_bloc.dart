@@ -6,14 +6,14 @@ import 'package:tasks/src/data/models/task_model.dart';
 import 'package:tasks/src/data/repositories/task_repository.dart';
 
 /// Home Page Business Logic Component.
-class HomePageBloc implements BlocContract {
+class PlannedPageBloc implements BlocContract {
   final _controllerTasks = StreamController<Map<String, List<TaskModel>>>.broadcast();
   Sink get sinkTasks => _controllerTasks.sink;
   Stream get streamTasks => _controllerTasks.stream;
 
   TaskRepository taskRepository;
 
-  HomePageBloc() {
+  PlannedPageBloc() {
     this.taskRepository = TaskRepository();
   }
 

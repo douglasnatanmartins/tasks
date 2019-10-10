@@ -1,50 +1,87 @@
 import 'package:flutter/material.dart';
-import 'package:tasks/src/presentation/pages/categories/categories_page.dart';
-import 'package:tasks/src/presentation/pages/home/home_page.dart';
-import 'package:tasks/src/presentation/ui_colors.dart';
 
 class BottomNavigation extends StatelessWidget {
-  final int current;
+  final String current;
   final BuildContext context;
+  final Function whenPop;
+  final Map<String, Map<String, dynamic>> routes = const {
+    '/settings': {
+      'title': 'Setttings',
+      'icon': Icons.settings,
+    },
+    '/important': {
+      'title': 'Planned',
+      'icon': Icons.star,
+    },
+    '/': {
+      'title': 'Planned',
+      'icon': Icons.calendar_today,
+    },
+    '/categories': {
+      'title': 'Planned',
+      'icon': Icons.style,
+    },
+  };
 
-  final pages = <Widget>[
-    HomePage(),
-    CategoriesPage()
-  ];
-
-  BottomNavigation({@required this.context, @required this.current});
+  const BottomNavigation({
+    Key key,
+    @required this.context,
+    @required this.current,
+    this.whenPop
+  }): assert(context != null),
+      assert(current != null),
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      currentIndex: current,
-      selectedFontSize: 14.0,
-      selectedItemColor: UIColors.Blue,
-      selectedLabelStyle: TextStyle(color: UIColors.Blue),
-      unselectedFontSize: 12.0,
-      items: <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          title: Text('Home')
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.style),
-          title: Text('Categories')
-        )
-      ],
-      onTap: onTabTapped
+    List<BottomNavigationBarItem> items = [];
+    int selected = 0;
+
+    for (var i = 0; i < this.routes.length; i++) {
+      final String key = this.routes.keys.elementAt(i);
+      if (this.current == key) {
+        selected = i;
+      }
+
+      items.add(BottomNavigationBarItem(
+        title: Text(this.routes[key]['title']),
+        icon: Icon(this.routes[key]['icon'])
+      ));
+    }
+
+    return Hero(
+      tag: 'shared-bottom-navigation-bar',
+      child: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        elevation: 16,
+        currentIndex: selected,
+        selectedFontSize: 14.0,
+        selectedItemColor: Colors.black,
+        unselectedItemColor: Colors.grey,
+        unselectedFontSize: 13.0,
+        showUnselectedLabels: false,
+        showSelectedLabels: false,
+        items: items,
+        onTap: this.onTapped
+      )
     );
   }
 
-  void onTabTapped(int index) {
-    if (this.current != index) {
-      Navigator.of(this.context).pushReplacement(
-        MaterialPageRoute(
-          builder: (BuildContext context) {
-            return this.pages[index];
-          }
-        )
-      );
+  void onTapped(int index) {
+    final String selected = this.routes.keys.elementAt(index);
+
+    if (this.current != selected) {
+      if (this.current == '/') {
+        Navigator.of(this.context).pushNamed(selected).then((result) {
+          this.whenPop();
+        });
+      } else {
+        if (selected == '/') {
+          Navigator.of(this.context).pop();
+        } else {
+          Navigator.of(this.context).pushReplacementNamed(selected);
+        }
+      }
     }
   }
 }

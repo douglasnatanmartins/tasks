@@ -37,7 +37,7 @@ class _CircleCheckboxState extends State<CircleCheckbox> {
   Widget build(BuildContext context) {
     if (!this.value) {
       background = Colors.white.withOpacity(0.25);
-      border = Border.all(width: 1.25, color: Colors.grey.withOpacity(0.55));
+      border = Border.all(width: 1.25, color: Colors.black.withOpacity(0.5));
       icon = null;
     } else {
       border = null;
@@ -46,11 +46,13 @@ class _CircleCheckboxState extends State<CircleCheckbox> {
     }
 
     return InkWell(
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
       child: AnimatedContainer(
         duration: Duration(milliseconds: 99),
-        margin: EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
-        height: 28.0,
-        width: 28.0,
+        margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+        height: 30.0,
+        width: 30.0,
         decoration: BoxDecoration(
           color: this.background,
           shape: BoxShape.circle,

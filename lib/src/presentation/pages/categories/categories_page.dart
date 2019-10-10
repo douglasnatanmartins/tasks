@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:tasks/src/data/models/category_model.dart';
 import 'package:tasks/src/presentation/pages/category/category_page.dart';
-import 'package:tasks/src/presentation/pages/settings/settings_page.dart';
 import 'package:tasks/src/presentation/shared/widgets/bottom_navigation.dart';
 import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
 import 'package:tasks/src/presentation/shared/forms/new_category_form.dart';
@@ -22,9 +21,9 @@ class CategoriesPage extends StatefulWidget {
 }
 
 class _CategoriesPageState extends State<CategoriesPage> {
+  final String route = '/categories';
   /// Business Logic Component.
   CategoriesPageBloc bloc;
-  final int id = 1;
 
   /// Called when this state inserted into tree.
   @override
@@ -84,11 +83,10 @@ class _CategoriesPageState extends State<CategoriesPage> {
           }
         },
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: Hero(
-        tag: 'bottom-navigation-bar',
-        child: BottomNavigation(context: context, current: this.id)
-      )
+      bottomNavigationBar: BottomNavigation(
+        context: context,
+        current: this.route
+      ),
     );
   }
 
@@ -144,23 +142,6 @@ class _CategoriesPageState extends State<CategoriesPage> {
                 }
               )
             ]
-          )
-        ),
-        Hero(
-          tag: 'on-hero-button',
-          child: FlatButton(
-            shape: CircleBorder(),
-            padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-            child: Icon(Icons.settings),
-            color: Colors.white,
-            textColor: UIColors.Blue,
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (BuildContext context) => SettingsPage()
-                )
-              );
-            },
           )
         )
       ]

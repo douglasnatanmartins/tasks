@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tasks/src/data/models/project_model.dart';
 import 'package:tasks/src/data/models/task_model.dart';
 import 'package:tasks/src/presentation/pages/task/task_page.dart';
+import 'package:tasks/src/presentation/shared/widgets/circle_checkbox.dart';
 import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
 import 'package:tasks/src/presentation/shared/forms/new_task_form.dart';
 import 'package:tasks/src/presentation/ui_colors.dart';
@@ -187,9 +188,7 @@ class _ProjectPageState extends State<ProjectPage> {
     }
 
     return ListTile(
-      leading: Checkbox(
-        checkColor: UIColors.Green,
-        activeColor: Colors.white,
+      leading: CircleCheckbox(
         value: task.done,
         onChanged: (bool checked) {
           task.done = checked;

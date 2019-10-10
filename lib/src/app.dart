@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:package_info/package_info.dart';
 
-import 'presentation/pages/home/home_page.dart';
+import 'router.dart';
 
 class App extends StatelessWidget {
   final PackageInfo information;
@@ -27,7 +27,8 @@ class App extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: this.information.appName,
-      home: HomePage()
+      initialRoute: '/',
+      onGenerateRoute: Router.generateRoute,
     );
   }
 }
