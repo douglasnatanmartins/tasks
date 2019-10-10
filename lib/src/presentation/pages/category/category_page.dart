@@ -78,6 +78,7 @@ class _CategoryPageState extends State<CategoryPage> {
               return NewProjectForm(categoryId: category.id);
             }
           );
+
           if (result is ProjectModel) {
             this.bloc.addProject(result);
           }
@@ -248,11 +249,8 @@ class _CategoryPageState extends State<CategoryPage> {
         progress: progress,
       ),
       onTap: () {
-        Navigator.of(this.context).push(
-          MaterialPageRoute(
-            builder: (BuildContext context) => ProjectPage(project: project)
-          )
-        ).then((_) => this.bloc.refreshProjects());
+        Navigator.of(this.context).pushNamed('/project', arguments: project)
+          .then((_) => this.bloc.refreshProjects());
       }
     );
   }

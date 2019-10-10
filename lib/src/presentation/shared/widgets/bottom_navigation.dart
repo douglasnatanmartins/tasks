@@ -52,8 +52,8 @@ class BottomNavigation extends StatelessWidget {
     return Hero(
       tag: 'shared-bottom-navigation-bar',
       child: BottomNavigationBar(
+        backgroundColor: Colors.grey[200],
         type: BottomNavigationBarType.fixed,
-        elevation: 16,
         currentIndex: selected,
         selectedFontSize: 14.0,
         selectedItemColor: Colors.black,

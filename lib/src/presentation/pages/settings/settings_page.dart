@@ -3,6 +3,7 @@ import 'package:package_info/package_info.dart';
 import 'package:tasks/src/app.dart';
 import 'package:tasks/src/presentation/shared/widgets/bottom_navigation.dart';
 import 'settings_page_bloc.dart';
+import 'widgets/page_header.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({
@@ -43,7 +44,6 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: this.headerPage(),
       backgroundColor: Colors.white,
       body: this.buildPage(),
       bottomNavigationBar: BottomNavigation(context: context, current: this.route)
@@ -55,7 +55,7 @@ class _SettingsPageState extends State<SettingsPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          // this.headerPage(),
+          this.headerPage(),
           this.bodyPage()
         ]
       )
@@ -64,11 +64,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   /// Build header this page.
   Widget headerPage() {
-    return AppBar(
-      backgroundColor: Colors.grey[400],
-      elevation: 0.0,
-      title: Text('Settings')
-    );
+    return PageHeader();
   }
 
   /// Build body this page.

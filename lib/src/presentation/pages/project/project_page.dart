@@ -214,13 +214,8 @@ class _ProjectPageState extends State<ProjectPage> {
         }
       ),
       onTap: () { // Open a task page.
-        Navigator.of(this.context).push(
-          MaterialPageRoute(
-            builder: (BuildContext context) => TaskPage(task: task)
-          )
-        ).then((_) {
-          this.bloc.refreshTasks();
-        });
+        Navigator.of(this.context).pushNamed('/task', arguments: task)
+          .then((_) => this.bloc.refreshTasks());
       },
     );
   }

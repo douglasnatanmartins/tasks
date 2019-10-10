@@ -66,11 +66,13 @@ class CategoryPageBloc implements BlocContract {
   Future<double> getProgressProject(int projectId) async {
     final data = await this.taskRepository.getTasksByProjectId(projectId);
     int total = data.length;
+
+    // Fixes NaN.
+    if (total == 0) return 0;
+
     int completed = 0;
     data.forEach((task) {
-      if (task['done'] == 1) {
-        completed++;
-      }
+      if (task['done'] == 1) completed++;
     });
 
     return completed / total;

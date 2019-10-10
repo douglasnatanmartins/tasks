@@ -91,13 +91,7 @@ class _ItemListTileState extends State<ItemListTile> {
           }
         ),
         onTap: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (BuildContext context) {
-                return TaskPage(task: this.task);
-              }
-            )
-          );
+          Navigator.of(context).pushNamed('/task', arguments: task);
         }
       )
     );
