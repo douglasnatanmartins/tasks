@@ -11,7 +11,7 @@ import 'project_page_bloc.dart';
 class ProjectPage extends StatefulWidget {
   final ProjectModel project;
 
-  const ProjectPage({
+  ProjectPage({
     Key key,
     @required this.project
   }): assert(project != null),
@@ -28,11 +28,6 @@ class _ProjectPageState extends State<ProjectPage> {
   @override
   void initState() {
     super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
     // Create business logic component.
     this.bloc = ProjectPageBloc(this.widget.project);
     this.bloc.refreshTasks();
@@ -67,13 +62,13 @@ class _ProjectPageState extends State<ProjectPage> {
       floatingActionButton: FloatingActionButton(
         heroTag: 'floating-button',
         elevation: 0,
-        shape: CircleBorder(
+        shape: const CircleBorder(
           side: BorderSide(
             color: Colors.white,
             width: 3.0
           )
         ),
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
         backgroundColor: Colors.green,
         onPressed: () async {
           final result = await showDialog(
@@ -94,17 +89,17 @@ class _ProjectPageState extends State<ProjectPage> {
   /// Build header this page.
   Widget headerPage(ProjectModel object) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 15.0),
+      padding: const EdgeInsets.symmetric(vertical: 15.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Hero(
             tag: 'previous-screen-button',
             child: FlatButton(
-              padding: EdgeInsets.all(10.0),
+              padding: const EdgeInsets.all(10.0),
               color: Colors.white,
-              shape: CircleBorder(),
-              child: Icon(Icons.arrow_back),
+              shape: const CircleBorder(),
+              child: const Icon(Icons.arrow_back),
               onPressed: () => Navigator.of(this.context).pop()
             )
           ),
@@ -122,13 +117,13 @@ class _ProjectPageState extends State<ProjectPage> {
           // Edit project button.
           FlatButton(
             padding: EdgeInsets.all(12.0),
-            shape: CircleBorder(
+            shape: const CircleBorder(
               side: BorderSide(
                 color: Colors.white,
                 width: 4.0
               )
             ),
-            child: Icon(Icons.edit),
+            child: const Icon(Icons.edit),
             textColor: Colors.white,
             onPressed: () {
               Navigator.of(this.context).pushNamed('/project/task');
@@ -169,7 +164,7 @@ class _ProjectPageState extends State<ProjectPage> {
   /// Build a listview to show tasks.
   Widget buildListView(List<TaskModel> tasks) {
     return ListView.separated(
-      padding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
+      padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
       itemCount: tasks.length,
       separatorBuilder: (BuildContext content, int index) {
         return Divider(

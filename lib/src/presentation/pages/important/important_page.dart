@@ -8,8 +8,6 @@ import 'widgets/item_list_tile.dart';
 import 'widgets/page_header.dart';
 
 class ImportantPage extends StatefulWidget {
-  const ImportantPage();
-
   @override
   State<ImportantPage> createState() => _ImportantPageState();
 }
@@ -22,11 +20,6 @@ class _ImportantPageState extends State<ImportantPage> {
   void initState() {
     super.initState();
     this.bloc = ImportantPageBloc();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
     this.bloc.refreshTasks();
   }
 
@@ -69,7 +62,7 @@ class _ImportantPageState extends State<ImportantPage> {
           stream: this.bloc.streamTasks,
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator()
               );
             } else {
@@ -87,7 +80,7 @@ class _ImportantPageState extends State<ImportantPage> {
 
   Widget buildListView(List<TaskModel> tasks) {
     return ListView.builder(
-      padding: EdgeInsets.all(0),
+      padding: const EdgeInsets.all(0),
       itemCount: tasks.length,
       itemBuilder: (BuildContext context, int index) {
         final TaskModel task = tasks[index];

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:tasks/src/data/models/step_model.dart';
 import 'package:tasks/src/data/models/task_model.dart';
 import 'package:tasks/src/presentation/pages/task/widgets/editable_title.dart';
 import 'package:tasks/src/presentation/shared/pickers/date_picker/date_picker.dart';
-import 'package:tasks/src/presentation/shared/widgets/circle_checkbox.dart';
 
 import 'task_page_bloc.dart';
 import 'widgets/note_textfield.dart';
@@ -11,7 +11,7 @@ import 'widgets/note_textfield.dart';
 class TaskPage extends StatefulWidget {
   final TaskModel task;
 
-  const TaskPage({
+  TaskPage({
     Key key,
     @required this.task
   }): assert(task != null),
@@ -26,16 +26,12 @@ class _TaskPageState extends State<TaskPage> {
   TaskPageBloc bloc;
   TaskModel task;
   String title;
+  List<StepModel> steps;
 
   /// Called when this state inserted into tree.
   @override
   void initState() {
     super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
     this.bloc = TaskPageBloc(this.widget.task);
     this.task = this.widget.task;
     this.title = this.task.title;
@@ -62,7 +58,49 @@ class _TaskPageState extends State<TaskPage> {
         return true;
       },
       child: Scaffold(
-        body: this.buildPage()
+        body: this.buildPage(),
+        bottomNavigationBar: BottomAppBar(
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border(
+                top: BorderSide(
+                  width: 0.5,
+                  color: Colors.grey
+                )
+              )
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  'Created: ${DateFormat.yMMMd().format(this.task.createdDate)}',
+                  style: Theme.of(this.context).textTheme.subtitle.copyWith(
+                    fontWeight: FontWeight.w300
+                  )
+                ),
+                IconButton(
+                  color: Colors.red[400],
+                  icon: Icon(Icons.delete),
+                  onPressed: () async {
+                    final result = await showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return _dialogWhenDeleteTask();
+                      }
+                    );
+
+                    if (result != null && result) {
+                      if (await this.bloc.deleteTask(task)) {
+                        Navigator.of(this.context).pop();
+                      }
+                    }
+                  },
+                )
+              ],
+            )
+          )
+        ),
       ),
     );
   }
@@ -70,12 +108,16 @@ class _TaskPageState extends State<TaskPage> {
   /// Build a task page.
   Widget buildPage() {
     return SafeArea(
-      child: Column(
-        children: <Widget>[
-          this.headerPage(),
-          this.bodyPage(),
-          this.footerPage()
-        ],
+      child: SingleChildScrollView(
+        child: IntrinsicHeight(
+          child: Column(
+            children: <Widget>[
+              this.headerPage(),
+              this.bodyPage(),
+              this.footerPage()
+            ],
+          ),
+        )
       )
     );
   }
@@ -83,17 +125,17 @@ class _TaskPageState extends State<TaskPage> {
   /// Build header this page.
   Widget headerPage() {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 15.0),
+      padding: const EdgeInsets.symmetric(vertical: 15.0),
       child: Row(
         children: <Widget>[
           // Back previous screen button.
           Hero(
             tag: 'previous-screen-button',
             child: FlatButton(
-              padding: EdgeInsets.all(10.0),
-              color: Colors.grey,
-              shape: CircleBorder(),
-              child: Icon(Icons.arrow_back),
+              padding: const EdgeInsets.all(10.0),
+              color: Colors.grey[200],
+              shape: const CircleBorder(),
+              child: const Icon(Icons.arrow_back),
               onPressed: () async {
                 if (this.title.isNotEmpty) {
                   this.task.title = this.title;
@@ -106,30 +148,7 @@ class _TaskPageState extends State<TaskPage> {
           Expanded(
             child: editableTitle()
           ),
-          Hero(
-            tag: 'floating-button',
-            child: FlatButton(
-              padding: EdgeInsets.all(12.0),
-              color: Colors.red,
-              shape: CircleBorder(),
-              child: Icon(Icons.delete),
-              textColor: Colors.white,
-              onPressed: () async {
-                final result = await showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return _dialogWhenDeleteTask();
-                  }
-                );
-
-                if (result != null && result) {
-                  if (await this.bloc.deleteTask(task)) {
-                    Navigator.of(this.context).pop();
-                  }
-                }
-              }
-            )
-          )
+          const SizedBox(width: 25.0)
         ]
       )
     );
@@ -148,6 +167,9 @@ class _TaskPageState extends State<TaskPage> {
   /// Build dialog when delete category.
   Widget _dialogWhenDeleteTask() {
     return AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
       content: Text("Are you sure delete this task?"),
       actions: <Widget>[
         // Yes Button.
@@ -205,9 +227,10 @@ class _TaskPageState extends State<TaskPage> {
       StepModel(id: null, title: '', done: false, taskId: widget.task.id)
     ));
 
-    return ListView(
-      padding: EdgeInsets.all(0.0),
-      children: tiles
+    return Container(
+      child: Column(
+        children: tiles
+      ),
     );
   }
 
@@ -216,8 +239,7 @@ class _TaskPageState extends State<TaskPage> {
     final controller = TextEditingController(text: step.title);
 
     return ListTile(
-      key: UniqueKey(),
-      leading: CircleCheckbox(
+      leading: Checkbox(
         value: step.done,
         onChanged: (bool checked) {
           if (step.id != null) {

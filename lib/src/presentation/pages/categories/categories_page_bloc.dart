@@ -20,7 +20,7 @@ class CategoriesPageBloc implements BlocContract {
   Future<bool> addCategory(CategoryModel category) async {
     bool result = await this.categoryRepository.add(category.toMap());
     if (result) {
-      await this.refreshCategories();
+      this.refreshCategories();
     }
     return result;
   }

@@ -10,7 +10,7 @@ import 'widgets/page_header.dart';
 import 'widgets/item_list_tile.dart';
 
 class PlannedPage extends StatefulWidget {
-  const PlannedPage({
+  PlannedPage({
     Key key
   }): super(key: key);
 
@@ -29,11 +29,6 @@ class _PlannedPageState extends State<PlannedPage> {
     super.initState();
     this.bloc = PlannedPageBloc();
     this.bloc.refreshTasks();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
   }
 
   /// Called when this state removed from the tree.
@@ -83,7 +78,7 @@ class _PlannedPageState extends State<PlannedPage> {
           stream: this.bloc.streamTasks,
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator()
               );
             } else {
@@ -111,7 +106,7 @@ class _PlannedPageState extends State<PlannedPage> {
     });
 
     return ListView(
-      padding: EdgeInsets.all(0.0),
+      padding: const EdgeInsets.all(0.0),
       children: children,
     );
   }
@@ -119,11 +114,11 @@ class _PlannedPageState extends State<PlannedPage> {
   /// Build header type in list view.
   Widget buildHeaderListTile(String title) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
+      margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
       child: Text(
         title,
         style: TextStyle(
-          color: UIColors.DarkBlue,
+          color: Colors.blue[400],
           fontSize: 17.0,
           fontWeight: FontWeight.w600
         )
@@ -136,14 +131,14 @@ class _PlannedPageState extends State<PlannedPage> {
     return Dismissible(
       key: Key(task.id.toString()),
       background: Container(
-        margin: EdgeInsets.symmetric(vertical: 5.0),
-        padding: EdgeInsets.symmetric(horizontal: 10.0),
+        margin: const EdgeInsets.symmetric(vertical: 5.0),
+        padding: const EdgeInsets.symmetric(horizontal: 10.0),
         color: Colors.red,
         child: Row(
           children: <Widget>[
-            Icon(Icons.clear, size: 25.0, color: Colors.white),
-            SizedBox(width: 5.0),
-            Text(
+            const Icon(Icons.clear, size: 25.0, color: Colors.white),
+            const SizedBox(width: 5.0),
+            const Text(
               'Delete',
               style: TextStyle(
                 fontSize: 16.0,
@@ -154,15 +149,15 @@ class _PlannedPageState extends State<PlannedPage> {
         )
       ),
       secondaryBackground: Container(
-        margin: EdgeInsets.symmetric(vertical: 5.0),
-        padding: EdgeInsets.symmetric(horizontal: 10.0),
+        margin: const EdgeInsets.symmetric(vertical: 5.0),
+        padding: const EdgeInsets.symmetric(horizontal: 10.0),
         color: Colors.blue,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
-            Icon(Icons.check, size: 25.0, color: Colors.white),
-            SizedBox(width: 5.0),
-            Text(
+            const Icon(Icons.check, size: 25.0, color: Colors.white),
+            const SizedBox(width: 5.0),
+            const Text(
               'Completed',
               style: TextStyle(
                 fontSize: 16.0,

@@ -9,17 +9,27 @@ class NewProjectForm extends StatefulWidget {
   NewProjectForm({
     Key key,
     @required this.categoryId
-  }): assert(categoryId != null), super(key: key);
+  }): assert(categoryId != null),
+      super(key: key);
 
   @override
   State<StatefulWidget> createState() => _NewProjectFormState();
 }
 
 class _NewProjectFormState extends State<NewProjectForm> {
-  final key = GlobalKey<FormState>();
-  final titleController = new TextEditingController();
-  final descriptionController = new TextEditingController();
-  Color colorProject = Colors.grey;
+  GlobalKey<FormState> key;
+  TextEditingController titleController;
+  TextEditingController descriptionController;
+  Color colorProject;
+
+  @override
+  void initState() {
+    super.initState();
+    key = GlobalKey<FormState>();
+    this.titleController = TextEditingController();
+    this.descriptionController = TextEditingController();
+    this.colorProject = Colors.grey[400];
+  }
 
   @override
   void dispose() {
@@ -43,18 +53,16 @@ class _NewProjectFormState extends State<NewProjectForm> {
               padding: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 0.0),
               child: Text(
                 'Add new project',
-                style: TextStyle(
-                  color: UIColors.DarkGreen,
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.w600
+                style: Theme.of(context).textTheme.title.copyWith(
+                  fontSize: 16.0
                 )
               )
             ),
-            SizedBox(height: 30.0),
+            const SizedBox(height: 30.0),
             this.buildForm(),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             ColorPicker(
-              colors: <Color>[
+              colors: const <Color>[
                 UIColors.Blue,
                 UIColors.Green,
                 UIColors.Orange,
@@ -86,10 +94,10 @@ class _NewProjectFormState extends State<NewProjectForm> {
                 Container(
                   margin: EdgeInsets.only(right: 10.0),
                   child: FlatButton(
-                    shape: CircleBorder(),
+                    shape: const CircleBorder(),
                     padding: EdgeInsets.all(12.0),
                     color: Colors.grey.withOpacity(0.2),
-                    child: Icon(Icons.create_new_folder),
+                    child: Icon(Icons.folder),
                     onPressed: () {}
                   )
                 ),
@@ -97,7 +105,7 @@ class _NewProjectFormState extends State<NewProjectForm> {
                   child: TextFormField(
                     autofocus: true,
                     controller: this.titleController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: 'Title'
                     ),
                     validator: (String value) {
@@ -113,7 +121,7 @@ class _NewProjectFormState extends State<NewProjectForm> {
             SizedBox(height: 10),
             TextFormField(
                 controller: this.descriptionController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'Description'
                 )
             )

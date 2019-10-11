@@ -25,17 +25,18 @@ class NoteTextField extends StatelessWidget {
           BoxShadow(
             color: Colors.black.withOpacity(0.2),
             blurRadius: 3.0,
-            offset: Offset(0.5, 4)
+            offset: const Offset(0.5, 4)
           )
         ]
       ),
-      margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 12.0),
-      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+      margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 12.0),
+      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
       child: TextField(
-        decoration: InputDecoration.collapsed(
+        decoration: const InputDecoration.collapsed(
           hintText: 'Note',
           border: InputBorder.none
         ),
+        focusNode: FocusNode(),
         controller: controller,
         keyboardType: TextInputType.multiline,
         maxLines: 3,

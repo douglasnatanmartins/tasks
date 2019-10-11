@@ -11,7 +11,7 @@ import 'categories_page_bloc.dart';
 import 'widgets/category_card.dart';
 
 class CategoriesPage extends StatefulWidget {
-  const CategoriesPage({
+  CategoriesPage({
     Key key
   }): super(key: key);
 
@@ -48,7 +48,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
   /// Build a categories list page.
   Widget buildPage(BuildContext context) {
     return Scaffold(
-      backgroundColor: UIColors.Blue,
+      backgroundColor: Colors.blue[400],
       body: SafeArea(
         child: Column(
           children: <Widget>[
@@ -61,13 +61,13 @@ class _CategoriesPageState extends State<CategoriesPage> {
         heroTag: 'floating-button',
         shape: CircleBorder(
           side: BorderSide(
-            color: UIColors.Blue,
-            width: 5.0
+            color: Colors.white.withOpacity(0.85),
+            width: 3.0
           )
         ),
         elevation: 0,
-        child: Icon(Icons.add, size: 30),
-        foregroundColor: UIColors.Blue,
+        child: const Icon(Icons.add, size: 30),
+        foregroundColor: Colors.green[400],
         backgroundColor: Colors.white,
         onPressed: () async {
           final result = await showDialog(
@@ -95,7 +95,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Container(
-          padding: EdgeInsets.symmetric(horizontal: 20.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
           height: 140.0,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,7 +103,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
             children: <Widget>[
               Text(
                 DateTimeUtil.currentDay,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 30.0
                 )
@@ -115,7 +115,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                   fontSize: 25.0
                 )
               ),
-              SizedBox(height: 15.0),
+              const SizedBox(height: 15.0),
               StreamBuilder(
                 stream: this.bloc.streamCategories,
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -154,7 +154,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
         stream: this.bloc.streamCategories,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator()
             );
           } else {
@@ -189,7 +189,10 @@ class _CategoriesPageState extends State<CategoriesPage> {
   /// Build a children in listview.
   Widget _buildChildrenInList(CategoryModel category) {
     return GestureDetector(
-      child: CategoryCard(category: category),
+      child: CategoryCard(
+          key: UniqueKey(),
+          category: category
+        ),
       onTap: () {
         Navigator.of(context).pushNamed('/category', arguments: category)
           .then((_) => this.bloc.refreshCategories());

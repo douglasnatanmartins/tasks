@@ -23,7 +23,7 @@ class ProjectPageBloc implements BlocContract {
   Future<bool> addTask(TaskModel task) async {
     bool result = await this.taskRepository.add(task.toMap());
     if (result) {
-      await this.refreshTasks();
+      this.refreshTasks();
     }
     return result;
   }
@@ -32,7 +32,7 @@ class ProjectPageBloc implements BlocContract {
   Future<bool> deleteTask(TaskModel task) async {
     bool result = await this.taskRepository.delete(task.id);
     if (result) {
-      await this.refreshTasks();
+      this.refreshTasks();
     }
     return result;
   }
@@ -41,7 +41,7 @@ class ProjectPageBloc implements BlocContract {
   Future<bool> updateTask(TaskModel task) async {
     bool result = await this.taskRepository.update(task.toMap());
     if (result) {
-      await this.refreshTasks();
+      this.refreshTasks();
     }
     return result;
   }

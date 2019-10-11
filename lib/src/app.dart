@@ -7,7 +7,7 @@ import 'router.dart';
 class App extends StatelessWidget {
   final PackageInfo information;
 
-  const App({
+  App({
     Key key,
     @required this.information
   }): assert(information != null),

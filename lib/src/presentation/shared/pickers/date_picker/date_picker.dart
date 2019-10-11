@@ -74,14 +74,14 @@ class _DatePickerState extends State<DatePicker> {
           BoxShadow(
             color: Colors.black.withOpacity(0.2),
             blurRadius: 3.0,
-            offset: Offset(0.5, 4)
+            offset: const Offset(0.5, 4)
           )
         ]
       ),
-      margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-      padding: EdgeInsets.symmetric(horizontal: 10.0),
+      margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+      padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: ListTile(
-        contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 10.0),
         leading: Icon(this.widget.icon),
         title: InkWell(
           child: Text(
@@ -114,7 +114,7 @@ class _DatePickerState extends State<DatePicker> {
 
   Widget trailing() {
     return IconButton(
-      icon: Icon(Icons.clear),
+      icon: const Icon(Icons.clear),
       onPressed: () {
         setState(() {
           this.selected = null;

@@ -6,7 +6,7 @@ import 'settings_page_bloc.dart';
 import 'widgets/page_header.dart';
 
 class SettingsPage extends StatefulWidget {
-  const SettingsPage({
+  SettingsPage({
     Key key
   }): super(key: key);
 
@@ -28,11 +28,6 @@ class _SettingsPageState extends State<SettingsPage> {
     this.app = App.of(this.context);
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-  }
-
   /// Called when this state removed from the tree.
   @override
   void dispose() {
@@ -46,7 +41,10 @@ class _SettingsPageState extends State<SettingsPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: this.buildPage(),
-      bottomNavigationBar: BottomNavigation(context: context, current: this.route)
+      bottomNavigationBar: BottomNavigation(
+        context: context,
+        current: this.route
+      )
     );
   }
 
@@ -76,13 +74,12 @@ class _SettingsPageState extends State<SettingsPage> {
         child: ScrollConfiguration(
           behavior: ScrollBehavior(),
           child: SingleChildScrollView(
-            physics: ClampingScrollPhysics(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 ListTile(
                   title: Container(
-                    padding: EdgeInsets.symmetric(vertical: 7.0),
+                    padding: const EdgeInsets.symmetric(vertical: 7.0),
                     decoration: BoxDecoration(
                       border: Border(
                         bottom: BorderSide(
@@ -98,12 +95,12 @@ class _SettingsPageState extends State<SettingsPage> {
                   )
                 ),
                 ListTile(
-                  title: Text('Version'),
+                  title: const Text('Version'),
                   trailing: Text(this.app.version),
                 ),
                 ListTile(
-                  title: Text('Third-party software'),
-                  trailing: Icon(Icons.arrow_forward),
+                  title: const Text('Third-party software'),
+                  trailing: const Icon(Icons.arrow_forward),
                   onTap: () {}
                 )
               ]

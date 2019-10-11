@@ -4,7 +4,7 @@ class CircleCheckbox extends StatefulWidget {
   final bool value;
   final ValueChanged<bool> onChanged;
 
-  const CircleCheckbox({
+  CircleCheckbox({
     Key key,
     @required this.value,
     @required this.onChanged
@@ -25,11 +25,6 @@ class _CircleCheckboxState extends State<CircleCheckbox> {
   @override
   void initState() {
     super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
     this.value = this.widget.value;
   }
 
@@ -49,8 +44,8 @@ class _CircleCheckboxState extends State<CircleCheckbox> {
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
       child: AnimatedContainer(
-        duration: Duration(milliseconds: 99),
-        margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+        duration: const Duration(milliseconds: 123),
+        margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
         height: 30.0,
         width: 30.0,
         decoration: BoxDecoration(

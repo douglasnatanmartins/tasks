@@ -5,7 +5,7 @@ import 'package:tasks/src/data/models/task_model.dart';
 class NewTaskForm extends StatefulWidget {
   final int projectId;
 
-  const NewTaskForm({
+  NewTaskForm({
     Key key,
     @required this.projectId
   }): assert(projectId != null),
@@ -45,7 +45,7 @@ class _NewTaskFormState extends State<NewTaskForm> {
       content: Form(
         key: this.key,
         child: TextFormField(
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             labelText: 'Title'
           ),
           autofocus: true,
@@ -61,7 +61,7 @@ class _NewTaskFormState extends State<NewTaskForm> {
       ),
       actions: <Widget>[
         FlatButton(
-          child: Text('Cancel'),
+          child: const Text('Cancel'),
           onPressed: () {
             this.controller.clear();
             Navigator.of(this.context).pop();

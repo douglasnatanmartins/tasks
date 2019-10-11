@@ -4,7 +4,7 @@ class EditableTitle extends StatefulWidget {
   final String title;
   final ValueChanged<String> onChanged;
 
-  const EditableTitle({
+  EditableTitle({
     Key key,
     @required this.title,
     @required this.onChanged
@@ -57,7 +57,7 @@ class _EditableTitleState extends State<EditableTitle> {
         focusNode: focusNode,
         controller: controller,
         decoration: InputDecoration(
-          enabledBorder: UnderlineInputBorder(
+          enabledBorder: const UnderlineInputBorder(
             borderSide: BorderSide(
               width: 0.25
             )

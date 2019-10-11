@@ -12,7 +12,7 @@ import 'widgets/project_card.dart';
 class CategoryPage extends StatefulWidget {
   final CategoryModel category;
 
-  const CategoryPage({
+  CategoryPage({
     Key key,
     @required this.category
   }): assert(category != null),

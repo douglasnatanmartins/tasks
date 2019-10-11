@@ -8,7 +8,7 @@ class ItemListTile extends StatefulWidget {
   final ValueChanged<bool> onChecked;
   final ValueChanged<bool> onImportanted;
 
-  const ItemListTile({
+  ItemListTile({
     Key key,
     @required this.task,
     @required this.onChecked,
@@ -27,11 +27,6 @@ class _ItemListTileState extends State<ItemListTile> {
   @override
   void initState() {
     super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
     this.task = this.widget.task;
   }
 
@@ -43,19 +38,19 @@ class _ItemListTileState extends State<ItemListTile> {
       Text(
         this.task.title,
         overflow: TextOverflow.ellipsis,
-        style: TextStyle(
+        style: const TextStyle(
           fontWeight: FontWeight.w600
         )
       )
     );
-    children.add(SizedBox(height: 5.0));
+    children.add(const SizedBox(height: 5.0));
 
     if (task.dueDate != null) {
       children.add(
         Row(
           children: <Widget>[
-            Icon(Icons.date_range, size: 18.0),
-            SizedBox(width: 5.0),
+            const Icon(Icons.date_range, size: 18.0),
+            const SizedBox(width: 5.0),
             Text(
               DateFormat.yMEd().format(this.task.dueDate)
             )
@@ -65,12 +60,12 @@ class _ItemListTileState extends State<ItemListTile> {
     }
 
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 0, vertical: 5.0),
+      margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 5.0),
       decoration: BoxDecoration(
         color: Colors.grey.shade200,
       ),
       child: ListTile(
-        contentPadding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
         leading: CircleCheckbox(
           value: task.done,
           onChanged: this.widget.onChecked

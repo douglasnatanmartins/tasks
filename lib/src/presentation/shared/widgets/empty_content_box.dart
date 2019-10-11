@@ -4,7 +4,10 @@ class EmptyContentBox extends StatelessWidget {
   final String message;
   final Color textColor;
 
-  EmptyContentBox({this.message, this.textColor = Colors.black});
+  EmptyContentBox({
+    this.message,
+    this.textColor = Colors.black
+  });
 
   @override
   Widget build(BuildContext context) {

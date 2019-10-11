@@ -36,12 +36,12 @@ class _ColorPickerState extends State<ColorPicker> {
 
     return Expanded(
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
         child: ListView.separated(
           scrollDirection: Axis.horizontal,
           itemCount: colors.length,
           separatorBuilder: (BuildContext context, int index) {
-            return SizedBox(width: 10.0);
+            return const SizedBox(width: 10.0);
           },
           itemBuilder: (BuildContext context, int index) {
             final color = colors[index];

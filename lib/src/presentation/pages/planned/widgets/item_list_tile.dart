@@ -7,7 +7,7 @@ class ItemListTile extends StatefulWidget {
   final TaskModel task;
   final ValueChanged<bool> onChanged;
 
-  const ItemListTile({
+  ItemListTile({
     Key key,
     @required this.task,
     @required this.onChanged
@@ -25,11 +25,6 @@ class _ItemListTileState extends State<ItemListTile> {
   @override
   void initState() {
     super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
     this.task = this.widget.task;
   }
 

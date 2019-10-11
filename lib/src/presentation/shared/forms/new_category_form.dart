@@ -3,25 +3,26 @@ import 'package:tasks/src/data/models/category_model.dart';
 
 class NewCategoryForm extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
-    return _NewCategoryFormState();
-  }
+  State<StatefulWidget> createState() => _NewCategoryFormState();
 }
 
 class _NewCategoryFormState extends State<NewCategoryForm> {
-  final _key = GlobalKey<FormState>();
-  final _titleController = new TextEditingController();
-  final _descriptionController = new TextEditingController();
+  GlobalKey<FormState> _key;
+  TextEditingController _titleController;
+  TextEditingController _descriptionController;
 
   @override
   void initState() {
     super.initState();
+    this._key = GlobalKey<FormState>();
+    this._titleController = TextEditingController();
+    this._descriptionController = TextEditingController();
   }
 
   @override
   void dispose() {
-    _titleController.dispose();
-    _descriptionController.dispose();
+    this._titleController.dispose();
+    this._descriptionController.dispose();
     super.dispose();
   }
 
@@ -31,13 +32,13 @@ class _NewCategoryFormState extends State<NewCategoryForm> {
       child: Container(
         width: 450,
         height: 250,
-        padding: EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(20.0),
         child: Form(
           key: _key,
           child: Column(
             children: <Widget>[
               Text(
-                "New Category",
+                'New Category',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600
@@ -45,21 +46,21 @@ class _NewCategoryFormState extends State<NewCategoryForm> {
               ),
               TextFormField(
                 autofocus: true,
-                controller: _titleController,
-                decoration: InputDecoration(
-                  labelText: "Title"
+                controller: this._titleController,
+                decoration: const InputDecoration(
+                  labelText: 'Title'
                 ),
                 validator: (value) {
                   if (value.trim().isEmpty) {
-                    return "Please enter category title.";
+                    return 'Enter category title';
                   }
                   return null;
                 },
               ),
               TextFormField(
-                controller: _descriptionController,
-                decoration: InputDecoration(
-                  labelText: "Description"
+                controller: this._descriptionController,
+                decoration: const InputDecoration(
+                  labelText: 'Description'
                 )
               ),
               Expanded(
@@ -68,7 +69,7 @@ class _NewCategoryFormState extends State<NewCategoryForm> {
                   child: FlatButton(
                     color: Colors.green,
                     child: Text(
-                      "Create",
+                      'Create',
                       style: TextStyle(
                         color: Colors.white
                       )

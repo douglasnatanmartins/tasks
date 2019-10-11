@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tasks/src/data/models/project_model.dart';
-import 'package:tasks/src/presentation/ui_colors.dart';
 
 class ProjectCard extends StatelessWidget {
   final ProjectModel project;
   final double progress;
 
-  const ProjectCard({
+  ProjectCard({
     Key key,
     @required this.project,
     @required this.progress
@@ -23,7 +22,7 @@ class ProjectCard extends StatelessWidget {
         this.project.title,
         overflow: TextOverflow.ellipsis,
         style: TextStyle(
-          color: UIColors.Blue,
+          color: Colors.blue[600],
           fontSize: 17.0,
           fontWeight: FontWeight.w600
         )
@@ -31,7 +30,7 @@ class ProjectCard extends StatelessWidget {
     );
 
     if (this.project.description.isNotEmpty) {
-      children.add(SizedBox(height: 6.0));
+      children.add(const SizedBox(height: 6.0));
       children.add(
         Text(
           this.project.description,
@@ -43,7 +42,7 @@ class ProjectCard extends StatelessWidget {
       );
     }
 
-    children.add(SizedBox(height: 5.0));
+    children.add(const SizedBox(height: 5.0));
     children.add(
       Text(
         'Created: ${DateFormat.yMMMd().format(this.project.created)}',
@@ -54,8 +53,8 @@ class ProjectCard extends StatelessWidget {
     );
 
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
-      padding: EdgeInsets.all(15.0),
+      margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
+      padding: const EdgeInsets.all(15.0),
       decoration: BoxDecoration(
         color: Colors.grey.withOpacity(0.18),
         borderRadius: BorderRadius.circular(10.0)
@@ -65,7 +64,7 @@ class ProjectCard extends StatelessWidget {
           Row(
             children: <Widget>[
               Container(
-                padding: EdgeInsets.only(right: 12.0),
+                padding: const EdgeInsets.only(right: 12.0),
                 child: Icon(
                   Icons.folder,
                   size: 30.0,
@@ -81,7 +80,7 @@ class ProjectCard extends StatelessWidget {
               )
             ]
           ),
-          SizedBox(height: 10.0),
+          const SizedBox(height: 10.0),
           Row(
             children: <Widget>[
               Expanded(
@@ -89,7 +88,7 @@ class ProjectCard extends StatelessWidget {
                   value: this.progress
                 ),
               ),
-              SizedBox(width: 10.0),
+              const SizedBox(width: 10.0),
               Text((progress * 100).round().toString() + '%')
             ],
           )

@@ -23,7 +23,7 @@ class BottomNavigation extends StatelessWidget {
     },
   };
 
-  const BottomNavigation({
+  BottomNavigation({
     Key key,
     @required this.context,
     @required this.current,

@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 
 class PageHeader extends StatelessWidget {
-  const PageHeader({
-    Key key,
-  }): super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
@@ -22,7 +18,7 @@ class PageHeader extends StatelessWidget {
                   fontSize: 22.0
                 )
               ),
-              SizedBox(height: 3.5),
+              const SizedBox(height: 3.5),
               Text(
                 'List of tasks by important',
                 style: Theme.of(context).textTheme.subtitle.copyWith(
