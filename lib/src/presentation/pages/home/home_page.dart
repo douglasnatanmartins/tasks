@@ -37,40 +37,52 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  Future<bool> willPop() async {
+    if (this.current != 2) {
+      this.onTapped(2);
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: this.pages.elementAt(this.current),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.grey[200],
-        type: BottomNavigationBarType.fixed,
-        currentIndex: this.current,
-        selectedFontSize: 14.0,
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.grey,
-        unselectedFontSize: 13.0,
-        showUnselectedLabels: false,
-        showSelectedLabels: false,
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            title: Text('Settings'),
-            icon: Icon(Icons.settings)
-          ),
-          BottomNavigationBarItem(
-            title: Text('Important'),
-            icon: Icon(Icons.star)
-          ),
-          BottomNavigationBarItem(
-            title: Text('Planned'),
-            icon: Icon(Icons.calendar_today)
-          ),
-          BottomNavigationBarItem(
-            title: Text('Category'),
-            icon: Icon(Icons.style)
-          )
-        ],
-        onTap: this.onTapped
-      )
+    return WillPopScope(
+      onWillPop: this.willPop,
+      child: Scaffold(
+        body: this.pages.elementAt(this.current),
+        bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: Colors.grey[200],
+          type: BottomNavigationBarType.fixed,
+          currentIndex: this.current,
+          selectedFontSize: 14.0,
+          selectedItemColor: Colors.black,
+          unselectedItemColor: Colors.grey,
+          unselectedFontSize: 13.0,
+          showUnselectedLabels: false,
+          showSelectedLabels: false,
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              title: Text('Settings'),
+              icon: Icon(Icons.settings)
+            ),
+            BottomNavigationBarItem(
+              title: Text('Important'),
+              icon: Icon(Icons.star)
+            ),
+            BottomNavigationBarItem(
+              title: Text('Planned'),
+              icon: Icon(Icons.calendar_today)
+            ),
+            BottomNavigationBarItem(
+              title: Text('Category'),
+              icon: Icon(Icons.style)
+            )
+          ],
+          onTap: this.onTapped
+        )
+      ),
     );
   }
 }

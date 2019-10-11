@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
 import 'package:tasks/src/app.dart';
-import 'package:tasks/src/presentation/shared/widgets/bottom_navigation.dart';
+
 import 'settings_page_bloc.dart';
 import 'widgets/page_header.dart';
 

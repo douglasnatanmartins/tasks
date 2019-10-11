@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:tasks/src/data/models/task_model.dart';
-import 'package:tasks/src/presentation/shared/widgets/bottom_navigation.dart';
 import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
 
 import 'planned_page_bloc.dart';
