@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tasks/src/data/models/project_model.dart';
 import 'package:tasks/src/presentation/shared/pickers/color_picker/color_picker.dart';
-import 'package:tasks/src/presentation/ui_colors.dart';
 
 class NewProjectForm extends StatefulWidget {
   final int categoryId;
@@ -63,17 +62,18 @@ class _NewProjectFormState extends State<NewProjectForm> {
             const SizedBox(height: 20.0),
             ColorPicker(
               colors: const <Color>[
-                UIColors.Blue,
-                UIColors.Green,
-                UIColors.Orange,
-                UIColors.Red,
-                UIColors.Purple
+                Colors.blue,
+                Colors.green,
+                Colors.orange,
+                Colors.red,
+                Colors.purple,
+                Colors.teal
               ],
               onChanged: (Color selected) {
                 this.colorProject = selected;
               },
             ),
-            Spacer(),
+            const Spacer(),
             this.buildActions(),
           ]
         )
@@ -85,7 +85,7 @@ class _NewProjectFormState extends State<NewProjectForm> {
     return Form(
       key: this.key,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 15.0),
+        padding: const EdgeInsets.symmetric(horizontal: 15.0),
         child: Column(
           children: <Widget>[
             Row(
@@ -118,7 +118,7 @@ class _NewProjectFormState extends State<NewProjectForm> {
                 )
               ]
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             TextFormField(
                 controller: this.descriptionController,
                 decoration: const InputDecoration(
@@ -137,7 +137,7 @@ class _NewProjectFormState extends State<NewProjectForm> {
       children: <Widget>[
         FlatButton(
           color: Colors.green,
-          child: Text(
+          child: const Text(
             'Create',
             style: TextStyle(
               color: Colors.white
@@ -152,7 +152,7 @@ class _NewProjectFormState extends State<NewProjectForm> {
                 created: DateTime.now(),
                 color: this.colorProject,
               );
-              Navigator.of(context).pop(project);
+              Navigator.of(this.context).pop(project);
             }
           }
         )

@@ -31,7 +31,6 @@ class _ItemListTileState extends State<ItemListTile> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 0, vertical: 5.0),
       decoration: BoxDecoration(
         color: Colors.grey.shade200,
       ),

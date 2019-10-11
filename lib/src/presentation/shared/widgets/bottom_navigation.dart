@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class BottomNavigation extends StatelessWidget {
   final String current;
   final BuildContext context;
-  final Function whenPop;
+  final Function backDefault;
   final Map<String, Map<String, dynamic>> routes = const {
     '/settings': {
       'title': 'Setttings',
@@ -27,7 +27,7 @@ class BottomNavigation extends StatelessWidget {
     Key key,
     @required this.context,
     @required this.current,
-    this.whenPop
+    this.backDefault
   }): assert(context != null),
       assert(current != null),
       super(key: key);
@@ -72,14 +72,14 @@ class BottomNavigation extends StatelessWidget {
 
     if (this.current != selected) {
       if (this.current == '/') {
-        Navigator.of(this.context).pushNamed(selected).then((result) {
-          this.whenPop();
-        });
+        Navigator.of(this.context).pushNamed(selected)
+          .then((result) => this.backDefault());
       } else {
         if (selected == '/') {
           Navigator.of(this.context).pop();
         } else {
-          Navigator.of(this.context).pushReplacementNamed(selected);
+          Navigator.of(this.context).pushReplacementNamed(selected)
+            .then((result) => this.backDefault());
         }
       }
     }

@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:tasks/src/presentation/pages/home/home_page.dart';
 
 import 'presentation/pages/category/category_page.dart';
-import 'presentation/pages/important/important_page.dart';
-import 'presentation/pages/planned/planned_page.dart';
-import 'presentation/pages/categories/categories_page.dart';
 import 'presentation/pages/project/project_page.dart';
-import 'presentation/pages/settings/settings_page.dart';
 import 'presentation/pages/task/task_page.dart';
 
 class Router {
@@ -15,34 +12,10 @@ class Router {
       case '/':
         return MaterialPageRoute(
           builder: (BuildContext context) {
-            return PlannedPage();
+            return HomePage();
           }
         );
-      
-      // Setting Page.
-      case '/settings':
-        return MaterialPageRoute(
-          builder: (BuildContext context) {
-            return SettingsPage();
-          }
-        );
-      
-      // Imporant Page.
-      case '/important':
-        return MaterialPageRoute(
-          builder: (BuildContext context) {
-            return ImportantPage();
-          }
-        );
-      
-      // Categories Page.
-      case '/categories':
-        return MaterialPageRoute(
-          builder: (BuildContext context) {
-            return CategoriesPage();
-          }
-        );
-      
+
       // Category Page.
       case '/category':
         return MaterialPageRoute(

@@ -16,7 +16,7 @@ class EmptyContentBox extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Image.asset('lib/assets/images/character.png'),
-          SizedBox(height: 10.0),
+          const SizedBox(height: 10.0),
           Text(
             this.message,
             style: TextStyle(

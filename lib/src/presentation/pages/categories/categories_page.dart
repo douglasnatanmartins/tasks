@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:tasks/src/data/models/category_model.dart';
-import 'package:tasks/src/presentation/shared/widgets/bottom_navigation.dart';
 import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
 import 'package:tasks/src/presentation/shared/forms/new_category_form.dart';
-import 'package:tasks/src/presentation/ui_colors.dart';
 import 'package:tasks/src/utils/date_time_util.dart';
 
 import 'categories_page_bloc.dart';
@@ -20,7 +18,6 @@ class CategoriesPage extends StatefulWidget {
 }
 
 class _CategoriesPageState extends State<CategoriesPage> {
-  final String route = '/categories';
   /// Business Logic Component.
   CategoriesPageBloc bloc;
 
@@ -81,11 +78,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
             this.bloc.addCategory(result);
           }
         },
-      ),
-      bottomNavigationBar: BottomNavigation(
-        context: context,
-        current: this.route
-      ),
+      )
     );
   }
 

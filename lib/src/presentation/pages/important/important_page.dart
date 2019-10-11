@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tasks/src/data/models/task_model.dart';
-import 'package:tasks/src/presentation/shared/widgets/bottom_navigation.dart';
 import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
 
 import 'important_page_bloc.dart';
@@ -13,7 +12,6 @@ class ImportantPage extends StatefulWidget {
 }
 
 class _ImportantPageState extends State<ImportantPage> {
-  final String route = '/important';
   ImportantPageBloc bloc;
 
   @override
@@ -33,10 +31,6 @@ class _ImportantPageState extends State<ImportantPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: this.buildPage(),
-      bottomNavigationBar: BottomNavigation(
-        context: context,
-        current: this.route
-      ),
     );
   }
 

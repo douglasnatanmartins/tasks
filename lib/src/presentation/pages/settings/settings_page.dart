@@ -41,10 +41,6 @@ class _SettingsPageState extends State<SettingsPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: this.buildPage(),
-      bottomNavigationBar: BottomNavigation(
-        context: context,
-        current: this.route
-      )
     );
   }
 

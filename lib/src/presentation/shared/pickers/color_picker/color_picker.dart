@@ -18,11 +18,14 @@ class ColorPicker extends StatefulWidget {
 }
 
 class _ColorPickerState extends State<ColorPicker> {
+  List<Color> colors;
   Color current;
 
   @override
   void initState() {
     super.initState();
+    this.colors = this.widget.colors;
+    this.current = this.colors[0];
   }
 
   @override
@@ -32,8 +35,6 @@ class _ColorPickerState extends State<ColorPicker> {
 
   @override
   Widget build(BuildContext context) {
-    List<Color> colors = this.widget.colors;
-
     return Expanded(
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
