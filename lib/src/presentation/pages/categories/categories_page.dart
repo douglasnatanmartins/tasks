@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 import 'package:tasks/src/data/models/category_model.dart';
+import 'package:tasks/src/presentation/pages/categories/widgets/category_list_view.dart';
 import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
 import 'package:tasks/src/presentation/shared/forms/new_category_form.dart';
 import 'package:tasks/src/utils/date_time_util.dart';
 
 import 'categories_page_bloc.dart';
-import 'widgets/category_card.dart';
 
 class CategoriesPage extends StatefulWidget {
   CategoriesPage({
@@ -64,8 +64,8 @@ class _CategoriesPageState extends State<CategoriesPage> {
         ),
         elevation: 0,
         child: const Icon(Icons.add, size: 30),
-        foregroundColor: Colors.green[400],
-        backgroundColor: Colors.white,
+        foregroundColor: Colors.white,
+        backgroundColor: Colors.green,
         onPressed: () async {
           final result = await showDialog(
             context: context,
@@ -153,7 +153,12 @@ class _CategoriesPageState extends State<CategoriesPage> {
           } else {
             if (snapshot.hasData && snapshot.data.isNotEmpty) {
               final List<CategoryModel> categories = snapshot.data;
-              return this.buildListCategories(categories);
+              return CategoryListView(
+                data: categories,
+                whenOpened: () {
+                  this.bloc.refreshCategories();
+                }
+              );
             } else {
               return EmptyContentBox(
                 message: 'no category found',
@@ -163,33 +168,6 @@ class _CategoriesPageState extends State<CategoriesPage> {
           }
         }
       )
-    );
-  }
-
-  /// Build the listview to show categories.
-  Widget buildListCategories(List<CategoryModel> categories) {
-    return PageView.builder(
-      controller: PageController(
-        viewportFraction: 0.8
-      ),
-      itemCount: categories.length,
-      itemBuilder: (BuildContext context, int index) {
-        return this._buildChildrenInList(categories[index]);
-      }
-    );
-  }
-
-  /// Build a children in listview.
-  Widget _buildChildrenInList(CategoryModel category) {
-    return GestureDetector(
-      child: CategoryCard(
-          key: UniqueKey(),
-          category: category
-        ),
-      onTap: () {
-        Navigator.of(context).pushNamed('/category', arguments: category)
-          .then((_) => this.bloc.refreshCategories());
-      }
     );
   }
 }

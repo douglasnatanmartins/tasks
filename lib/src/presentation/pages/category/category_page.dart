@@ -7,7 +7,7 @@ import 'package:tasks/src/presentation/shared/forms/new_project_form.dart';
 import 'package:tasks/src/presentation/ui_colors.dart';
 
 import 'category_page_bloc.dart';
-import 'widgets/project_card.dart';
+import 'widgets/project_list_view.dart';
 
 class CategoryPage extends StatefulWidget {
   final CategoryModel category;
@@ -219,7 +219,10 @@ class _CategoryPageState extends State<CategoryPage> {
               );
             } else {
               if (snapshot.data.isNotEmpty) { // Has the stream data.
-                return this.buildListView(snapshot.data);
+                return ProjectListView(
+                  data: snapshot.data,
+                  whenOpened: () => this.bloc.refreshProjects(),
+                );
               } else {
                 return EmptyContentBox(message: 'not project found');
               }
@@ -227,32 +230,6 @@ class _CategoryPageState extends State<CategoryPage> {
           }
         )
       )
-    );
-  }
-
-  /// Build the listview to show projects.
-  Widget buildListView(List<Map<String, dynamic>> projects) {
-    return ListView.builder(
-      padding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 5.0),
-      itemCount: projects.length,
-      itemBuilder: (BuildContext context, int index) {
-        final project = projects[index];
-        return this._buildChildrenInListView(project['project'], project['progress']);
-      }
-    );
-  }
-
-  /// Build a children in listview.
-  Widget _buildChildrenInListView(ProjectModel project, double progress) {
-    return GestureDetector(
-      child: ProjectCard(
-        project: project,
-        progress: progress,
-      ),
-      onTap: () {
-        Navigator.of(this.context).pushNamed('/project', arguments: project)
-          .then((_) => this.bloc.refreshProjects());
-      }
     );
   }
 }

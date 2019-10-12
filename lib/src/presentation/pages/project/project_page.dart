@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 import 'package:tasks/src/data/models/project_model.dart';
 import 'package:tasks/src/data/models/task_model.dart';
-import 'package:tasks/src/presentation/shared/widgets/circle_checkbox.dart';
 import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
 import 'package:tasks/src/presentation/shared/forms/new_task_form.dart';
 
 import 'project_page_bloc.dart';
+import 'widgets/task_list_view.dart';
 
 class ProjectPage extends StatefulWidget {
   final ProjectModel project;
@@ -147,7 +147,15 @@ class _ProjectPageState extends State<ProjectPage> {
               );
             } else {
               if (snapshot.hasData && snapshot.data.isNotEmpty) {
-                return this.buildListView(snapshot.data);
+                return TaskListView(
+                  data: snapshot.data,
+                  onChanged: (TaskModel task) {
+                    this.bloc.updateTask(task);
+                  },
+                  whenOpened: () {
+                    this.bloc.refreshTasks();
+                  },
+                );
               } else {
                 return EmptyContentBox(
                   message: 'not task found',
@@ -158,64 +166,6 @@ class _ProjectPageState extends State<ProjectPage> {
           }
         )
       )
-    );
-  }
-
-  /// Build a listview to show tasks.
-  Widget buildListView(List<TaskModel> tasks) {
-    return ListView.separated(
-      padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
-      itemCount: tasks.length,
-      separatorBuilder: (BuildContext content, int index) {
-        return Divider(
-          color: Colors.white.withOpacity(0.85),
-        );
-      },
-      itemBuilder: (BuildContext context, int index) {
-        final task = tasks[index];
-        return this._buildChildrenInListView(task);
-      }
-    );
-  }
-
-  /// Build a children in listview.
-  Widget _buildChildrenInListView(TaskModel task) {
-    TextDecoration _decoration = TextDecoration.none;
-
-    if (task.done) {
-      _decoration = TextDecoration.lineThrough;
-    }
-
-    return ListTile(
-      leading: CircleCheckbox(
-        value: task.done,
-        onChanged: (bool checked) {
-          task.done = checked;
-          this.bloc.updateTask(task);
-        }
-      ),
-      title: Text(
-        task.title,
-        overflow: TextOverflow.ellipsis,
-        style: TextStyle(
-          color: Colors.white,
-          decoration: _decoration
-        )
-      ),
-      trailing: IconButton(
-        icon: Icon(
-          Icons.star,
-          color: task.important ? Colors.yellow.shade600 : null
-        ),
-        onPressed: () {
-          task.important = !task.important;
-          this.bloc.updateTask(task);
-        }
-      ),
-      onTap: () { // Open a task page.
-        Navigator.of(this.context).pushNamed('/task', arguments: task)
-          .then((result) => this.bloc.refreshTasks());
-      },
     );
   }
 }

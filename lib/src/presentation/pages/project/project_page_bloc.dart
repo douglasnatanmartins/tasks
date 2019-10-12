@@ -40,9 +40,6 @@ class ProjectPageBloc implements BlocContract {
   /// Update a task.
   Future<bool> updateTask(TaskModel task) async {
     bool result = await this.taskRepository.update(task.toMap());
-    if (result) {
-      this.refreshTasks();
-    }
     return result;
   }
 
