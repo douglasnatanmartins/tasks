@@ -6,6 +6,7 @@ import 'package:tasks/src/presentation/pages/task/widgets/editable_title.dart';
 import 'package:tasks/src/presentation/shared/pickers/date_picker/date_picker.dart';
 
 import 'task_page_bloc.dart';
+import 'widgets/item_list_tile.dart';
 import 'widgets/note_textfield.dart';
 
 class TaskPage extends StatefulWidget {
@@ -36,6 +37,11 @@ class _TaskPageState extends State<TaskPage> {
     this.task = this.widget.task;
     this.title = this.task.title;
     this.bloc.refreshSteps();
+  }
+
+  @override
+  void didUpdateWidget(TaskPage oldWidget) {
+    super.didUpdateWidget(oldWidget);
   }
 
   /// Called when this state removed from tree.
@@ -86,7 +92,7 @@ class _TaskPageState extends State<TaskPage> {
                     final result = await showDialog(
                       context: context,
                       builder: (BuildContext context) {
-                        return _dialogWhenDeleteTask();
+                        return this.dialogWhenDeleteTask();
                       }
                     );
 
@@ -165,18 +171,18 @@ class _TaskPageState extends State<TaskPage> {
   }
 
   /// Build dialog when delete category.
-  Widget _dialogWhenDeleteTask() {
+  Widget dialogWhenDeleteTask() {
     return AlertDialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ),
-      content: Text("Are you sure delete this task?"),
+      content: Text('Are you sure delete this task?'),
       actions: <Widget>[
         // Yes Button.
         FlatButton(
           color: Theme.of(context).errorColor,
-          child: Text(
-            "Yes",
+          child: const Text(
+            'Yes',
             style: TextStyle(color: Colors.white)
           ),
           onPressed: () { // When the user pressed YES button.
@@ -185,8 +191,8 @@ class _TaskPageState extends State<TaskPage> {
         ),
         // Cancel button.
         FlatButton(
-          child: Text(
-            "Cancel",
+          child: const Text(
+            'Cancel',
             style: TextStyle(color: Colors.grey)
           ),
           onPressed: () { // When the user pressed CANCEL button.
@@ -204,7 +210,7 @@ class _TaskPageState extends State<TaskPage> {
         stream: this.bloc.streamSteps,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator()
             );
           } else {
@@ -217,13 +223,13 @@ class _TaskPageState extends State<TaskPage> {
 
   /// Build a listview to show steps of task.
   Widget buildListView(List<StepModel> steps) {
-    List<ListTile> tiles = [];
+    List<ItemListTile> tiles = [];
 
     steps.forEach((step) {
-      tiles.add(this._buildChildrenInListView(step));
+      tiles.add(this.buildItemInListView(step));
     });
 
-    tiles.add(this._buildChildrenInListView(
+    tiles.add(this.buildItemInListView(
       StepModel(id: null, title: '', done: false, taskId: widget.task.id)
     ));
 
@@ -235,57 +241,21 @@ class _TaskPageState extends State<TaskPage> {
   }
 
   /// Build a children in listview.
-  Widget _buildChildrenInListView(StepModel step) {
-    final controller = TextEditingController(text: step.title);
-
-    return ListTile(
-      leading: Checkbox(
-        value: step.done,
-        onChanged: (bool checked) {
-          if (step.id != null) {
-            step.done = checked;
+  Widget buildItemInListView(StepModel step) {
+    return ItemListTile(
+      key: Key(step.id.toString()),
+      step: step,
+      onChanged: (StepModel step) {
+        if (step.title == null) {
+          this.bloc.deleteStep(step);
+        } else {
+          if (step.id == null) {
+            this.bloc.addStep(step);
+          } else {
             this.bloc.updateStep(step);
           }
         }
-      ),
-      title: TextField(
-        controller: controller,
-        cursorColor: Colors.blue.withOpacity(0.85),
-        decoration: InputDecoration(
-          hintText: "Enter step",
-          hintStyle: TextStyle(
-            color: Colors.blue.withOpacity(0.5)
-          ),
-          border: InputBorder.none,
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(
-              color: Colors.blue.withOpacity(0.5)
-            )
-          )
-        ),
-        style: TextStyle(
-          color: Colors.black.withOpacity(0.85)
-        ),
-        onSubmitted: (String text) {
-          if (text.trim().isNotEmpty) {
-            step.title = text.trim();
-            if (step.id != null) {
-              this.bloc.updateStep(step);
-            } else {
-              this.bloc.addStep(step);
-            }
-          }
-        }
-      ),
-      trailing: IconButton(
-        icon: Icon(Icons.clear),
-        color: Colors.red,
-        onPressed: () {
-          if (step.id != null) {
-            this.bloc.deleteStep(step);
-          }
-        }
-      ),
+      }
     );
   }
 

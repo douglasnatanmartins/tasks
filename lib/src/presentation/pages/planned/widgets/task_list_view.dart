@@ -6,13 +6,16 @@ import 'group_list_tile.dart';
 class TaskListView extends StatefulWidget {
   final Map<String, List<TaskModel>> data;
   final ValueChanged<TaskModel> onChanged;
+  final Function whenOnTap;
 
   TaskListView({
     Key key,
     @required this.data,
-    @required this.onChanged
+    @required this.onChanged,
+    @required this.whenOnTap,
   }): assert(data != null),
       assert(onChanged != null),
+      assert(whenOnTap != null),
       super(key: key);
 
   @override
@@ -41,7 +44,8 @@ class _TaskListViewState extends State<TaskListView> {
       children.add(GroupListTile(
         title: title,
         items: tasks,
-        onChanged: this.widget.onChanged
+        onChanged: this.widget.onChanged,
+        whenOnTap: this.widget.whenOnTap,
       ));
     });
 

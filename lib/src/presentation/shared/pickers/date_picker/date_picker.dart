@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 
 class DatePicker extends StatefulWidget {
@@ -23,6 +24,7 @@ class DatePicker extends StatefulWidget {
 }
 
 class _DatePickerState extends State<DatePicker> {
+  DateTime today;
   DateTime selected;
   String title;
   Color textColor;
@@ -30,12 +32,16 @@ class _DatePickerState extends State<DatePicker> {
   @override
   void initState() {
     super.initState();
+    this.selected = this.widget.initialDate;
+    DateTime now = DateTime.now();
+    this.today = DateTime(now.year, now.month, now.day);
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  void didUpdateWidget(DatePicker oldWidget) {
     this.selected = this.widget.initialDate;
+
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
@@ -45,8 +51,6 @@ class _DatePickerState extends State<DatePicker> {
 
   @override
   Widget build(BuildContext context) {
-    final DateTime now = DateTime.now();
-    final DateTime today = DateTime(now.year, now.month, now.day);
     Widget deleteButton;
 
     if (this.selected != null) {
@@ -58,7 +62,7 @@ class _DatePickerState extends State<DatePicker> {
         this.textColor = Colors.red;
       }
     } else {
-      this.selected = today;
+      this.selected = this.today;
       this.title = this.widget.title;
       this.textColor = Colors.grey;
     }

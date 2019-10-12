@@ -7,15 +7,18 @@ class GroupListTile extends StatefulWidget {
   final String title;
   final List<TaskModel> items;
   final ValueChanged<TaskModel> onChanged;
+  final Function whenOnTap;
 
   GroupListTile({
     Key key,
     @required this.title,
     @required this.items,
-    @required this.onChanged
+    @required this.onChanged,
+    @required this.whenOnTap
   }): assert(title != null),
       assert(items != null),
       assert(onChanged != null),
+      assert(whenOnTap != null),
       super(key: key);
 
   @override
@@ -55,7 +58,8 @@ class _GroupListTileState extends State<GroupListTile> {
         onChanged: (bool checked) {
           task.done = checked;
           this.widget.onChanged(task);
-        }
+        },
+        whenOnTap: this.widget.whenOnTap
       ));
     });
 

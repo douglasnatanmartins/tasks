@@ -91,6 +91,9 @@ class _PlannedPageState extends State<PlannedPage> {
       data: data,
       onChanged: (TaskModel task) {
         this.bloc.updateTask(task);
+      },
+      whenOnTap: () {
+        this.bloc.refreshTasks();
       }
     );
   }

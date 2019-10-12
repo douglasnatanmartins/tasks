@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class NoteTextField extends StatelessWidget {
+class NoteTextField extends StatefulWidget {
   final String note;
   final ValueChanged<String> onChanged;
 
@@ -10,10 +10,36 @@ class NoteTextField extends StatelessWidget {
     @required this.onChanged
   }): assert(onChanged != null),
       super(key: key);
+  
+  @override
+  State<NoteTextField> createState() => _NoteTextFieldState();
+}
+
+class _NoteTextFieldState extends State<NoteTextField> {
+  TextEditingController controller;
+  FocusNode focusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    this.controller = TextEditingController(text: this.widget.note);
+    this.focusNode = FocusNode();
+  }
+
+  @override
+  void didUpdateWidget(NoteTextField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  void dispose() {
+    this.focusNode.dispose();
+    this.controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final controller = TextEditingController(text: this.note);
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -36,13 +62,12 @@ class NoteTextField extends StatelessWidget {
           hintText: 'Note',
           border: InputBorder.none
         ),
-        focusNode: FocusNode(),
-        controller: controller,
+        autocorrect: false,
+        focusNode: this.focusNode,
+        controller: this.controller,
         keyboardType: TextInputType.multiline,
         maxLines: 3,
-        onChanged: (String value) {
-          this.onChanged(value);
-        }
+        onChanged: this.widget.onChanged
       )
     );
   }

@@ -6,13 +6,16 @@ import 'package:tasks/src/presentation/shared/widgets/circle_checkbox.dart';
 class ItemListTile extends StatefulWidget {
   final TaskModel task;
   final ValueChanged<bool> onChanged;
+  final Function whenOnTap;
 
   ItemListTile({
     Key key,
     @required this.task,
-    @required this.onChanged
+    @required this.onChanged,
+    this.whenOnTap
   }): assert(task != null),
       assert(onChanged != null),
+      assert(whenOnTap != null),
       super(key: key);
 
   @override
@@ -63,7 +66,8 @@ class _ItemListTileState extends State<ItemListTile> {
           ],
         ),
         onTap: () {
-          Navigator.of(context).pushNamed('/task', arguments: task);
+          Navigator.of(context).pushNamed('/task', arguments: task)
+            .then((result) => this.widget.whenOnTap());
         }
       )
     );

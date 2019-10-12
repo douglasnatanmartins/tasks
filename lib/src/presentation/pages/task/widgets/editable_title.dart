@@ -32,7 +32,7 @@ class _EditableTitleState extends State<EditableTitle> {
       if (!this.focusNode.hasFocus) {
         String value = this.controller.text.trim();
         if (value.isEmpty) {
-          this.controller.text = this.title;
+          this.controller.text = value;
         } else {
           if (value != this.title) {
             this.title = value;
@@ -54,8 +54,8 @@ class _EditableTitleState extends State<EditableTitle> {
   Widget build(BuildContext context) {
     return Container(
       child: TextField(
-        focusNode: focusNode,
-        controller: controller,
+        focusNode: this.focusNode,
+        controller: this.controller,
         decoration: InputDecoration(
           enabledBorder: const UnderlineInputBorder(
             borderSide: BorderSide(
