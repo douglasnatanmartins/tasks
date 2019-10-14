@@ -66,7 +66,7 @@ class ProjectCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.only(right: 12.0),
                 child: Icon(
-                  Icons.folder,
+                  project.icon,
                   size: 30.0,
                   color: project.color
                 )

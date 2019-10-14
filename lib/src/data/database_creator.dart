@@ -29,7 +29,7 @@ class DatabaseCreator {
     String path = join(databasesPath, 'data.db');
     var database = await openDatabase(
       path,
-      version: 2,
+      version: 3,
       onConfigure: _onConfigure,
       onCreate: _onCreate,
       onUpgrade: _onUpgrade
@@ -60,6 +60,10 @@ class DatabaseCreator {
       batch.execute('DROP TABLE IF EXISTS Task');
       batch.execute('DROP TABLE IF EXISTS Step');
       this._createTables(batch);
+    }
+
+    if (oldVersion < 3) {
+      this._updateCode_3(batch);
     }
 
     // Commit this batch.
@@ -114,6 +118,13 @@ class DatabaseCreator {
         task_id INTEGER NOT NULL,
         FOREIGN KEY (task_id) REFERENCES Task(id) ON DELETE CASCADE
       )
+    ''');
+  }
+
+  void _updateCode_3(Batch batch) {
+    batch.execute('''
+      ALTER TABLE Project
+      ADD COLUMN icon TEXT DEFAULT 'folder'
     ''');
   }
 }

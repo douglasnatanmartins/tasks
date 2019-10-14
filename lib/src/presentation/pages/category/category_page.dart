@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:tasks/src/data/models/category_model.dart';
 import 'package:tasks/src/data/models/project_model.dart';
+import 'package:tasks/src/presentation/pages/project_new/project_new_screen.dart';
 import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
-import 'package:tasks/src/presentation/shared/forms/new_project_form.dart';
 import 'package:tasks/src/presentation/ui_colors.dart';
 
 import 'category_page_bloc.dart';
@@ -73,11 +73,14 @@ class _CategoryPageState extends State<CategoryPage> {
         backgroundColor: Colors.green[600],
         child: Icon(Icons.add),
         onPressed: () async {
-          final result = await showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return NewProjectForm(categoryId: category.id);
-            }
+          final result = await Navigator.of(this.context).push(
+            MaterialPageRoute(
+              builder: (BuildContext context) {
+                return ProjectNewScreen(
+                  category: category.id
+                );
+              }
+            )
           );
 
           if (result is ProjectModel) {

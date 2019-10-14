@@ -20,13 +20,15 @@ class ItemListTile extends StatefulWidget {
 class _ItemListTileState extends State<ItemListTile> {
   StepModel step;
   TextEditingController controller;
+  TextEditingValue value;
   FocusNode focusNode;
 
   @override
   void initState() {
     super.initState();
     this.step = this.widget.step;
-    this.controller = TextEditingController(text: this.step.title);
+    this.value = TextEditingValue(text: this.step.title);
+    this.controller = TextEditingController.fromValue(this.value);
     this.focusNode = FocusNode();
 
     this.focusNode.addListener(() {
@@ -40,6 +42,10 @@ class _ItemListTileState extends State<ItemListTile> {
         }
       }
     });
+
+    this.controller.addListener(() {
+      this.value = this.controller.value;
+    });
   }
 
   @override
@@ -48,7 +54,9 @@ class _ItemListTileState extends State<ItemListTile> {
       this.step = this.widget.step;
     }
 
-    this.controller.text = this.step.title;
+    if (this.step.id == null) {
+      this.controller.value = this.value.copyWith(text: '');
+    }
 
     super.didUpdateWidget(oldWidget);
   }

@@ -16,14 +16,38 @@ class CircleColor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: this.onTap,
-      child: Material(
-        child: CircleAvatar(
-          backgroundColor: this.color,
-          child: this.selected ? Icon(Icons.check, color: Colors.white.withOpacity(0.5)) : null
+    Border border;
+
+    if (this.selected) {
+      border = Border.all(
+        color: this.color,
+        width: 3.0
+      );
+    }
+
+    return Center(
+      child: InkWell(
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        onTap: this.onTap,
+        child: AnimatedContainer(
+          width: 32,
+          height: 32,
+          duration: const Duration(milliseconds: 210),
+          padding: const EdgeInsets.symmetric(horizontal: 2.5, vertical: 2.5),
+          decoration: BoxDecoration(
+            color: Colors.transparent,
+            shape: BoxShape.circle,
+            border: border
+          ),
+          child: Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: this.color
+            )
+          )
         )
-      )
+      ),
     );
   }
 }

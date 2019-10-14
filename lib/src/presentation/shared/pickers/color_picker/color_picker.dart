@@ -35,29 +35,37 @@ class _ColorPickerState extends State<ColorPicker> {
 
   @override
   Widget build(BuildContext context) {
+    List<Container> children = <Container>[];
+
+    this.colors.forEach((Color color) {
+      children.add(
+        Container(
+          child: CircleColor(
+            color: color,
+            selected: this.current == color,
+            onTap: () {
+              setState(() {
+                this.current = color;
+                this.widget.onChanged(color);
+              });
+            }
+          ),
+        )
+      );
+    });
+
     return Expanded(
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
-        child: ListView.separated(
-          scrollDirection: Axis.horizontal,
-          itemCount: colors.length,
-          separatorBuilder: (BuildContext context, int index) {
-            return const SizedBox(width: 10.0);
-          },
-          itemBuilder: (BuildContext context, int index) {
-            final color = colors[index];
-            return CircleColor(
-              color: color,
-              selected: this.current == color,
-              onTap: () {
-                setState(() {
-                  this.current = color;
-                  this.widget.onChanged(color);
-                });
-              }
-            );
-          }
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.5)
         ),
+        child: GridView.count(
+          padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+          crossAxisCount: 5,
+          crossAxisSpacing: 20,
+          mainAxisSpacing: 20,
+          children: children,
+        )
       ),
     );
   }
