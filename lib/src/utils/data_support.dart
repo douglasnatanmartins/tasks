@@ -6,6 +6,19 @@ class DataSupport {
     'build': Icons.build,
     'bookmark': Icons.bookmark,
     'folder_shared': Icons.folder_shared,
+    'work': Icons.work,
+    'shopping_cart': Icons.shopping_cart,
+    'info': Icons.info,
+    'favorite': Icons.favorite,
+    'cloud': Icons.cloud,
+    'toys': Icons.toys,
+    'photo': Icons.photo,
+    'fitness_center': Icons.fitness_center,
+    'home': Icons.home,
+    'code': Icons.code,
+    'person': Icons.person,
+    'public': Icons.public,
+    'share': Icons.share
   };
 
   static const Map<String, Color> colors = {
@@ -13,6 +26,8 @@ class DataSupport {
     'blue': Colors.blue,
     'purple': Colors.purple,
     'red': Colors.red,
-    'pink': Colors.pink
+    'pink': Colors.pink,
+    'orange': Colors.orange,
+    'lime': Colors.lime,
   };
 }
