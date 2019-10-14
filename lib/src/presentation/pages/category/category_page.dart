@@ -179,29 +179,38 @@ class _CategoryPageState extends State<CategoryPage> {
   /// Build dialog when delete category.
   Widget _dialogWhenDeleteCategory() {
     return AlertDialog(
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0)
+      ),
       content: Text('Are you want delete this category?'),
       actions: <Widget>[
+        // Cancel button.
+        FlatButton(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(7.0)
+          ),
+          color: Colors.grey[400],
+          textColor: Colors.white,
+          child: const Text('Cancel'),
+          onPressed: () { // When the user pressed CANCEL button.
+            Navigator.of(context).pop(false);
+          }
+        ),
         // Yes Button.
         FlatButton(
-          color: Theme.of(this.context).errorColor,
-          child: Text(
-            'Yes',
-            style: TextStyle(color: Colors.white)
+          padding: const EdgeInsets.symmetric(horizontal: 30.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(7.0)
           ),
+          color: Theme.of(this.context).errorColor,
+          textColor: Colors.white,
+          child: const Text('Yes'),
           onPressed: () { // When the user pressed YES button.
             Navigator.of(context).pop(true);
           }
         ),
-        // Cancel button.
-        FlatButton(
-          child: Text(
-            'Cancel',
-            style: TextStyle(color: Colors.grey)
-          ),
-          onPressed: () { // When the user pressed CANCEL button.
-            Navigator.of(context).pop(false);
-          }
-        )
       ]
     );
   }
