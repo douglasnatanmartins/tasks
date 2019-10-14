@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 
 class EditableTitle extends StatefulWidget {
-  final String title;
-  final ValueChanged<String> onChanged;
-
   EditableTitle({
     Key key,
     @required this.title,
@@ -11,6 +8,9 @@ class EditableTitle extends StatefulWidget {
   }): assert(title != null),
       assert(onChanged != null),
       super(key: key);
+
+  final String title;
+  final ValueChanged<String> onChanged;
 
   @override
   State<EditableTitle> createState() => _EditableTitleState();

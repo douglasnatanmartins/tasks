@@ -4,10 +4,6 @@ import 'package:tasks/src/data/models/task_model.dart';
 import 'task_list_tile.dart';
 
 class TaskListView extends StatefulWidget {
-  final List<TaskModel> data;
-  final ValueChanged<TaskModel> onChanged;
-  final Function whenOpened;
-
   TaskListView({
     Key key,
     @required this.data,
@@ -17,6 +13,10 @@ class TaskListView extends StatefulWidget {
       assert(onChanged != null),
       assert(whenOpened != null),
       super(key: key);
+
+  final List<TaskModel> data;
+  final ValueChanged<TaskModel> onChanged;
+  final Function whenOpened;
 
   @override
   State<TaskListView> createState() => _TaskListViewState();

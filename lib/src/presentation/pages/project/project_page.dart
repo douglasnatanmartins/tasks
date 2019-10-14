@@ -9,13 +9,13 @@ import 'project_page_bloc.dart';
 import 'widgets/task_list_view.dart';
 
 class ProjectPage extends StatefulWidget {
-  final ProjectModel project;
-
   ProjectPage({
     Key key,
     @required this.project
   }): assert(project != null),
       super(key: key);
+
+  final ProjectModel project;
 
   @override
   State<ProjectPage> createState() => _ProjectPageState();
@@ -73,9 +73,7 @@ class _ProjectPageState extends State<ProjectPage> {
         onPressed: () async {
           final result = await showDialog(
             context: this.context,
-            builder: (BuildContext context) {
-              return NewTaskForm(projectId: project.id);
-            }
+            builder: (BuildContext context) => NewTaskForm(project: project.id)
           );
 
           if (result is TaskModel) {

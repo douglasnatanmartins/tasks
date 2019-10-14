@@ -3,15 +3,15 @@ import 'package:intl/intl.dart';
 import 'package:tasks/src/data/models/project_model.dart';
 
 class ProjectCard extends StatelessWidget {
-  final ProjectModel project;
-  final double progress;
-
   ProjectCard({
     Key key,
     @required this.project,
     @required this.progress
   }): assert(project != null),
       super(key: key);
+
+  final ProjectModel project;
+  final double progress;
 
   @override
   Widget build(BuildContext context) {

@@ -3,11 +3,6 @@ import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 
 class DatePicker extends StatefulWidget {
-  final IconData icon;
-  final String title;
-  final ValueChanged<DateTime> onSelected;
-  final DateTime initialDate;
-
   DatePicker({
     Key key,
     @required this.title,
@@ -18,6 +13,11 @@ class DatePicker extends StatefulWidget {
       assert(title != null),
       assert(onSelected != null),
       super(key: key);
+
+  final IconData icon;
+  final String title;
+  final ValueChanged<DateTime> onSelected;
+  final DateTime initialDate;
 
   @override
   State<StatefulWidget> createState() => _DatePickerState();

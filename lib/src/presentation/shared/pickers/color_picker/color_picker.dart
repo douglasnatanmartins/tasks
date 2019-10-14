@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:tasks/src/presentation/shared/pickers/color_picker/circle_color.dart';
 
 class ColorPicker extends StatefulWidget {
-  final List<Color> colors;
-  final ValueChanged<Color> onChanged;
-
   ColorPicker({
     Key key,
     @required this.colors,
@@ -12,6 +9,9 @@ class ColorPicker extends StatefulWidget {
   }): assert(colors != null),
       assert(onChanged != null),
       super(key: key);
+
+  final List<Color> colors;
+  final ValueChanged<Color> onChanged;
 
   @override
   State<StatefulWidget> createState() => _ColorPickerState();

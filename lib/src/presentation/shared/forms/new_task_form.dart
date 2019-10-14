@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:tasks/src/data/models/task_model.dart';
 
 class NewTaskForm extends StatefulWidget {
-  final int projectId;
-
   NewTaskForm({
     Key key,
-    @required this.projectId
-  }): assert(projectId != null),
+    @required this.project
+  }): assert(project != null),
       super(key: key);
+
+  final int project;
 
   @override
   State<NewTaskForm> createState() => _NewTaskFormState();
@@ -61,6 +61,12 @@ class _NewTaskFormState extends State<NewTaskForm> {
       ),
       actions: <Widget>[
         FlatButton(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(7.0)
+          ),
+          color: Colors.grey[400],
+          textColor: Colors.white,
           child: const Text('Cancel'),
           onPressed: () {
             this.controller.clear();
@@ -68,17 +74,19 @@ class _NewTaskFormState extends State<NewTaskForm> {
           }
         ),
         FlatButton(
-          color: Colors.green,
-          child: Text(
-            'Add',
-            style: TextStyle(color: Colors.white)
+          padding: const EdgeInsets.symmetric(horizontal: 30.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(7.0)
           ),
+          color: Colors.green,
+          textColor: Colors.white,
+          child: const Text('Add'),
           onPressed: () {
             if (this.key.currentState.validate()) {
               final task = TaskModel(
                 title: this.controller.text.trim(),
                 done: false,
-                projectId: this.widget.projectId,
+                projectId: this.widget.project,
                 important: false,
                 createdDate: DateTime.now(),
               );

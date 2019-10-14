@@ -17,7 +17,6 @@ class PlannedPage extends StatefulWidget {
 }
 
 class _PlannedPageState extends State<PlannedPage> {
-  final String route = '/';
   // Business Logic Component
   PlannedPageBloc bloc;
 
@@ -44,7 +43,7 @@ class _PlannedPageState extends State<PlannedPage> {
     );
   }
 
-  /// Build a home page.
+  /// Build a planned page.
   Widget buildPage() {
     return SafeArea(
       child: Column(

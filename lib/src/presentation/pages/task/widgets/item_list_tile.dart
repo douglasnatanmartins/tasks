@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:tasks/src/data/models/step_model.dart';
 
 class ItemListTile extends StatefulWidget {
-  final StepModel step;
-  final ValueChanged<StepModel> onChanged;
-
   ItemListTile({
     Key key,
     this.step,
@@ -12,6 +9,9 @@ class ItemListTile extends StatefulWidget {
   }): assert(step != null),
       assert(onChanged != null),
       super(key: key);
+
+  final StepModel step;
+  final ValueChanged<StepModel> onChanged;
 
   @override
   State<StatefulWidget> createState() => _ItemListTileState();

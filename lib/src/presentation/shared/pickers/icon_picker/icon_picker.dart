@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:tasks/src/presentation/shared/pickers/icon_picker/icon_item.dart';
 
 class IconPicker extends StatefulWidget {
+  final List<IconData> icons;
+  final IconData current;
+  final ValueChanged<IconData> onChanged;
+
   IconPicker({
     Key key,
     @required this.icons,
@@ -12,10 +16,6 @@ class IconPicker extends StatefulWidget {
       assert(current != null),
       assert(onChanged != null),
       super(key: key);
-
-  final List<IconData> icons;
-  final IconData current;
-  final ValueChanged<IconData> onChanged;
 
   @override
   State<IconPicker> createState() => _IconPickerState();

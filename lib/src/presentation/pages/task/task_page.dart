@@ -10,13 +10,13 @@ import 'widgets/item_list_tile.dart';
 import 'widgets/note_textfield.dart';
 
 class TaskPage extends StatefulWidget {
-  final TaskModel task;
-
   TaskPage({
     Key key,
     @required this.task
   }): assert(task != null),
       super(key: key);
+
+  final TaskModel task;
 
   @override
   State<TaskPage> createState() => _TaskPageState();

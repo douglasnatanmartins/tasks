@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
 class NoteTextField extends StatefulWidget {
-  final String note;
-  final ValueChanged<String> onChanged;
-
   const NoteTextField({
     Key key,
     @required this.note,
     @required this.onChanged
   }): assert(onChanged != null),
       super(key: key);
+
+  final String note;
+  final ValueChanged<String> onChanged;
   
   @override
   State<NoteTextField> createState() => _NoteTextFieldState();

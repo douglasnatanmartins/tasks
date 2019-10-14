@@ -4,9 +4,6 @@ import 'package:tasks/src/data/models/category_model.dart';
 import 'category_card.dart';
 
 class CategoryListView extends StatefulWidget {
-  final List<CategoryModel> data;
-  final Function whenOpened;
-
   CategoryListView({
     Key key,
     @required this.data,
@@ -14,6 +11,9 @@ class CategoryListView extends StatefulWidget {
   }): assert(data != null),
       assert(whenOpened != null),
       super(key: key);
+
+  final List<CategoryModel> data;
+  final Function whenOpened;
 
   @override
   State<CategoryListView> createState() => _CategoryListViewState();

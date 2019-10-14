@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 
 class CircleColor extends StatelessWidget {
-  final bool selected;
-  final Color color;
-  final VoidCallback onTap;
-
   CircleColor({
     Key key,
     @required this.color,
@@ -13,6 +9,10 @@ class CircleColor extends StatelessWidget {
   }): assert(color != null),
       assert(onTap != null),
       super(key: key);
+
+  final bool selected;
+  final Color color;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {

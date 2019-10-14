@@ -8,21 +8,20 @@ import 'package:tasks/src/data/repositories/task_repository.dart';
 
 /// Task Page Business Logic Component
 class TaskPageBloc implements BlocContract {
-  // Stream of step list.
-  final _controllerSteps = StreamController();
-  Sink get sinkSteps => _controllerSteps.sink;
-  Stream get streamSteps => _controllerSteps.stream;
-
-  TaskRepository taskRepository;
-  StepRepository stepRepository;
-
-  TaskModel task;
-
   TaskPageBloc(TaskModel task) {
     this.task = task;
     this.taskRepository = TaskRepository();
     this.stepRepository = StepRepository();
   }
+
+  TaskRepository taskRepository;
+  StepRepository stepRepository;
+  TaskModel task;
+
+  // Stream of step list.
+  final _controllerSteps = StreamController();
+  Sink get sinkSteps => _controllerSteps.sink;
+  Stream get streamSteps => _controllerSteps.stream;
 
   /// Update the task.
   Future<bool> updateTask(TaskModel task) async {

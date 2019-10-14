@@ -4,11 +4,6 @@ import 'package:tasks/src/data/models/task_model.dart';
 import 'item_list_tile.dart';
 
 class GroupListTile extends StatefulWidget {
-  final String title;
-  final List<TaskModel> items;
-  final ValueChanged<TaskModel> onChanged;
-  final Function whenOnTap;
-
   GroupListTile({
     Key key,
     @required this.title,
@@ -20,6 +15,11 @@ class GroupListTile extends StatefulWidget {
       assert(onChanged != null),
       assert(whenOnTap != null),
       super(key: key);
+
+  final String title;
+  final List<TaskModel> items;
+  final ValueChanged<TaskModel> onChanged;
+  final Function whenOnTap;
 
   @override
   State<GroupListTile> createState() => _GroupListTileState();

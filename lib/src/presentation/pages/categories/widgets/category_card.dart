@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:tasks/src/data/models/category_model.dart';
 
 class CategoryCard extends StatelessWidget {
-  final CategoryModel category;
-
   CategoryCard({
     Key key,
     @required this.category
   }): assert(category != null),
       super(key: key);
+
+  final CategoryModel category;
 
   @override
   Widget build(BuildContext context) {

@@ -62,7 +62,7 @@ class _HomePageState extends State<HomePage> {
           unselectedFontSize: 13.0,
           showUnselectedLabels: false,
           showSelectedLabels: false,
-          items: <BottomNavigationBarItem>[
+          items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               title: Text('Settings'),
               icon: Icon(Icons.settings)

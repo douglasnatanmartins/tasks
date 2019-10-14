@@ -4,9 +4,6 @@ import 'package:tasks/src/data/models/project_model.dart';
 import 'project_card.dart';
 
 class ProjectListView extends StatefulWidget {
-  final List<Map<String, dynamic>> data;
-  final Function whenOpened;
-
   ProjectListView({
     Key key,
     @required this.data,
@@ -14,6 +11,9 @@ class ProjectListView extends StatefulWidget {
   }): assert(data != null),
       assert(whenOpened != null),
       super(key: key);
+
+  final List<Map<String, dynamic>> data;
+  final Function whenOpened;
 
   @override
   State<StatefulWidget> createState() => _ProjectListViewState();

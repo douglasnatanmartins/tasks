@@ -4,19 +4,18 @@ import 'package:tasks/src/data/models/category_model.dart';
 import 'package:tasks/src/data/models/project_model.dart';
 import 'package:tasks/src/presentation/pages/project_new/project_new_screen.dart';
 import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
-import 'package:tasks/src/presentation/ui_colors.dart';
 
 import 'category_page_bloc.dart';
 import 'widgets/project_list_view.dart';
 
 class CategoryPage extends StatefulWidget {
-  final CategoryModel category;
-
   CategoryPage({
     Key key,
     @required this.category
   }): assert(category != null),
       super(key: key);
+
+  final CategoryModel category;
 
   @override
   State<CategoryPage> createState() => _CategoryPageState();
@@ -129,8 +128,8 @@ class _CategoryPageState extends State<CategoryPage> {
               Hero(
                 tag: 'previous-screen-button',
                 child: FlatButton(
-                  padding: EdgeInsets.all(10.0),
-                  shape: CircleBorder(),
+                  padding: const EdgeInsets.all(10.0),
+                  shape: const CircleBorder(),
                   color: Colors.white,
                   child: Icon(Icons.arrow_back),
                   onPressed: () => Navigator.of(this.context).pop()
@@ -146,13 +145,13 @@ class _CategoryPageState extends State<CategoryPage> {
               ),
               // Delete button.
               FlatButton(
-                padding: EdgeInsets.all(12.0),
-                shape: CircleBorder(
+                padding: const EdgeInsets.all(12.0),
+                shape: const CircleBorder(
                   side: BorderSide(color: Colors.white, width: 4.0)
                 ),
-                color: UIColors.Blue,
+                color: Colors.red,
                 textColor: Colors.white,
-                child: Icon(Icons.delete),
+                child: const Icon(Icons.delete),
                 // Show a dialog to confirm the user wants delete.
                 onPressed: () async {
                   final result = await showDialog(

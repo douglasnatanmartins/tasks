@@ -4,10 +4,6 @@ import 'package:tasks/src/data/models/task_model.dart';
 import 'group_list_tile.dart';
 
 class TaskListView extends StatefulWidget {
-  final Map<String, List<TaskModel>> data;
-  final ValueChanged<TaskModel> onChanged;
-  final Function whenOnTap;
-
   TaskListView({
     Key key,
     @required this.data,
@@ -17,6 +13,10 @@ class TaskListView extends StatefulWidget {
       assert(onChanged != null),
       assert(whenOnTap != null),
       super(key: key);
+
+  final Map<String, List<TaskModel>> data;
+  final ValueChanged<TaskModel> onChanged;
+  final Function whenOnTap;
 
   @override
   State<TaskListView> createState() => _TaskListViewState();

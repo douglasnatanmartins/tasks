@@ -4,10 +4,6 @@ import 'package:tasks/src/data/models/task_model.dart';
 import 'package:tasks/src/presentation/shared/widgets/circle_checkbox.dart';
 
 class ItemListTile extends StatefulWidget {
-  final TaskModel task;
-  final ValueChanged<bool> onChanged;
-  final Function whenOnTap;
-
   ItemListTile({
     Key key,
     @required this.task,
@@ -17,6 +13,10 @@ class ItemListTile extends StatefulWidget {
       assert(onChanged != null),
       assert(whenOnTap != null),
       super(key: key);
+
+  final TaskModel task;
+  final ValueChanged<bool> onChanged;
+  final Function whenOnTap;
 
   @override
   State<ItemListTile> createState() => _ItemListTileState();

@@ -7,17 +7,16 @@ import 'package:tasks/src/data/repositories/task_repository.dart';
 
 /// Project Page Business Logic Component.
 class ProjectPageBloc implements BlocContract {
-  final _controllerTasks = StreamController<List<TaskModel>>();
-  Sink get sinkTasks => _controllerTasks.sink;
-  Stream get streamTasks => _controllerTasks.stream;
-
-  TaskRepository taskRepository;
-  ProjectModel project;
-
   ProjectPageBloc(ProjectModel project) {
     this.project = project;
     this.taskRepository = TaskRepository();
   }
+  TaskRepository taskRepository;
+  ProjectModel project;
+
+  final _controllerTasks = StreamController<List<TaskModel>>();
+  Sink get sinkTasks => _controllerTasks.sink;
+  Stream get streamTasks => _controllerTasks.stream;
 
   /// Add a task into database.
   Future<bool> addTask(TaskModel task) async {
