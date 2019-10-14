@@ -173,32 +173,38 @@ class _TaskPageState extends State<TaskPage> {
   /// Build dialog when delete category.
   Widget dialogWhenDeleteTask() {
     return AlertDialog(
+      elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ),
       content: Text('Are you sure delete this task?'),
       actions: <Widget>[
-        // Yes Button.
-        FlatButton(
-          color: Theme.of(context).errorColor,
-          child: const Text(
-            'Yes',
-            style: TextStyle(color: Colors.white)
-          ),
-          onPressed: () { // When the user pressed YES button.
-            Navigator.of(context).pop(true);
-          }
-        ),
         // Cancel button.
         FlatButton(
-          child: const Text(
-            'Cancel',
-            style: TextStyle(color: Colors.grey)
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(7.0),
           ),
+          color: Colors.grey[400],
+          textColor: Colors.white,
+          child: const Text('Cancel'),
           onPressed: () { // When the user pressed CANCEL button.
             Navigator.of(context).pop(false);
-          }
-        )
+          },
+        ),
+        // Yes Button.
+        FlatButton(
+          padding: const EdgeInsets.symmetric(horizontal: 30.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(7.0),
+          ),
+          color: Theme.of(context).errorColor,
+          textColor: Colors.white,
+          child: const Text('Yes'),
+          onPressed: () { // When the user pressed YES button.
+            Navigator.of(context).pop(true);
+          },
+        ),
       ]
     );
   }
