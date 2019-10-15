@@ -3,7 +3,9 @@ import 'package:intl/intl.dart';
 import 'package:tasks/src/data/models/step_model.dart';
 import 'package:tasks/src/data/models/task_model.dart';
 import 'package:tasks/src/presentation/pages/task/widgets/editable_title.dart';
+import 'package:tasks/src/presentation/pages/task/widgets/important_checkbox.dart';
 import 'package:tasks/src/presentation/shared/pickers/date_picker/date_picker.dart';
+import 'package:tasks/src/presentation/shared/widgets/circle_checkbox.dart';
 
 import 'task_page_bloc.dart';
 import 'widgets/item_list_tile.dart';
@@ -41,6 +43,10 @@ class _TaskPageState extends State<TaskPage> {
 
   @override
   void didUpdateWidget(TaskPage oldWidget) {
+    if (oldWidget.task != this.widget.task) {
+      this.task = this.widget.task;
+    }
+
     super.didUpdateWidget(oldWidget);
   }
 
@@ -51,31 +57,26 @@ class _TaskPageState extends State<TaskPage> {
     super.dispose();
   }
 
+  Future<bool> update() async {
+    if (this.title.isNotEmpty) {
+      this.task.title = this.title;
+    }
+
+    await this.bloc.updateTask(this.task);
+    return true;
+  }
+
   /// Build this widget.
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async {
-        if (this.title.isNotEmpty) {
-          this.task.title = this.title;
-          await this.bloc.updateTask(this.task);
-        }
-
-        return true;
-      },
+      onWillPop: this.update,
       child: Scaffold(
         body: this.buildPage(),
         backgroundColor: Colors.grey[200],
         bottomNavigationBar: BottomAppBar(
           child: Container(
-            decoration: BoxDecoration(
-              border: Border(
-                top: BorderSide(
-                  width: 0.5,
-                  color: Colors.grey
-                )
-              )
-            ),
+            decoration: const BoxDecoration(),
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -132,30 +133,47 @@ class _TaskPageState extends State<TaskPage> {
   /// Build header this page.
   Widget headerPage() {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 15.0),
-      child: Row(
+      margin: const EdgeInsets.symmetric(vertical: 10.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           // Back previous screen button.
           Hero(
             tag: 'previous-screen-button',
             child: FlatButton(
               padding: const EdgeInsets.all(10.0),
-              color: Colors.grey[200],
               shape: const CircleBorder(),
               child: const Icon(Icons.arrow_back),
+              textColor: Colors.black.withOpacity(0.5),
               onPressed: () async {
-                if (this.title.isNotEmpty) {
-                  this.task.title = this.title;
-                  await this.bloc.updateTask(task);
-                }
+                await this.update();
                 Navigator.of(this.context).pop();
-              }
+              },
             )
           ),
-          Expanded(
-            child: editableTitle()
-          ),
-          const SizedBox(width: 25.0)
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+            child: Row(
+              children: <Widget>[
+                CircleCheckbox(
+                  value: this.task.done,
+                  onChanged: (bool checked) {
+                    this.task.done = checked;
+                  },
+                ),
+                SizedBox(width: 10.0),
+                Expanded(
+                  child: this.editableTitle()
+                ),
+                ImportantCheckBox(
+                  value: this.task.important,
+                  onChanged: (bool checked) {
+                    this.task.important = checked;
+                  },
+                )
+              ],
+            ),
+          )
         ]
       )
     );
