@@ -70,17 +70,7 @@ class _DatePickerState extends State<DatePicker> {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border.all(
-          color: Colors.black.withOpacity(0.2)
-        ),
         borderRadius: BorderRadius.circular(5.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.2),
-            blurRadius: 3.0,
-            offset: const Offset(0.5, 4)
-          )
-        ]
       ),
       margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
       padding: const EdgeInsets.symmetric(horizontal: 10.0),

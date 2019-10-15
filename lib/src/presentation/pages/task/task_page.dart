@@ -65,6 +65,7 @@ class _TaskPageState extends State<TaskPage> {
       },
       child: Scaffold(
         body: this.buildPage(),
+        backgroundColor: Colors.grey[200],
         bottomNavigationBar: BottomAppBar(
           child: Container(
             decoration: BoxDecoration(
