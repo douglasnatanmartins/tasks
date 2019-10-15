@@ -140,7 +140,7 @@ class _ProjectPageState extends State<ProjectPage> {
           stream: this.bloc.streamTasks,
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator()
               );
             } else {

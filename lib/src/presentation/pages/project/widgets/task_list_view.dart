@@ -45,23 +45,21 @@ class _TaskListViewState extends State<TaskListView> {
     super.dispose();
   }
 
+  /// Build the list view
   @override
   Widget build(BuildContext context) {
-    return ScrollConfiguration(
-      behavior: const ScrollBehavior(),
-      child: ListView.separated(
-        padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
-        itemCount: tasks.length,
-        separatorBuilder: (BuildContext content, int index) {
-          return Divider(
-            color: Colors.white.withOpacity(0.85),
-          );
-        },
-        itemBuilder: (BuildContext context, int index) {
-          final task = tasks[index];
-          return this.buildItem(task);
-        }
-      ),
+    return ListView.separated(
+      padding: const EdgeInsets.all(0),
+      itemCount: this.tasks.length,
+      separatorBuilder: (BuildContext content, int index) {
+        return Divider(
+          color: Colors.white.withOpacity(0.85),
+        );
+      },
+      itemBuilder: (BuildContext context, int index) {
+        final task = this.tasks[index];
+        return this.buildItem(task);
+      }
     );
   }
 

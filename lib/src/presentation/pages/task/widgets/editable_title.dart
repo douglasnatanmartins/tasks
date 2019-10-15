@@ -56,17 +56,10 @@ class _EditableTitleState extends State<EditableTitle> {
       child: TextField(
         focusNode: this.focusNode,
         controller: this.controller,
-        decoration: InputDecoration(
-          enabledBorder: const UnderlineInputBorder(
-            borderSide: BorderSide(
-              width: 0.25
-            )
-          ),
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(
-              color: Colors.blue.withOpacity(0.85),
-              width: 0.5
-            )
+        decoration: InputDecoration.collapsed(
+          hintText: 'Title',
+          hintStyle: TextStyle(
+            color: Colors.grey.withOpacity(0.5)
           )
         ),
         style: TextStyle(

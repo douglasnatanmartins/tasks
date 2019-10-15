@@ -29,6 +29,13 @@ class _CircleCheckboxState extends State<CircleCheckbox> {
   }
 
   @override
+  void didUpdateWidget(CircleCheckbox oldWidget) {
+    this.value = this.widget.value;
+    super.didUpdateWidget(oldWidget);
+  }
+
+  /// Build circle checkbox.
+  @override
   Widget build(BuildContext context) {
     if (!this.value) {
       background = Colors.white.withOpacity(0.25);

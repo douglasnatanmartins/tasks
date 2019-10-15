@@ -48,16 +48,20 @@ class _TaskListTileState extends State<TaskListTile> {
 
   @override
   Widget build(BuildContext context) {
-    if (task.done) {
+    if (this.task.done) {
       this.decoration = TextDecoration.lineThrough;
+    } else {
+      this.decoration = TextDecoration.none;
     }
 
     return ListTile(
       leading: CircleCheckbox(
-        value: task.done,
+        value: this.task.done,
         onChanged: (bool checked) {
-          task.done = checked;
-          this.widget.onChanged(task);
+          setState(() {
+            this.task.done = checked;
+            this.widget.onChanged(this.task);
+          });
         }
       ),
       title: Text(
@@ -75,8 +79,8 @@ class _TaskListTileState extends State<TaskListTile> {
         ),
         onPressed: () {
           setState(() {
-            task.important = !task.important;
-            this.widget.onChanged(task);
+            this.task.important = !task.important;
+            this.widget.onChanged(this.task);
           });
         }
       ),
