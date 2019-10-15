@@ -2,90 +2,104 @@ import 'package:flutter/material.dart';
 import 'package:tasks/src/data/models/category_model.dart';
 
 class NewCategoryForm extends StatefulWidget {
+  NewCategoryForm({
+    Key key
+  }): super(key: key);
+
   @override
-  State<StatefulWidget> createState() => _NewCategoryFormState();
+  State<NewCategoryForm> createState() => _NewCategoryFormState();
 }
 
 class _NewCategoryFormState extends State<NewCategoryForm> {
-  GlobalKey<FormState> _key;
-  TextEditingController _titleController;
-  TextEditingController _descriptionController;
+  GlobalKey<FormState> key;
+  TextEditingController titleController;
+  TextEditingController descriptionController;
 
   @override
   void initState() {
     super.initState();
-    this._key = GlobalKey<FormState>();
-    this._titleController = TextEditingController();
-    this._descriptionController = TextEditingController();
+    this.key = GlobalKey<FormState>();
+    this.titleController = TextEditingController();
+    this.descriptionController = TextEditingController();
   }
 
   @override
   void dispose() {
-    this._titleController.dispose();
-    this._descriptionController.dispose();
+    this.titleController.dispose();
+    this.descriptionController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Dialog(
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
       child: Container(
-        width: 450,
-        height: 250,
+        height: 300,
         padding: const EdgeInsets.all(20.0),
         child: Form(
-          key: _key,
+          key: this.key,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
                 'New Category',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600
-                )
+                style: Theme.of(context).textTheme.headline
               ),
+              const SizedBox(height: 10.0),
               TextFormField(
                 autofocus: true,
-                controller: this._titleController,
+                controller: this.titleController,
                 decoration: const InputDecoration(
                   labelText: 'Title'
                 ),
-                validator: (value) {
+                validator: (String value) {
                   if (value.trim().isEmpty) {
                     return 'Enter category title';
                   }
                   return null;
                 },
+                maxLength: 255,
               ),
               TextFormField(
-                controller: this._descriptionController,
+                controller: this.descriptionController,
                 decoration: const InputDecoration(
                   labelText: 'Description'
                 )
               ),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.bottomRight,
-                  child: FlatButton(
-                    color: Colors.green,
-                    child: Text(
-                      'Create',
-                      style: TextStyle(
-                        color: Colors.white
-                      )
-                    ),
+              const Spacer(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  FlatButton(
+                    child: Text('Cancel'),
+                    textColor: Colors.grey,
                     onPressed: () {
-                      if (_key.currentState.validate()) {
+                      Navigator.of(context).pop(false);
+                    },
+                  ),
+                  FlatButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(7.0)
+                    ),
+                    color: Colors.green,
+                    textColor: Colors.white,
+                    child: const Text('Create'),
+                    onPressed: () {
+                      if (this.key.currentState.validate()) {
                         CategoryModel category = CategoryModel(
-                          title: _titleController.text.trim(),
-                          description: _descriptionController.text.trim(),
-                          created: DateTime.now()
+                          title: this.titleController.text.trim(),
+                          description: this.descriptionController.text.trim(),
+                          created: DateTime.now(),
                         );
                         Navigator.of(context).pop(category);
                       }
-                    }
-                  )
-                )
+                    },
+                  ),
+                ],
               )
             ],
           )

@@ -82,7 +82,7 @@ class _TaskPageState extends State<TaskPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  'Created: ${DateFormat.yMMMd().format(this.task.createdDate)}',
+                  'Created on ${DateFormat.yMMMd().format(this.task.createdDate)}',
                   style: Theme.of(this.context).textTheme.subtitle.copyWith(
                     fontWeight: FontWeight.w300
                   )
@@ -161,7 +161,7 @@ class _TaskPageState extends State<TaskPage> {
                     this.task.done = checked;
                   },
                 ),
-                SizedBox(width: 10.0),
+                const SizedBox(width: 10.0),
                 Expanded(
                   child: this.editableTitle()
                 ),

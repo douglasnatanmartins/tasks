@@ -157,7 +157,7 @@ class _CategoryPageState extends State<CategoryPage> {
                   final result = await showDialog(
                     context: context,
                     builder: (BuildContext context) {
-                      return this._dialogWhenDeleteCategory();
+                      return this.dialogWhenDeleteCategory();
                     }
                   );
 
@@ -176,7 +176,7 @@ class _CategoryPageState extends State<CategoryPage> {
   }
 
   /// Build dialog when delete category.
-  Widget _dialogWhenDeleteCategory() {
+  Widget dialogWhenDeleteCategory() {
     return AlertDialog(
       elevation: 0,
       shape: RoundedRectangleBorder(
