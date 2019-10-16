@@ -5,13 +5,13 @@ import 'package:package_info/package_info.dart';
 import 'router.dart';
 
 class App extends StatelessWidget {
-  final PackageInfo information;
-
-  App({
+  const App({
     Key key,
     @required this.information
   }): assert(information != null),
       super(key: key);
+
+  final PackageInfo information;
 
   /// Get the object contains application information.
   static PackageInfo of(BuildContext context) {
