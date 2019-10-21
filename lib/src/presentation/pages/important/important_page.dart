@@ -3,8 +3,8 @@ import 'package:tasks/src/data/models/task_model.dart';
 import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
 
 import 'important_page_bloc.dart';
-import 'widgets/item_list_tile.dart';
 import 'widgets/page_header.dart';
+import 'widgets/task_list_view.dart';
 
 class ImportantPage extends StatefulWidget {
   @override
@@ -19,6 +19,11 @@ class _ImportantPageState extends State<ImportantPage> {
     super.initState();
     this.bloc = ImportantPageBloc();
     this.bloc.refreshTasks();
+  }
+
+  @override
+  void didUpdateWidget(ImportantPage oldWidget) {
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
@@ -73,24 +78,13 @@ class _ImportantPageState extends State<ImportantPage> {
   }
 
   Widget buildListView(List<TaskModel> tasks) {
-    return ListView.builder(
-      padding: const EdgeInsets.all(0),
-      itemCount: tasks.length,
-      itemBuilder: (BuildContext context, int index) {
-        final TaskModel task = tasks[index];
-        return ItemListTile(
-          key: UniqueKey(),
-          task: task,
-          onChecked: (bool checked) {
-            task.done = checked;
-            this.bloc.updateTask(task);
-          },
-          onImportanted: (bool importanted) async {
-            task.important = importanted;
-            await this.bloc.updateTask(task);
-            await this.bloc.refreshTasks();
-          },
-        );
+    return TaskListView(
+      data: tasks,
+      onChanged: (TaskModel task) {
+        this.bloc.updateTask(task);
+      },
+      whenOnTap: () {
+        this.bloc.refreshTasks();
       },
     );
   }
