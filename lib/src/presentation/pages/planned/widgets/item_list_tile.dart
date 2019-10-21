@@ -32,7 +32,48 @@ class _ItemListTileState extends State<ItemListTile> {
   }
 
   @override
+  void didUpdateWidget(ItemListTile oldWidget) {
+    if (oldWidget.task != this.widget.task) {
+      this.task = this.widget.task;
+    }
+
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    List<Widget> children = <Widget>[];
+
+    children.add(
+      Text(
+        this.task.title,
+        overflow: TextOverflow.ellipsis,
+        style: TextStyle(
+          fontWeight: FontWeight.w600,
+        ),
+      )
+    );
+
+    if (task.dueDate != null) {
+      children.add(SizedBox(height: 5.0));
+      children.add(
+        Row(
+          children: <Widget>[
+            Icon(Icons.date_range, size: 18.0),
+            SizedBox(width: 5.0),
+            Text(
+              DateFormat.yMEd().format(this.task.dueDate)
+            ),
+          ],
+        )
+      );
+    }
+
     return Container(
       decoration: BoxDecoration(
         color: Colors.grey.shade200,
@@ -45,25 +86,7 @@ class _ItemListTileState extends State<ItemListTile> {
         ),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              this.task.title,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontWeight: FontWeight.w600
-              )
-            ),
-            SizedBox(height: 5.0),
-            Row(
-              children: <Widget>[
-                Icon(Icons.date_range, size: 18.0),
-                SizedBox(width: 5.0),
-                Text(
-                  DateFormat.yMEd().format(this.task.dueDate)
-                )
-              ],
-            )
-          ],
+          children: children
         ),
         onTap: () {
           Navigator.of(context).pushNamed('/task', arguments: task)

@@ -32,6 +32,15 @@ class _TaskListViewState extends State<TaskListView> {
   }
 
   @override
+  void didUpdateWidget(TaskListView oldWidget) {
+    if (oldWidget.data != this.widget.data) {
+      this.data = this.widget.data;
+    }
+
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   void dispose() {
     super.dispose();
   }
@@ -41,12 +50,16 @@ class _TaskListViewState extends State<TaskListView> {
     List<GroupListTile> children = <GroupListTile>[];
 
     this.data.forEach((String title, List<TaskModel> tasks) {
-      children.add(GroupListTile(
-        title: title,
-        items: tasks,
-        onChanged: this.widget.onChanged,
-        whenOnTap: this.widget.whenOnTap,
-      ));
+      if (tasks.length > 0) {
+        children.add(
+          GroupListTile(
+            title: title,
+            items: tasks,
+            onChanged: this.widget.onChanged,
+            whenOnTap: this.widget.whenOnTap,
+          )
+        );
+      }
     });
 
     return ListView(

@@ -37,6 +37,15 @@ class _GroupListTileState extends State<GroupListTile> {
   }
 
   @override
+  void didUpdateWidget(GroupListTile oldWidget) {
+    if (oldWidget.items.length != this.widget.items.length) {
+      this.items = this.widget.items;
+    }
+
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   void dispose() {
     super.dispose();
   }

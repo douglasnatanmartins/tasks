@@ -28,6 +28,11 @@ class _PlannedPageState extends State<PlannedPage> {
     this.bloc.refreshTasks();
   }
 
+  @override
+  void didUpdateWidget(PlannedPage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+  }
+
   /// Called when this state removed from the tree.
   @override
   void dispose() {
