@@ -7,16 +7,15 @@ class ItemListTile extends StatefulWidget {
   ItemListTile({
     Key key,
     @required this.task,
-    @required this.onChanged,
-    @required this.whenOnTap
+    @required this.onChecked,
+    @required this.onImportanted
   }): assert(task != null),
-      assert(onChanged != null),
-      assert(whenOnTap != null),
+      assert(onChecked != null),
       super(key: key);
 
   final TaskModel task;
-  final ValueChanged<TaskModel> onChanged;
-  final Function whenOnTap;
+  final ValueChanged<bool> onChecked;
+  final ValueChanged<bool> onImportanted;
 
   @override
   State<ItemListTile> createState() => _ItemListTileState();
@@ -32,20 +31,6 @@ class _ItemListTileState extends State<ItemListTile> {
   }
 
   @override
-  void didUpdateWidget(ItemListTile oldWidget) {
-    if (oldWidget.task != this.widget.task) {
-      this.task = this.widget.task;
-    }
-
-    super.didUpdateWidget(oldWidget);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     List<Widget> children = <Widget>[];
 
@@ -58,9 +43,9 @@ class _ItemListTileState extends State<ItemListTile> {
         )
       )
     );
+    children.add(const SizedBox(height: 5.0));
 
-    if (this.task.dueDate != null) {
-      children.add(const SizedBox(height: 5.0));
+    if (task.dueDate != null) {
       children.add(
         Row(
           children: <Widget>[
@@ -83,10 +68,7 @@ class _ItemListTileState extends State<ItemListTile> {
         contentPadding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
         leading: CircleCheckbox(
           value: task.done,
-          onChanged: (bool checked) {
-            this.task.done = checked;
-            this.widget.onChanged(task);
-          },
+          onChanged: this.widget.onChecked
         ),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,15 +80,14 @@ class _ItemListTileState extends State<ItemListTile> {
             color: Colors.yellow[600]
           ),
           onPressed: () {
-            this.task.important = !this.task.important;
-            this.widget.onChanged(this.task);
+            task.important = !task.important;
+            this.widget.onImportanted(task.important);
           }
         ),
         onTap: () {
-          Navigator.of(this.context).pushNamed('/task', arguments: this.task)
-            .then((result) => this.widget.whenOnTap());
-        },
-      ),
+          Navigator.of(context).pushNamed('/task', arguments: task);
+        }
+      )
     );
   }
 }

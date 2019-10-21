@@ -5,15 +5,15 @@ import 'package:tasks/src/data/models/task_model.dart';
 import 'package:tasks/src/data/repositories/task_repository.dart';
 
 class ImportantPageBloc implements BlocContract {
-  ImportantPageBloc() {
-    this.taskRepository = TaskRepository();
-  }
-
-  TaskRepository taskRepository;
-
   final controllerTasks = StreamController();
   Sink get sinkTasks => controllerTasks.sink;
   Stream get streamTasks => controllerTasks.stream;
+
+  TaskRepository taskRepository;
+
+  ImportantPageBloc() {
+    this.taskRepository = TaskRepository();
+  }
 
   Future<bool> updateTask(TaskModel task) async {
     bool result = await this.taskRepository.update(task.toMap());
@@ -22,9 +22,8 @@ class ImportantPageBloc implements BlocContract {
 
   Future<void> refreshTasks() async {
     final result = await taskRepository.allImportantTasks();
-
     List<TaskModel> tasks = <TaskModel>[];
-    result.forEach((Map<String, dynamic> task) {
+    result.forEach((task) {
       tasks.add(TaskModel.from(task));
     });
 
