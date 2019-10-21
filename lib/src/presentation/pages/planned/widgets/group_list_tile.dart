@@ -52,15 +52,10 @@ class _GroupListTileState extends State<GroupListTile> {
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      data: Theme.of(this.context).copyWith(
-        dividerColor: Colors.transparent
-      ),
-      child: ExpansionTile(
-        initiallyExpanded: true,
-        title: Text(this.title),
-        children: this.buildChildren()
-      ),
+    return ExpansionTile(
+      initiallyExpanded: true,
+      title: Text(this.title),
+      children: this.buildChildren()
     );
   }
 
