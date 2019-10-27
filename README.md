@@ -1,4 +1,9 @@
 # Tenla: Tasks
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/tenla/tasks)
+![GitHub All Releases](https://img.shields.io/github/downloads/tenla/tasks/total)
+![GitHub repo size](https://img.shields.io/github/repo-size/tenla/tasks)
+![GitHub](https://img.shields.io/github/license/tenla/tasks)
+
 Helps you organize and simplify your plans.
 
 ##### Criteria for Tasks app:
