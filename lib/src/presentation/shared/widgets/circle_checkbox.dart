@@ -58,9 +58,9 @@ class _CircleCheckboxState extends State<CircleCheckbox> {
         decoration: BoxDecoration(
           color: this.background,
           shape: BoxShape.circle,
-          border: this.border
+          border: this.border,
         ),
-        child: this.icon
+        child: this.icon,
       ),
       onTap: () {
         setState(() {

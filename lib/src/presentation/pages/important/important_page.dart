@@ -44,9 +44,9 @@ class _ImportantPageState extends State<ImportantPage> {
       child: Column(
         children: <Widget>[
           this.headerPage(),
-          this.bodyPage()
+          this.bodyPage(),
         ],
-      )
+      ),
     );
   }
 
@@ -62,7 +62,7 @@ class _ImportantPageState extends State<ImportantPage> {
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
-                child: CircularProgressIndicator()
+                child: CircularProgressIndicator(),
               );
             } else {
               if (snapshot.hasData && snapshot.data.isNotEmpty) {
@@ -71,8 +71,8 @@ class _ImportantPageState extends State<ImportantPage> {
                 return EmptyContentBox(message: 'not important task');
               }
             }
-          }
-        )
+          },
+        ),
       ),
     );
   }

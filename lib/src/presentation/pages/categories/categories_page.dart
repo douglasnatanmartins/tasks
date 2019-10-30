@@ -14,7 +14,7 @@ class CategoriesPage extends StatefulWidget {
   }): super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _CategoriesPageState();
+  State<CategoriesPage> createState() => _CategoriesPageState();
 }
 
 class _CategoriesPageState extends State<CategoriesPage> {
@@ -50,17 +50,17 @@ class _CategoriesPageState extends State<CategoriesPage> {
         child: Column(
           children: <Widget>[
             this.pageHeader(),
-            this.pageBody()
-          ]
-        )
+            this.pageBody(),
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         heroTag: 'floating-button',
         shape: CircleBorder(
           side: BorderSide(
             color: Colors.white.withOpacity(0.85),
-            width: 3.0
-          )
+            width: 3.0,
+          ),
         ),
         elevation: 0,
         child: const Icon(Icons.add, size: 30),
@@ -78,7 +78,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
             this.bloc.addCategory(result);
           }
         },
-      )
+      ),
     );
   }
 
@@ -98,15 +98,15 @@ class _CategoriesPageState extends State<CategoriesPage> {
                 DateTimeUtil.currentDay,
                 style: const TextStyle(
                   color: Colors.white,
-                  fontSize: 30.0
-                )
+                  fontSize: 30.0,
+                ),
               ),
               Text(
                 '${DateTimeUtil.currentDate} ${DateTimeUtil.currentMonth}',
                 style: TextStyle(
                   color: Colors.white.withOpacity(0.85),
-                  fontSize: 25.0
-                )
+                  fontSize: 25.0,
+                ),
               ),
               const SizedBox(height: 15.0),
               StreamBuilder(
@@ -128,15 +128,15 @@ class _CategoriesPageState extends State<CategoriesPage> {
                     description,
                     style: TextStyle(
                       color: Colors.white.withOpacity(0.75),
-                      fontSize: 18.0
-                    )
+                      fontSize: 18.0,
+                    ),
                   );
-                }
-              )
-            ]
-          )
-        )
-      ]
+                },
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
@@ -148,7 +148,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
-              child: CircularProgressIndicator()
+              child: CircularProgressIndicator(),
             );
           } else {
             if (snapshot.hasData && snapshot.data.isNotEmpty) {
@@ -166,8 +166,8 @@ class _CategoriesPageState extends State<CategoriesPage> {
               );
             }
           }
-        }
-      )
+        },
+      ),
     );
   }
 }

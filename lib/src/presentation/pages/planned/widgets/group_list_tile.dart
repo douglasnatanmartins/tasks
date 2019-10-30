@@ -54,12 +54,12 @@ class _GroupListTileState extends State<GroupListTile> {
   Widget build(BuildContext context) {
     return Theme(
       data: Theme.of(this.context).copyWith(
-        dividerColor: Colors.transparent
+        dividerColor: Colors.transparent,
       ),
       child: ExpansionTile(
         initiallyExpanded: true,
         title: Text(this.title),
-        children: this.buildChildren()
+        children: this.buildChildren(),
       ),
     );
   }
@@ -73,7 +73,7 @@ class _GroupListTileState extends State<GroupListTile> {
           task.done = checked;
           this.widget.onChanged(task);
         },
-        whenOnTap: this.widget.whenOnTap
+        whenOnTap: this.widget.whenOnTap,
       ));
     });
 

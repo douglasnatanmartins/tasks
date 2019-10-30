@@ -89,7 +89,7 @@ class _TaskPageState extends State<TaskPage> {
                 ),
                 IconButton(
                   color: Colors.red[400],
-                  icon: Icon(Icons.delete),
+                  icon: const Icon(Icons.delete),
                   onPressed: () async {
                     final result = await showDialog(
                       context: context,
@@ -104,10 +104,10 @@ class _TaskPageState extends State<TaskPage> {
                       }
                     }
                   },
-                )
+                ),
               ],
-            )
-          )
+            ),
+          ),
         ),
       ),
     );
@@ -122,11 +122,11 @@ class _TaskPageState extends State<TaskPage> {
             children: <Widget>[
               this.headerPage(),
               this.bodyPage(),
-              this.footerPage()
+              this.footerPage(),
             ],
           ),
-        )
-      )
+        ),
+      ),
     );
   }
 
@@ -149,7 +149,7 @@ class _TaskPageState extends State<TaskPage> {
                 await this.update();
                 Navigator.of(this.context).pop();
               },
-            )
+            ),
           ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -170,12 +170,12 @@ class _TaskPageState extends State<TaskPage> {
                   onChanged: (bool checked) {
                     this.task.important = checked;
                   },
-                )
+                ),
               ],
             ),
-          )
-        ]
-      )
+          ),
+        ],
+      ),
     );
   }
 
@@ -185,7 +185,7 @@ class _TaskPageState extends State<TaskPage> {
       title: this.task.title,
       onChanged: (String newTitle) {
         this.title = newTitle;
-      }
+      },
     );
   }
 
@@ -196,7 +196,7 @@ class _TaskPageState extends State<TaskPage> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ),
-      content: Text('Are you sure delete this task?'),
+      content: const Text('Are you sure delete this task?'),
       actions: <Widget>[
         // Cancel button.
         FlatButton(
@@ -224,7 +224,7 @@ class _TaskPageState extends State<TaskPage> {
             Navigator.of(context).pop(true);
           },
         ),
-      ]
+      ],
     );
   }
 
@@ -241,8 +241,8 @@ class _TaskPageState extends State<TaskPage> {
           } else {
             return this.buildListView(snapshot.data);
           }
-        }
-      )
+        },
+      ),
     );
   }
 
@@ -260,7 +260,7 @@ class _TaskPageState extends State<TaskPage> {
 
     return Container(
       child: Column(
-        children: tiles
+        children: tiles,
       ),
     );
   }
@@ -280,7 +280,7 @@ class _TaskPageState extends State<TaskPage> {
             this.bloc.updateStep(step);
           }
         }
-      }
+      },
     );
   }
 
@@ -297,7 +297,7 @@ class _TaskPageState extends State<TaskPage> {
             await this.bloc.updateTask(this.task);
           },
         ),
-        this.buildNoteForm(this.task)
+        this.buildNoteForm(this.task),
       ],
     );
   }
@@ -309,7 +309,7 @@ class _TaskPageState extends State<TaskPage> {
       onChanged: (String note) {
         task.note = note;
         this.bloc.updateTask(task);
-      }
+      },
     );
   }
 }

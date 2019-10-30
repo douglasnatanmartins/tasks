@@ -11,11 +11,10 @@ class SettingsPage extends StatefulWidget {
   }): super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _SettingsPageState();
+  State<SettingsPage> createState() => _SettingsPageState();
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  final String route = '/settings';
   // Business Logic Component.
   SettingsPageBloc bloc;
   PackageInfo app;
@@ -50,9 +49,9 @@ class _SettingsPageState extends State<SettingsPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           this.headerPage(),
-          this.bodyPage()
-        ]
-      )
+          this.bodyPage(),
+        ],
+      ),
     );
   }
 
@@ -68,7 +67,7 @@ class _SettingsPageState extends State<SettingsPage> {
         width: MediaQuery.of(context).size.width,
         color: Colors.white,
         child: ScrollConfiguration(
-          behavior: ScrollBehavior(),
+          behavior: const ScrollBehavior(),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,15 +79,15 @@ class _SettingsPageState extends State<SettingsPage> {
                       border: Border(
                         bottom: BorderSide(
                           color: Colors.grey[400],
-                          width: 0.5
-                        )
-                      )
+                          width: 0.5,
+                        ),
+                      ),
                     ),
                     child: Text(
                       'About',
-                      style: Theme.of(context).textTheme.title
-                    )
-                  )
+                      style: Theme.of(context).textTheme.title,
+                    ),
+                  ),
                 ),
                 ListTile(
                   title: const Text('Version'),
@@ -97,13 +96,13 @@ class _SettingsPageState extends State<SettingsPage> {
                 ListTile(
                   title: const Text('Third-party software'),
                   trailing: const Icon(Icons.arrow_forward),
-                  onTap: () {}
-                )
-              ]
-            )
-          )
+                  onTap: () {},
+                ),
+              ],
+            ),
+          ),
         ),
-      )
+      ),
     );
   }
 }

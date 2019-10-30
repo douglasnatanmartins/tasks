@@ -55,9 +55,9 @@ class _ProjectPageState extends State<ProjectPage> {
         child: Column(
           children: <Widget>[
             this.headerPage(project),
-            this.bodyPage()
+            this.bodyPage(),
           ],
-        )
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         heroTag: 'floating-button',
@@ -65,8 +65,8 @@ class _ProjectPageState extends State<ProjectPage> {
         shape: const CircleBorder(
           side: BorderSide(
             color: Colors.white,
-            width: 3.0
-          )
+            width: 3.0,
+          ),
         ),
         child: const Icon(Icons.add),
         backgroundColor: Colors.green,
@@ -98,8 +98,8 @@ class _ProjectPageState extends State<ProjectPage> {
               color: Colors.white,
               shape: const CircleBorder(),
               child: const Icon(Icons.arrow_back),
-              onPressed: () => Navigator.of(this.context).pop()
-            )
+              onPressed: () => Navigator.of(this.context).pop(),
+            ),
           ),
           Expanded(
             child: Text(
@@ -108,9 +108,9 @@ class _ProjectPageState extends State<ProjectPage> {
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 18.0,
-                fontWeight: FontWeight.w600
-              )
-            )
+                fontWeight: FontWeight.w600,
+              ),
+            ),
           ),
           // Edit project button.
           FlatButton(
@@ -118,17 +118,17 @@ class _ProjectPageState extends State<ProjectPage> {
             shape: const CircleBorder(
               side: BorderSide(
                 color: Colors.white,
-                width: 4.0
-              )
+                width: 4.0,
+              ),
             ),
             child: const Icon(Icons.edit),
             textColor: Colors.white,
             onPressed: () {
               Navigator.of(this.context).pushNamed('/project/task');
-            }
-          )
-        ]
-      )
+            },
+          ),
+        ],
+      ),
     );
   }
 
@@ -141,7 +141,7 @@ class _ProjectPageState extends State<ProjectPage> {
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
-                child: CircularProgressIndicator()
+                child: CircularProgressIndicator(),
               );
             } else {
               if (snapshot.hasData && snapshot.data.isNotEmpty) {
@@ -161,9 +161,9 @@ class _ProjectPageState extends State<ProjectPage> {
                 );
               }
             }
-          }
-        )
-      )
+          },
+        ),
+      ),
     );
   }
 }

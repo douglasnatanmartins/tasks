@@ -54,9 +54,9 @@ class _ItemListTileState extends State<ItemListTile> {
         this.task.title,
         overflow: TextOverflow.ellipsis,
         style: const TextStyle(
-          fontWeight: FontWeight.w600
-        )
-      )
+          fontWeight: FontWeight.w600,
+        ),
+      ),
     );
 
     if (this.task.dueDate != null) {
@@ -67,10 +67,10 @@ class _ItemListTileState extends State<ItemListTile> {
             const Icon(Icons.date_range, size: 18.0),
             const SizedBox(width: 5.0),
             Text(
-              DateFormat.yMEd().format(this.task.dueDate)
-            )
+              DateFormat.yMEd().format(this.task.dueDate),
+            ),
           ],
-        )
+        ),
       );
     }
 
@@ -95,12 +95,12 @@ class _ItemListTileState extends State<ItemListTile> {
         trailing: IconButton(
           icon: Icon(
             Icons.star,
-            color: Colors.yellow[600]
+            color: Colors.yellow[600],
           ),
           onPressed: () {
             this.task.important = !this.task.important;
             this.widget.onChanged(this.task);
-          }
+          },
         ),
         onTap: () {
           Navigator.of(this.context).pushNamed('/task', arguments: this.task)

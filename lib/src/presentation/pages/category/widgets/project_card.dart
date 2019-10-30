@@ -24,9 +24,9 @@ class ProjectCard extends StatelessWidget {
         style: TextStyle(
           color: Colors.blue[600],
           fontSize: 17.0,
-          fontWeight: FontWeight.w600
-        )
-      )
+          fontWeight: FontWeight.w600,
+        ),
+      ),
     );
 
     if (this.project.description.isNotEmpty) {
@@ -36,9 +36,9 @@ class ProjectCard extends StatelessWidget {
           this.project.description,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
-            color: Colors.black.withOpacity(0.8)
-          )
-        )
+            color: Colors.black.withOpacity(0.8),
+          ),
+        ),
       );
     }
 
@@ -47,9 +47,9 @@ class ProjectCard extends StatelessWidget {
       Text(
         'Created: ${DateFormat.yMMMd().format(this.project.created)}',
         style: TextStyle(
-          color: Colors.black.withOpacity(0.45)
-        )
-      )
+          color: Colors.black.withOpacity(0.45),
+        ),
+      ),
     );
 
     return Container(
@@ -57,7 +57,7 @@ class ProjectCard extends StatelessWidget {
       padding: const EdgeInsets.all(15.0),
       decoration: BoxDecoration(
         color: Colors.grey.withOpacity(0.18),
-        borderRadius: BorderRadius.circular(10.0)
+        borderRadius: BorderRadius.circular(10.0),
       ),
       child: Column(
         children: <Widget>[
@@ -68,32 +68,32 @@ class ProjectCard extends StatelessWidget {
                 child: Icon(
                   project.icon,
                   size: 30.0,
-                  color: project.color
-                )
+                  color: project.color,
+                ),
               ),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
-                  children: children
-                )
-              )
-            ]
+                  children: children,
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 10.0),
           Row(
             children: <Widget>[
               Expanded(
                 child: LinearProgressIndicator(
-                  value: this.progress
+                  value: this.progress,
                 ),
               ),
               const SizedBox(width: 10.0),
-              Text((progress * 100).round().toString() + '%')
+              Text((progress * 100).round().toString() + '%'),
             ],
-          )
+          ),
         ],
-      )
+      ),
     );
   }
 }

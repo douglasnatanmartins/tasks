@@ -22,7 +22,7 @@ class TaskListView extends StatefulWidget {
   final Function whenOnTap;
 
   @override
-  State<StatefulWidget> createState() => _TaskListViewState();
+  State<TaskListView> createState() => _TaskListViewState();
 }
 
 class _TaskListViewState extends State<TaskListView> {

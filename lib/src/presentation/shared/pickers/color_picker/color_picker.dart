@@ -14,7 +14,7 @@ class ColorPicker extends StatefulWidget {
   final ValueChanged<Color> onChanged;
 
   @override
-  State<StatefulWidget> createState() => _ColorPickerState();
+  State<ColorPicker> createState() => _ColorPickerState();
 }
 
 class _ColorPickerState extends State<ColorPicker> {
@@ -48,24 +48,24 @@ class _ColorPickerState extends State<ColorPicker> {
                 this.current = color;
                 this.widget.onChanged(color);
               });
-            }
+            },
           ),
-        )
+        ),
       );
     });
 
     return Expanded(
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.5)
+          color: Colors.white.withOpacity(0.5),
         ),
         child: GridView.count(
-          padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
           crossAxisCount: 5,
           crossAxisSpacing: 20,
           mainAxisSpacing: 20,
           children: children,
-        )
+        ),
       ),
     );
   }

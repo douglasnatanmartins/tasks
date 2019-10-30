@@ -59,7 +59,7 @@ class _TaskListViewState extends State<TaskListView> {
       itemBuilder: (BuildContext context, int index) {
         final task = this.tasks[index];
         return this.buildItem(task);
-      }
+      },
     );
   }
 

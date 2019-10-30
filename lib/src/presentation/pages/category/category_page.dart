@@ -49,7 +49,7 @@ class _CategoryPageState extends State<CategoryPage> {
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         final CategoryModel category = snapshot.data;
         return this.buildPage(category);
-      }
+      },
     );
   }
 
@@ -61,16 +61,16 @@ class _CategoryPageState extends State<CategoryPage> {
         child: Column(
           children: <Widget>[
             this.headerPage(category),
-            this.bodyPage()
+            this.bodyPage(),
           ],
-        )
+        ),
       ),
       // Create new project button.
       floatingActionButton: FloatingActionButton(
         heroTag: 'floating-button',
         elevation: 0,
         backgroundColor: Colors.green[600],
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
         onPressed: () async {
           final result = await Navigator.of(this.context).push(
             MaterialPageRoute(
@@ -78,14 +78,14 @@ class _CategoryPageState extends State<CategoryPage> {
                 return ProjectNewScreen(
                   category: category.id
                 );
-              }
-            )
+              },
+            ),
           );
 
           if (result is ProjectModel) {
             this.bloc.addProject(result);
           }
-        }
+        },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
@@ -99,9 +99,9 @@ class _CategoryPageState extends State<CategoryPage> {
         category.title,
         overflow: TextOverflow.ellipsis,
         style: Theme.of(this.context).textTheme.title.copyWith(
-          fontSize: 22.0
-        )
-      )
+          fontSize: 22.0,
+        ),
+      ),
     );
 
     if (category.description != null && category.description.isNotEmpty) {
@@ -110,14 +110,14 @@ class _CategoryPageState extends State<CategoryPage> {
           category.description,
           overflow: TextOverflow.ellipsis,
           style: Theme.of(context).textTheme.subtitle.copyWith(
-            fontWeight: FontWeight.w300
-          )
-        )
+            fontWeight: FontWeight.w300,
+          ),
+        ),
       );
     }
 
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 15.0),
+      padding: const EdgeInsets.symmetric(vertical: 15.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -131,23 +131,23 @@ class _CategoryPageState extends State<CategoryPage> {
                   padding: const EdgeInsets.all(10.0),
                   shape: const CircleBorder(),
                   color: Colors.white,
-                  child: Icon(Icons.arrow_back),
-                  onPressed: () => Navigator.of(this.context).pop()
-                )
+                  child: const Icon(Icons.arrow_back),
+                  onPressed: () => Navigator.of(this.context).pop(),
+                ),
               ),
               // Header title.
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: headerTitle
-                )
+                  children: headerTitle,
+                ),
               ),
               // Delete button.
               FlatButton(
                 padding: const EdgeInsets.all(12.0),
                 shape: const CircleBorder(
-                  side: BorderSide(color: Colors.white, width: 4.0)
+                  side: BorderSide(color: Colors.white, width: 4.0),
                 ),
                 color: Colors.red,
                 textColor: Colors.white,
@@ -166,12 +166,12 @@ class _CategoryPageState extends State<CategoryPage> {
                       Navigator.of(this.context).pop();
                     }
                   }
-                }
-              )
-            ]
+                },
+              ),
+            ],
           ),
-        ]
-      )
+        ],
+      ),
     );
   }
 
@@ -180,9 +180,9 @@ class _CategoryPageState extends State<CategoryPage> {
     return AlertDialog(
       elevation: 0,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0)
+        borderRadius: BorderRadius.circular(10.0),
       ),
-      content: Text('Are you want delete this category?'),
+      content: const Text('Are you want delete this category?'),
       actions: <Widget>[
         // Cancel button.
         FlatButton(
@@ -195,22 +195,22 @@ class _CategoryPageState extends State<CategoryPage> {
           child: const Text('Cancel'),
           onPressed: () { // When the user pressed CANCEL button.
             Navigator.of(context).pop(false);
-          }
+          },
         ),
         // Yes Button.
         FlatButton(
           padding: const EdgeInsets.symmetric(horizontal: 30.0),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(7.0)
+            borderRadius: BorderRadius.circular(7.0),
           ),
           color: Theme.of(this.context).errorColor,
           textColor: Colors.white,
           child: const Text('Yes'),
           onPressed: () { // When the user pressed YES button.
             Navigator.of(context).pop(true);
-          }
+          },
         ),
-      ]
+      ],
     );
   }
 
@@ -219,14 +219,14 @@ class _CategoryPageState extends State<CategoryPage> {
     return Expanded(
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white
+          color: Colors.white,
         ),
         child: StreamBuilder(
           stream: this.bloc.streamProjects,
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-                child: CircularProgressIndicator()
+              return const Center(
+                child: CircularProgressIndicator(),
               );
             } else {
               if (snapshot.data.isNotEmpty) { // Has the stream data.
@@ -238,9 +238,9 @@ class _CategoryPageState extends State<CategoryPage> {
                 return EmptyContentBox(message: 'not project found');
               }
             }
-          }
-        )
-      )
+          },
+        ),
+      ),
     );
   }
 }

@@ -15,17 +15,17 @@ class PageHeader extends StatelessWidget {
               Text(
                 'Important',
                 style: Theme.of(context).textTheme.title.copyWith(
-                  fontSize: 22.0
-                )
+                  fontSize: 22.0,
+                ),
               ),
               const SizedBox(height: 3.5),
               Text(
                 'List of tasks by important',
                 style: Theme.of(context).textTheme.subtitle.copyWith(
-                  fontWeight: FontWeight.w300
-                )
-              )
-            ]
+                  fontWeight: FontWeight.w300,
+                ),
+              ),
+            ],
           ),
         ],
       ),
