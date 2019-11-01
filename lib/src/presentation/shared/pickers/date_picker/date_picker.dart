@@ -20,7 +20,7 @@ class DatePicker extends StatefulWidget {
   final DateTime initialDate;
 
   @override
-  State<StatefulWidget> createState() => _DatePickerState();
+  State<DatePicker> createState() => _DatePickerState();
 }
 
 class _DatePickerState extends State<DatePicker> {
@@ -81,15 +81,15 @@ class _DatePickerState extends State<DatePicker> {
           child: Text(
             this.title,
             style: TextStyle(
-              color: textColor
-            )
+              color: textColor,
+            ),
           ),
           onTap: () async {
             DateTime result = await showDatePicker(
               context: this.context,
               initialDate: this.selected,
               firstDate: DateTime(this.selected.year - 10),
-              lastDate: DateTime(today.year + 10)
+              lastDate: DateTime(today.year + 10),
             );
 
             if (result != null) {
@@ -99,10 +99,10 @@ class _DatePickerState extends State<DatePicker> {
                 this.widget.onSelected(result);
               });
             }
-          }
+          },
         ),
-        trailing: deleteButton
-      )
+        trailing: deleteButton,
+      ),
     );
   }
 
@@ -114,7 +114,7 @@ class _DatePickerState extends State<DatePicker> {
           this.selected = null;
           this.widget.onSelected(null);
         });
-      }
+      },
     );
   }
 }

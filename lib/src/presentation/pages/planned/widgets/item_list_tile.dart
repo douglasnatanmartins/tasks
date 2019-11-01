@@ -56,21 +56,21 @@ class _ItemListTileState extends State<ItemListTile> {
         style: TextStyle(
           fontWeight: FontWeight.w600,
         ),
-      )
+      ),
     );
 
     if (task.dueDate != null) {
-      children.add(SizedBox(height: 5.0));
+      children.add(const SizedBox(height: 5.0));
       children.add(
         Row(
           children: <Widget>[
             Icon(Icons.date_range, size: 18.0),
             SizedBox(width: 5.0),
             Text(
-              DateFormat.yMEd().format(this.task.dueDate)
+              DateFormat.yMEd().format(this.task.dueDate),
             ),
           ],
-        )
+        ),
       );
     }
 
@@ -79,20 +79,20 @@ class _ItemListTileState extends State<ItemListTile> {
         color: Colors.grey.shade200,
       ),
       child: ListTile(
-        contentPadding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
         leading: CircleCheckbox(
           value: task.done,
-          onChanged: this.widget.onChanged
+          onChanged: this.widget.onChanged,
         ),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: children
+          children: children,
         ),
         onTap: () {
-          Navigator.of(context).pushNamed('/task', arguments: task)
+          Navigator.of(this.context).pushNamed('/task', arguments: task)
             .then((result) => this.widget.whenOnTap());
-        }
-      )
+        },
+      ),
     );
   }
 }

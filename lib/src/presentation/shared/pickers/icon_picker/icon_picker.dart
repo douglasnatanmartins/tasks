@@ -44,11 +44,11 @@ class _IconPickerState extends State<IconPicker> {
     });
 
     return GridView.count(
-      padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
       crossAxisCount: 5,
       crossAxisSpacing: 20.0,
       mainAxisSpacing: 20.0,
-      children: children
+      children: children,
     );
   }
 

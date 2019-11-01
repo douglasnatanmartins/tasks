@@ -15,17 +15,17 @@ class PageHeader extends StatelessWidget {
               Text(
                 'Settings',
                 style: Theme.of(context).textTheme.title.copyWith(
-                  fontSize: 22.0
-                )
+                  fontSize: 22.0,
+                ),
               ),
               const SizedBox(height: 3.5),
               Text(
                 'General settings for the application',
                 style: Theme.of(context).textTheme.subtitle.copyWith(
-                  fontWeight: FontWeight.w300
-                )
-              )
-            ]
+                  fontWeight: FontWeight.w300,
+                ),
+              ),
+            ],
           ),
         ],
       ),

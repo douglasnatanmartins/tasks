@@ -27,8 +27,8 @@ class _ProjectNewScreenState extends State<ProjectNewScreen> {
   @override
   void initState() {
     super.initState();
-    this.color = DataSupport.colors.values.elementAt(0);
-    this.icon = DataSupport.icons.values.elementAt(0);
+    this.color = DataSupport.colors['blue'];
+    this.icon = DataSupport.icons['folder'];
     this.editingTitle = TextEditingController();
     this.editingDescription = TextEditingController();
   }
@@ -55,39 +55,39 @@ class _ProjectNewScreenState extends State<ProjectNewScreen> {
     return Column(
       children: <Widget>[
         this.pageHeader(),
-        this.pageBody()
+        this.pageBody(),
       ],
     );
   }
 
   Widget pageHeader() {
     return AnimatedContainer(
-      duration: Duration(milliseconds: 180),
+      duration: const Duration(milliseconds: 180),
       decoration: BoxDecoration(
-        color: this.color
+        color: this.color,
       ),
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: SafeArea(
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 20.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               this.theActions(),
-              SizedBox(height: 15.0),
+              const SizedBox(height: 15.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   this.iconPicker(),
                   Expanded(
-                    child: this.headerTitle()
-                  )
+                    child: this.headerTitle(),
+                  ),
                 ],
               ),
-              SizedBox(height: 5.0),
+              const SizedBox(height: 5.0),
               this.textFieldDescription(),
-            ]
+            ],
           ),
         ),
       )
@@ -103,7 +103,7 @@ class _ProjectNewScreenState extends State<ProjectNewScreen> {
           shape: BoxShape.circle,
           color: Colors.white.withOpacity(0.5),
         ),
-        padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
         child: Icon(this.icon, color: Colors.white),
       ),
       onTap: () {
@@ -114,18 +114,18 @@ class _ProjectNewScreenState extends State<ProjectNewScreen> {
               child: IconPicker(
                 icons: DataSupport.icons.values.toList(),
                 current: this.icon,
-                onChanged: this.changeIcon
-              )
+                onChanged: this.changeIcon,
+              ),
             );
-          }
+          },
         );
-      }
+      },
     );
   }
 
   Widget headerTitle() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: TextField(
         controller: this.editingTitle,
         autofocus: true,
@@ -136,18 +136,18 @@ class _ProjectNewScreenState extends State<ProjectNewScreen> {
           hintStyle: TextStyle(
             fontWeight: FontWeight.w600,
             color: Colors.white.withOpacity(0.4),
-          )
+          ),
         ),
         inputFormatters: [
-          LengthLimitingTextInputFormatter(255)
+          LengthLimitingTextInputFormatter(255),
         ],
         cursorColor: Colors.white.withOpacity(0.5),
         style: TextStyle(
           color: Colors.white,
           fontSize: 21.0,
-          fontWeight: FontWeight.w600
-        )
-      )
+          fontWeight: FontWeight.w600,
+        ),
+      ),
     );
   }
 
@@ -161,10 +161,10 @@ class _ProjectNewScreenState extends State<ProjectNewScreen> {
             color: Colors.white.withOpacity(0.4)
           ),
           counterStyle: TextStyle(
-            color: Colors.white
+            color: Colors.white,
           ),
           enabledBorder: InputBorder.none,
-          focusedBorder: InputBorder.none
+          focusedBorder: InputBorder.none,
         ),
         style: TextStyle(
           color: Colors.white.withOpacity(0.9),
@@ -184,7 +184,7 @@ class _ProjectNewScreenState extends State<ProjectNewScreen> {
             this.theColorPicker(),
           ],
         ),
-      )
+      ),
     );
   }
 
@@ -195,7 +195,7 @@ class _ProjectNewScreenState extends State<ProjectNewScreen> {
         setState(() {
           this.color = selected;
         });
-      }
+      },
     );
   }
 
@@ -208,7 +208,7 @@ class _ProjectNewScreenState extends State<ProjectNewScreen> {
             shape: RoundedRectangleBorder(
               side: BorderSide(
                 width: 3,
-                color: Colors.white
+                color: Colors.white,
               ),
               borderRadius: BorderRadius.circular(7.0),
             ),
@@ -217,12 +217,12 @@ class _ProjectNewScreenState extends State<ProjectNewScreen> {
             child: const Text('Cancel'),
             onPressed: () => Navigator.of(this.context).pop(false),
           ),
-          SizedBox(width: 10.0),
+          const SizedBox(width: 10.0),
           FlatButton(
             shape: RoundedRectangleBorder(
               side: BorderSide(
                 width: 3,
-                color: Colors.white
+                color: Colors.white,
               ),
               borderRadius: BorderRadius.circular(7.0),
             ),
@@ -239,7 +239,7 @@ class _ProjectNewScreenState extends State<ProjectNewScreen> {
                   description: description,
                   created: DateTime.now(),
                   color: this.color,
-                  icon: this.icon
+                  icon: this.icon,
                 );
                 Navigator.of(this.context).pop(model);
               }

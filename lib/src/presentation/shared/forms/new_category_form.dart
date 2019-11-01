@@ -47,14 +47,14 @@ class _NewCategoryFormState extends State<NewCategoryForm> {
             children: <Widget>[
               Text(
                 'New Category',
-                style: Theme.of(context).textTheme.headline
+                style: Theme.of(context).textTheme.headline,
               ),
               const SizedBox(height: 10.0),
               TextFormField(
                 autofocus: true,
                 controller: this.titleController,
                 decoration: const InputDecoration(
-                  labelText: 'Title'
+                  labelText: 'Title',
                 ),
                 validator: (String value) {
                   if (value.trim().isEmpty) {
@@ -67,8 +67,8 @@ class _NewCategoryFormState extends State<NewCategoryForm> {
               TextFormField(
                 controller: this.descriptionController,
                 decoration: const InputDecoration(
-                  labelText: 'Description'
-                )
+                  labelText: 'Description',
+                ),
               ),
               const Spacer(),
               Row(
@@ -100,11 +100,11 @@ class _NewCategoryFormState extends State<NewCategoryForm> {
                     },
                   ),
                 ],
-              )
+              ),
             ],
-          )
-        )
-      )
+          ),
+        ),
+      ),
     );
   }
 }

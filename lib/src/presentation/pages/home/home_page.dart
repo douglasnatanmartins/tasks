@@ -6,8 +6,12 @@ import 'package:tasks/src/presentation/pages/planned/planned_page.dart';
 import 'package:tasks/src/presentation/pages/settings/settings_page.dart';
 
 class HomePage extends StatefulWidget {
+  HomePage({
+    Key key,
+  }): super(key: key);
+
   @override
-  State<StatefulWidget> createState() => _HomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
@@ -15,7 +19,7 @@ class _HomePageState extends State<HomePage> {
     SettingsPage(),
     ImportantPage(),
     PlannedPage(),
-    CategoriesPage()
+    CategoriesPage(),
   ];
 
   int current;
@@ -65,23 +69,23 @@ class _HomePageState extends State<HomePage> {
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               title: Text('Settings'),
-              icon: Icon(Icons.settings)
+              icon: Icon(Icons.settings),
             ),
             BottomNavigationBarItem(
               title: Text('Important'),
-              icon: Icon(Icons.star)
+              icon: Icon(Icons.star),
             ),
             BottomNavigationBarItem(
               title: Text('Planned'),
-              icon: Icon(Icons.calendar_today)
+              icon: Icon(Icons.calendar_today),
             ),
             BottomNavigationBarItem(
               title: Text('Category'),
-              icon: Icon(Icons.style)
-            )
+              icon: Icon(Icons.style),
+            ),
           ],
-          onTap: this.onTapped
-        )
+          onTap: this.onTapped,
+        ),
       ),
     );
   }

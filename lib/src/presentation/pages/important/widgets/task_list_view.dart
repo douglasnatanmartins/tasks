@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tasks/src/data/models/task_model.dart';
-
-import 'item_list_tile.dart';
+import 'package:tasks/src/presentation/shared/widgets/task_list_tile.dart';
 
 class TaskListView extends StatefulWidget {
   TaskListView({
@@ -22,7 +21,7 @@ class TaskListView extends StatefulWidget {
   final Function whenOnTap;
 
   @override
-  State<StatefulWidget> createState() => _TaskListViewState();
+  State<TaskListView> createState() => _TaskListViewState();
 }
 
 class _TaskListViewState extends State<TaskListView> {
@@ -50,13 +49,13 @@ class _TaskListViewState extends State<TaskListView> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return ListView.separated(
       padding: const EdgeInsets.all(0),
       itemCount: this.data.length,
       itemBuilder: (BuildContext context, int index) {
         final TaskModel task = this.data.elementAt(index);
 
-        return ItemListTile(
+        return TaskListTile(
           key: Key(task.id.toString()),
           task: task,
           onChanged: (TaskModel newTask) {
@@ -72,6 +71,12 @@ class _TaskListViewState extends State<TaskListView> {
             }
           },
           whenOnTap: this.widget.whenOnTap,
+        );
+      },
+      separatorBuilder: (BuildContext context, int index) {
+        return Divider(
+          height: 0,
+          color: Color(0xff979797),
         );
       },
     );

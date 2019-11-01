@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tasks/src/data/models/task_model.dart';
-
-import 'item_list_tile.dart';
+import 'package:tasks/src/presentation/shared/widgets/task_list_tile.dart';
 
 class GroupListTile extends StatefulWidget {
   GroupListTile({
@@ -54,12 +53,12 @@ class _GroupListTileState extends State<GroupListTile> {
   Widget build(BuildContext context) {
     return Theme(
       data: Theme.of(this.context).copyWith(
-        dividerColor: Colors.transparent
+        dividerColor: Colors.transparent,
       ),
       child: ExpansionTile(
         initiallyExpanded: true,
         title: Text(this.title),
-        children: this.buildChildren()
+        children: this.buildChildren(),
       ),
     );
   }
@@ -67,14 +66,25 @@ class _GroupListTileState extends State<GroupListTile> {
   List<Widget> buildChildren() {
     List<Widget> children = <Widget>[];
     this.items.forEach((TaskModel task) {
-      children.add(ItemListTile(
-        task: task,
-        onChanged: (bool checked) {
-          task.done = checked;
-          this.widget.onChanged(task);
-        },
-        whenOnTap: this.widget.whenOnTap
-      ));
+      int index = this.items.indexOf(task);
+      children.add(
+        TaskListTile(
+          task: task,
+          onChanged: (TaskModel checked) {
+            task.done = checked.done;
+            this.widget.onChanged(task);
+          },
+          whenOnTap: this.widget.whenOnTap,
+        )
+      );
+
+      if (index != this.items.length - 1) {
+        children.add(
+          Divider(
+            color: Color(0xff989898),
+          ),
+        );
+      }
     });
 
     return children;

@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 
 class CircleCheckbox extends StatefulWidget {
-  final bool value;
-  final ValueChanged<bool> onChanged;
-
   CircleCheckbox({
     Key key,
     @required this.value,
@@ -11,6 +8,9 @@ class CircleCheckbox extends StatefulWidget {
   }): assert(value != null),
       assert(onChanged != null),
       super(key: key);
+
+  final bool value;
+  final ValueChanged<bool> onChanged;
 
   @override
   State<CircleCheckbox> createState() => _CircleCheckboxState();
@@ -58,9 +58,9 @@ class _CircleCheckboxState extends State<CircleCheckbox> {
         decoration: BoxDecoration(
           color: this.background,
           shape: BoxShape.circle,
-          border: this.border
+          border: this.border,
         ),
-        child: this.icon
+        child: this.icon,
       ),
       onTap: () {
         setState(() {

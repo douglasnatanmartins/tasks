@@ -15,7 +15,7 @@ class CategoryCard extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 12.0),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15.0)
+        borderRadius: BorderRadius.circular(15.0),
       ),
       elevation: 5.0,
       color: Colors.white,
@@ -26,15 +26,15 @@ class CategoryCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             const Spacer(
-              flex: 5
+              flex: 5,
             ),
             Text(
               category.description,
               overflow: TextOverflow.ellipsis,
               maxLines: 2,
               style: TextStyle(
-                color: Colors.grey[400]
-              )
+                color: Colors.grey[400],
+              ),
             ),
             const SizedBox(height: 5),
             Text(
@@ -42,12 +42,12 @@ class CategoryCard extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 color: Colors.blue[400],
-                fontSize: 28.0
-              )
-            )
-          ]
-        )
-      )
+                fontSize: 28.0,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

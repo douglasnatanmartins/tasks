@@ -57,14 +57,14 @@ class _TaskListViewState extends State<TaskListView> {
             items: tasks,
             onChanged: this.widget.onChanged,
             whenOnTap: this.widget.whenOnTap,
-          )
+          ),
         );
       }
     });
 
     return ListView(
       padding: const EdgeInsets.all(0.0),
-      children: children
+      children: children,
     );
   }
 }

@@ -21,7 +21,7 @@ class CircleColor extends StatelessWidget {
     if (this.selected) {
       border = Border.all(
         color: this.color,
-        width: 3.0
+        width: 3.0,
       );
     }
 
@@ -38,15 +38,15 @@ class CircleColor extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.transparent,
             shape: BoxShape.circle,
-            border: border
+            border: border,
           ),
           child: Container(
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: this.color
-            )
-          )
-        )
+              color: this.color,
+            ),
+          ),
+        ),
       ),
     );
   }

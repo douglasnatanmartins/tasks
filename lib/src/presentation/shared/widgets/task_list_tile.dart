@@ -3,8 +3,10 @@ import 'package:intl/intl.dart';
 import 'package:tasks/src/data/models/task_model.dart';
 import 'package:tasks/src/presentation/shared/widgets/circle_checkbox.dart';
 
-class ItemListTile extends StatefulWidget {
-  ItemListTile({
+import 'icon_checkbox.dart';
+
+class TaskListTile extends StatefulWidget {
+  TaskListTile({
     Key key,
     @required this.task,
     @required this.onChanged,
@@ -19,10 +21,11 @@ class ItemListTile extends StatefulWidget {
   final Function whenOnTap;
 
   @override
-  State<ItemListTile> createState() => _ItemListTileState();
+  State<TaskListTile> createState() => _TaskListTileState();
 }
 
-class _ItemListTileState extends State<ItemListTile> {
+class _TaskListTileState extends State<TaskListTile> {
+  final Color metaColor = Color(0xff878787);
   TaskModel task;
 
   @override
@@ -32,7 +35,7 @@ class _ItemListTileState extends State<ItemListTile> {
   }
 
   @override
-  void didUpdateWidget(ItemListTile oldWidget) {
+  void didUpdateWidget(TaskListTile oldWidget) {
     if (oldWidget.task != this.widget.task) {
       this.task = this.widget.task;
     }
@@ -54,6 +57,7 @@ class _ItemListTileState extends State<ItemListTile> {
         this.task.title,
         overflow: TextOverflow.ellipsis,
         style: const TextStyle(
+          fontSize: 17.0,
           fontWeight: FontWeight.w600,
         ),
       ),
@@ -64,10 +68,18 @@ class _ItemListTileState extends State<ItemListTile> {
       children.add(
         Row(
           children: <Widget>[
-            const Icon(Icons.date_range, size: 18.0),
-            const SizedBox(width: 5.0),
+            Icon(
+              Icons.calendar_today,
+              size: 16.0,
+              color: this.metaColor,
+            ),
+            const SizedBox(width: 4.5),
             Text(
               DateFormat.yMEd().format(this.task.dueDate),
+              style: TextStyle(
+                fontSize: 15.0,
+                color: this.metaColor,
+              ),
             ),
           ],
         ),
@@ -75,12 +87,12 @@ class _ItemListTileState extends State<ItemListTile> {
     }
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 5.0),
-      decoration: BoxDecoration(
-        color: Colors.grey.shade200,
-      ),
+      margin: const EdgeInsets.all(0.0),
       child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 5.0,
+          vertical: 5.0,
+        ),
         leading: CircleCheckbox(
           value: task.done,
           onChanged: (bool checked) {
@@ -92,13 +104,11 @@ class _ItemListTileState extends State<ItemListTile> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: children,
         ),
-        trailing: IconButton(
-          icon: Icon(
-            Icons.star,
-            color: Colors.yellow[600],
-          ),
-          onPressed: () {
-            this.task.important = !this.task.important;
+        trailing: IconCheckbox(
+          value: this.task.important,
+          icon: Icons.star,
+          onChanged: (bool checked) {
+            this.task.important = checked;
             this.widget.onChanged(this.task);
           },
         ),
