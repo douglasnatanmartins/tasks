@@ -54,7 +54,7 @@ class _PlannedPageState extends State<PlannedPage> {
       child: Column(
         children: <Widget>[
           this.headerPage(),
-          this.bodyPage()
+          this.bodyPage(),
         ],
       ),
     );
@@ -74,7 +74,7 @@ class _PlannedPageState extends State<PlannedPage> {
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
-                child: CircularProgressIndicator()
+                child: CircularProgressIndicator(),
               );
             } else {
               if (snapshot.hasData && snapshot.data.isNotEmpty) {
@@ -83,8 +83,8 @@ class _PlannedPageState extends State<PlannedPage> {
                 return EmptyContentBox(message: 'NO TASK');
               }
             }
-          }
-        )
+          },
+        ),
       ),
     );
   }
@@ -98,7 +98,7 @@ class _PlannedPageState extends State<PlannedPage> {
       },
       whenOnTap: () {
         this.bloc.refreshTasks();
-      }
+      },
     );
   }
 }

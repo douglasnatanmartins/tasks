@@ -6,7 +6,7 @@ class EmptyContentBox extends StatelessWidget {
 
   EmptyContentBox({
     this.message,
-    this.textColor = Colors.black
+    this.textColor,
   });
 
   @override
@@ -20,11 +20,11 @@ class EmptyContentBox extends StatelessWidget {
           Text(
             this.message,
             style: TextStyle(
-              color: this.textColor
-            )
-          )
-        ]
-      )
+              color: this.textColor ?? Colors.black,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

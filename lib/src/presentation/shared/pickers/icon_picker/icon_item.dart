@@ -28,20 +28,20 @@ class IconItem extends StatelessWidget {
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
         child: AnimatedContainer(
-          duration: Duration(milliseconds: 200),
+          duration: const Duration(milliseconds: 200),
           padding: const EdgeInsets.symmetric(horizontal: 7.0, vertical: 7.0),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             border: Border.all(
               width: 3.0,
-              color: color
+              color: color,
             ),
-            color: Colors.white.withOpacity(0.25)
+            color: Colors.white.withOpacity(0.25),
           ),
           child: Icon(
             this.icon,
-            color: color
-          )
+            color: color,
+          ),
         ),
         onTap: this.onTap,
       ),

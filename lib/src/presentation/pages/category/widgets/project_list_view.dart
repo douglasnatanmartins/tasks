@@ -16,7 +16,7 @@ class ProjectListView extends StatefulWidget {
   final Function whenOpened;
 
   @override
-  State<StatefulWidget> createState() => _ProjectListViewState();
+  State<ProjectListView> createState() => _ProjectListViewState();
 }
 
 class _ProjectListViewState extends State<ProjectListView> {
@@ -50,7 +50,7 @@ class _ProjectListViewState extends State<ProjectListView> {
       itemBuilder: (BuildContext context, int index) {
         final project = data[index];
         return this.buildItem(project['project'], project['progress']);
-      }
+      },
     );
   }
 
@@ -63,7 +63,7 @@ class _ProjectListViewState extends State<ProjectListView> {
       onTap: () {
         Navigator.of(this.context).pushNamed('/project', arguments: project)
           .then((result) => this.widget.whenOpened());
-      }
+      },
     );
   }
 }

@@ -69,20 +69,20 @@ class _TaskListTileState extends State<TaskListTile> {
         overflow: TextOverflow.ellipsis,
         style: TextStyle(
           color: Colors.white,
-          decoration: decoration
-        )
+          decoration: decoration,
+        ),
       ),
       trailing: IconButton(
         icon: Icon(
           Icons.star,
-          color: task.important ? Colors.yellow.shade600 : null
+          color: task.important ? Colors.yellow.shade600 : null,
         ),
         onPressed: () {
           setState(() {
             this.task.important = !task.important;
             this.widget.onChanged(this.task);
           });
-        }
+        },
       ),
       onTap: () { // Open a task page.
         Navigator.of(this.context).pushNamed('/task', arguments: task)

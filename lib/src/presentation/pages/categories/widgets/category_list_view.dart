@@ -47,12 +47,12 @@ class _CategoryListViewState extends State<CategoryListView> {
   Widget build(BuildContext context) {
     return PageView.builder(
       controller: PageController(
-        viewportFraction: 0.8
+        viewportFraction: 0.8,
       ),
       itemCount: categories.length,
       itemBuilder: (BuildContext context, int index) {
         return this.buildItem(categories[index]);
-      }
+      },
     );
   }
 
@@ -60,12 +60,12 @@ class _CategoryListViewState extends State<CategoryListView> {
     return GestureDetector(
       child: CategoryCard(
           key: UniqueKey(),
-          category: category
+          category: category,
         ),
       onTap: () {
-        Navigator.of(context).pushNamed('/category', arguments: category)
+        Navigator.of(this.context).pushNamed('/category', arguments: category)
           .then((result) => this.widget.whenOpened());
-      }
+      },
     );
   }
 }
