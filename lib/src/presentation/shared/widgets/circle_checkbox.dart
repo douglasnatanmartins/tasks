@@ -53,8 +53,8 @@ class _CircleCheckboxState extends State<CircleCheckbox> {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 123),
         margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-        height: 30.0,
-        width: 30.0,
+        height: 27.0,
+        width: 27.0,
         decoration: BoxDecoration(
           color: this.background,
           shape: BoxShape.circle,

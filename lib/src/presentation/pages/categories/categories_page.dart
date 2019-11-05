@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'package:tasks/src/data/models/category_model.dart';
 import 'package:tasks/src/presentation/pages/categories/widgets/category_list_view.dart';
 import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
 import 'package:tasks/src/presentation/shared/forms/new_category_form.dart';
-import 'package:tasks/src/utils/date_time_util.dart';
 
 import 'categories_page_bloc.dart';
 
@@ -84,6 +84,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
 
   /// Build header this page.
   Widget pageHeader() {
+    final DateTime now = DateTime.now();
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
@@ -95,17 +96,18 @@ class _CategoriesPageState extends State<CategoriesPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
-                DateTimeUtil.currentDay,
+                DateFormat.EEEE().format(now),
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 30.0,
                 ),
               ),
+              const SizedBox(height: 3.0),
               Text(
-                '${DateTimeUtil.currentDate} ${DateTimeUtil.currentMonth}',
+                '${DateFormat.d().format(now)} ${DateFormat.MMMM().format(now)}',
                 style: TextStyle(
-                  color: Colors.white.withOpacity(0.85),
-                  fontSize: 25.0,
+                  color: Colors.white.withOpacity(0.75),
+                  fontSize: 24.0,
                 ),
               ),
               const SizedBox(height: 15.0),
