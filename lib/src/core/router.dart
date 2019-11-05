@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:tasks/src/presentation/pages/home/home_page.dart';
 
-import 'presentation/pages/category/category_page.dart';
-import 'presentation/pages/project/project_page.dart';
-import 'presentation/pages/task/task_page.dart';
+import '../presentation/pages/home/home_page.dart';
+import '../presentation/pages/category/category_page.dart';
+import '../presentation/pages/project/project_page.dart';
+import '../presentation/pages/task/task_page.dart';
 
 class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -13,7 +13,7 @@ class Router {
         return MaterialPageRoute(
           builder: (BuildContext context) {
             return HomePage();
-          }
+          },
         );
 
       // Category Page.
@@ -21,7 +21,7 @@ class Router {
         return MaterialPageRoute(
           builder: (BuildContext context) {
             return CategoryPage(category: settings.arguments);
-          }
+          },
         );
       
       // Project Page.
@@ -29,7 +29,7 @@ class Router {
         return MaterialPageRoute(
           builder: (BuildContext context) {
             return ProjectPage(project: settings.arguments);
-          }
+          },
         );
       
       // Task Page.
@@ -37,7 +37,7 @@ class Router {
         return MaterialPageRoute(
           builder: (BuildContext context) {
             return TaskPage(task: settings.arguments);
-          }
+          },
         );
       
       // Default Page.
@@ -57,7 +57,7 @@ class Router {
                 padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
                 decoration: BoxDecoration(
                   color: Colors.orange,
-                  borderRadius: BorderRadius.circular(10.0)
+                  borderRadius: BorderRadius.circular(10.0),
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -66,28 +66,28 @@ class Router {
                       'Page not defined or feature is comming.',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 16.0
-                      )
+                        fontSize: 16.0,
+                      ),
                     ),
                     InkWell(
                       child: Text(
                         'Back previous screen ...',
                         style: TextStyle(
                           decoration: TextDecoration.underline,
-                          color: Colors.white
-                        )
+                          color: Colors.white,
+                        ),
                       ),
                       onTap: () {
                         Navigator.of(context).pop();
                       },
-                    )
+                    ),
                   ],
-                )
+                ),
               ),
-            )
-          )
+            ),
+          ),
         );
-      }
+      },
     );
   }
 }

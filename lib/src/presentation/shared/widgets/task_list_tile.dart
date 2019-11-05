@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tasks/src/data/models/task_model.dart';
 import 'package:tasks/src/presentation/shared/widgets/circle_checkbox.dart';
+import 'package:tasks/src/utils/date_time_util.dart';
 
 import 'icon_checkbox.dart';
 
@@ -25,7 +26,7 @@ class TaskListTile extends StatefulWidget {
 }
 
 class _TaskListTileState extends State<TaskListTile> {
-  final Color metaColor = Color(0xff878787);
+  Color metaColor = Color(0xff878787);
   TaskModel task;
 
   @override
@@ -64,6 +65,8 @@ class _TaskListTileState extends State<TaskListTile> {
     );
 
     if (this.task.dueDate != null) {
+      int days = DateTimeUtil.difference(this.task.dueDate).inDays;
+      this.metaColor = days >= 0 ? Colors.blue : Colors.red;
       children.add(const SizedBox(height: 5.0));
       children.add(
         Row(
@@ -75,9 +78,9 @@ class _TaskListTileState extends State<TaskListTile> {
             ),
             const SizedBox(width: 4.5),
             Text(
-              DateFormat.yMEd().format(this.task.dueDate),
+              DateFormat('EEEE, y/M/d').format(this.task.dueDate),
               style: TextStyle(
-                fontSize: 15.0,
+                fontSize: 14.0,
                 color: this.metaColor,
               ),
             ),

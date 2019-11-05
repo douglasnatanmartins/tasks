@@ -23,7 +23,7 @@ class PlannedPageBloc implements BlocContract {
     return result;
   }
 
-  Future<void> refreshTasks() async {
+  Future<void> fetchAll() async {
     final data = await this.taskRepository.allTaskWithDueDate();
     final Map<String, List<TaskModel>> tasks = {};
 

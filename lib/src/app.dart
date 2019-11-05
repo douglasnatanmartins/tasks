@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:package_info/package_info.dart';
 
-import 'router.dart';
+import 'core/router.dart';
 
 class App extends StatelessWidget {
   const App({
