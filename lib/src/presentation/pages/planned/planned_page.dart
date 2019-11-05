@@ -25,7 +25,7 @@ class _PlannedPageState extends State<PlannedPage> {
   void initState() {
     super.initState();
     this.bloc = PlannedPageBloc();
-    this.bloc.refreshTasks();
+    this.bloc.fetchAll();
   }
 
   @override
@@ -97,7 +97,7 @@ class _PlannedPageState extends State<PlannedPage> {
         this.bloc.updateTask(task);
       },
       whenOnTap: () {
-        this.bloc.refreshTasks();
+        this.bloc.fetchAll();
       },
     );
   }
