@@ -1,4 +1,4 @@
-import 'package:tasks/src/data/contracts/model_contract.dart';
+import 'package:tasks/src/core/contracts/model_contract.dart';
 
 class CategoryModel implements ModelContract {
   int _id;
@@ -37,7 +37,7 @@ class CategoryModel implements ModelContract {
     this._created = DateTime.parse(object['created']);
   }
 
-  /// Returns a map object to representation of this object.
+  /// Returns a map object to representation of this model object.
   @override
   Map<String, dynamic> toMap() {
     var result = Map<String, dynamic>();

@@ -5,6 +5,9 @@ import 'package:package_info/package_info.dart';
 import 'core/router.dart';
 
 class App extends StatelessWidget {
+  /// The root widget application.
+  /// 
+  /// The [information] arguments must not be null.
   const App({
     Key key,
     @required this.information
@@ -18,7 +21,7 @@ class App extends StatelessWidget {
     return (context.ancestorWidgetOfExactType(App) as App).information;
   }
 
-  /// Build the application.
+  /// Build root widget of the application.
   @override
   Widget build(BuildContext context) {
     // Set device orientation.

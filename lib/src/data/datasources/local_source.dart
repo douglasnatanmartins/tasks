@@ -2,15 +2,15 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'dart:async';
 
-class DatabaseCreator {
-  static DatabaseCreator _instance;
+class LocalSource {
+  static LocalSource _instance;
   static Database _database;
 
-  DatabaseCreator._internal();
+  LocalSource._internal();
 
-  factory DatabaseCreator() {
+  factory LocalSource() {
     if (_instance == null) {
-      _instance = DatabaseCreator._internal();
+      _instance = LocalSource._internal();
     }
 
     return _instance;

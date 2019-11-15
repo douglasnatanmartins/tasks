@@ -6,7 +6,7 @@ import 'package:tasks/src/data/models/task_model.dart';
 import 'package:tasks/src/data/repositories/task_repository.dart';
 
 /// Home Page Business Logic Component.
-class PlannedPageBloc implements BlocContract {
+class PlannedPageBloc implements BLoCContract {
   PlannedPageBloc() {
     this.taskRepository = TaskRepository();
   }

@@ -8,7 +8,7 @@ import 'package:tasks/src/data/repositories/project_repository.dart';
 import 'package:tasks/src/data/repositories/task_repository.dart';
 
 /// Category Page Business Logic Component.
-class CategoryPageBloc implements BlocContract {
+class CategoryPageBloc implements BLoCContract {
   // Stream of the category.
   final _controllerCategory = StreamController<CategoryModel>();
   Sink get sinkCategory => _controllerCategory.sink;

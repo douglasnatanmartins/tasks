@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/widgets.dart';
 import 'package:meta/meta.dart';
-import 'package:tasks/src/data/contracts/model_contract.dart';
+import 'package:tasks/src/core/contracts/model_contract.dart';
 import 'package:tasks/src/utils/data_support.dart';
 
 class ProjectModel implements ModelContract{
@@ -72,7 +72,7 @@ class ProjectModel implements ModelContract{
     this._icon = DataSupport.icons[project['icon']];
   }
 
-  // Returns a map object to representation of this object.
+  // Returns a map object to representation of this model object.
   @override
   Map<String, dynamic> toMap() {
     final icons = DataSupport.icons;

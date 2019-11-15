@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
-import 'package:tasks/src/data/contracts/model_contract.dart';
+import 'package:tasks/src/core/contracts/model_contract.dart';
 
 class TaskModel implements ModelContract {
   int _id;
@@ -78,7 +78,7 @@ class TaskModel implements ModelContract {
     this._dueDate = object['due_date'] != null ? DateTime.parse(object['due_date']) : null;
   }
 
-  /// Returns a map object to representation of this object.
+  /// Returns a map object to representation of this model object.
   Map<String, dynamic> toMap() {
     var object = Map<String, dynamic>();
     object['id'] = this._id;

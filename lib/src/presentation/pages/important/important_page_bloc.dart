@@ -4,7 +4,7 @@ import 'package:tasks/src/core/contracts/bloc_contract.dart';
 import 'package:tasks/src/data/models/task_model.dart';
 import 'package:tasks/src/data/repositories/task_repository.dart';
 
-class ImportantPageBloc implements BlocContract {
+class ImportantPageBloc implements BLoCContract {
   ImportantPageBloc() {
     this.taskRepository = TaskRepository();
   }

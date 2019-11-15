@@ -1,4 +1,4 @@
-import 'package:tasks/src/data/contracts/model_contract.dart';
+import 'package:tasks/src/core/contracts/model_contract.dart';
 
 class StepModel implements ModelContract {
   int _id;
@@ -39,7 +39,7 @@ class StepModel implements ModelContract {
     this._taskId = object['task_id'];
   }
 
-  /// Returns a map object to representation of this object.
+  /// Returns a map object to representation of this model object.
   @override
   Map<String, dynamic> toMap() {
     var object = Map<String, dynamic>();
