@@ -2,7 +2,7 @@ import 'package:meta/meta.dart';
 import 'package:tasks/src/core/contracts/model_contract.dart';
 
 class CategoryModel implements ModelContract {
-  /// Constructor of a category model object from a Map object.
+  /// Create a category model.
   CategoryModel({
     int id,
     String description,

@@ -6,42 +6,6 @@ import 'package:tasks/src/core/contracts/model_contract.dart';
 import 'package:tasks/src/utils/data_support.dart';
 
 class ProjectModel implements ModelContract{
-  int _id;
-  String _title;
-  String _description;
-  int _categoryId;
-  DateTime _created;
-  Color _color;
-  IconData _icon;
-
-  int get id => this._id;
-  String get title => this._title;
-  String get description => this._description;
-  int get categoryId => this._categoryId;
-  DateTime get created => this._created;
-  Color get color => this._color;
-  IconData get icon => this._icon;
-
-  set title(String title) {
-    this._title = title;
-  }
-
-  set description(String description) {
-    this._description = description;
-  }
-
-  set categoryId(int categoryId) {
-    this._categoryId = categoryId;
-  }
-
-  set color(Color color) {
-    this._color = color;
-  }
-
-  set icon(IconData icon) {
-    this._icon = icon;
-  }
-
   /// Constructor of a project model object.
   ProjectModel({
     int id,
@@ -62,17 +26,73 @@ class ProjectModel implements ModelContract{
   }
 
   /// Constructor of a project model object from a Map object.
-  ProjectModel.from(Map<String, dynamic> project) {
-    this._id = project['id'];
-    this._title = project['title'];
-    this._description = project['description'];
-    this._categoryId = project['category_id'];
-    this._created = DateTime.parse(project['created']);
-    this._color = Color(int.parse(project['color']));
-    this._icon = DataSupport.icons[project['icon']];
+  /// 
+  /// The [data] argument must not be null.
+  ProjectModel.from(Map<String, dynamic> data) {
+    this._id = data['id'];
+    this._title = data['title'];
+    this._description = data['description'];
+    this._categoryId = data['category_id'];
+    this._created = DateTime.parse(data['created']);
+    this._color = Color(int.parse(data['color']));
+    this._icon = DataSupport.icons[data['icon']];
   }
 
-  // Returns a map object to representation of this model object.
+  int _id;
+  String _title;
+  String _description;
+  int _categoryId;
+  DateTime _created;
+  Color _color;
+  IconData _icon;
+
+  /// Get the project id.
+  int get id => this._id;
+
+  /// Get the project title.
+  String get title => this._title;
+
+  /// Get the project description.
+  String get description => this._description;
+
+  /// Get the category id of project.
+  int get categoryId => this._categoryId;
+
+  /// Get the date the project was created.
+  DateTime get created => this._created;
+
+  /// Get the project color.
+  Color get color => this._color;
+
+  /// Get the project icon.
+  IconData get icon => this._icon;
+
+  /// Set the project title.
+  set title(String title) {
+    this._title = title;
+  }
+
+  /// Set new project description.
+  set description(String description) {
+    this._description = description;
+  }
+
+  /// Set new category id of project.
+  set categoryId(int categoryId) {
+    this._categoryId = categoryId;
+  }
+
+  /// Set new the project color.
+  set color(Color color) {
+    this._color = color;
+  }
+
+  /// Set new the project icon.
+  set icon(IconData icon) {
+    this._icon = icon;
+  }
+
+  /// Returns a map object to representation of this model object.
   @override
   Map<String, dynamic> toMap() {
     final icons = DataSupport.icons;
