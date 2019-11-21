@@ -2,13 +2,17 @@ import 'package:meta/meta.dart';
 import 'package:tasks/src/core/contracts/model_contract.dart';
 
 class CategoryModel implements ModelContract {
-  /// Create a category model.
+  /// Create a category model object.
+  /// 
+  /// The [title] and [created] arguments must not be null.
   CategoryModel({
     int id,
     String description,
     @required String title,
     @required DateTime created,
   }) {
+    assert(title != null);
+    assert(created != null);
     this._id = id;
     this._title = title;
     this._description = description;
@@ -19,6 +23,7 @@ class CategoryModel implements ModelContract {
   /// 
   /// The [data] argument must not be null.
   CategoryModel.from(Map<String, dynamic> data) {
+    assert(data != null);
     this._id = data['id'];
     this._title = data['title'];
     this._description = data['description'];

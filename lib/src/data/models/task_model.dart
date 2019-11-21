@@ -4,16 +4,28 @@ import 'package:tasks/src/core/contracts/model_contract.dart';
 
 class TaskModel implements ModelContract {
   /// Constructor of a task model object.
+  /// 
+  /// The [title], [done], [projectId], [important] and [createdDate]
+  /// arguments must not be null.
+  /// 
+  /// The `title` argument must not empty.
+  /// 
+  /// The `projectId` argument must greater than or equal zero.
   TaskModel({
     int id,
+    String note,
+    DateTime dueDate,
     @required String title,
     @required bool done,
     @required int projectId,
-    String note,
-    bool important,
+    @required bool important,
     @required DateTime createdDate,
-    DateTime dueDate
   }) {
+    assert(title != null && title.isNotEmpty);
+    assert(done != null);
+    assert(projectId != null && projectId >= 0);
+    assert(important != null);
+    assert(createdDate != null);
     this._id = id;
     this._title = title;
     this._done = done ? 1 : 0;
@@ -28,6 +40,7 @@ class TaskModel implements ModelContract {
   /// 
   /// The [data] argument must not be null.
   TaskModel.from(Map<String, dynamic> data) {
+    assert(data != null);
     this._id = data['id'];
     this._title = data['title'];
     this._done = data['done'];

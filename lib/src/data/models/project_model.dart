@@ -7,15 +7,27 @@ import 'package:tasks/src/utils/data_support.dart';
 
 class ProjectModel implements ModelContract{
   /// Constructor of a project model object.
+  /// 
+  /// The [title], [categoryId], [created], [color]
+  /// and [icon] arguments must not be null.
+  /// 
+  /// The `title` argument must not empty.
+  /// 
+  /// The `categoryId` argument must greater than or equal zero.
   ProjectModel({
     int id,
+    String description,
     @required String title,
-    @required String description,
     @required int categoryId,
     @required DateTime created,
     @required Color color,
-    @required IconData icon
+    @required IconData icon,
   }) {
+    assert(title != null && title.isNotEmpty);
+    assert(categoryId != null && categoryId >= 0);
+    assert(created != null);
+    assert(color != null);
+    assert(icon != null);
     this._id = id;
     this._title = title;
     this._description = description;
@@ -29,6 +41,7 @@ class ProjectModel implements ModelContract{
   /// 
   /// The [data] argument must not be null.
   ProjectModel.from(Map<String, dynamic> data) {
+    assert(data != null);
     this._id = data['id'];
     this._title = data['title'];
     this._description = data['description'];

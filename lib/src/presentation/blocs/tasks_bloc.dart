@@ -27,12 +27,8 @@ class TasksBloc implements BLoCContract {
   List<TaskModel> _tasks;
 
   /// Update task.
-  Future<bool> updateTask(TaskModel oldModel, TaskModel newModel) async {
-    bool result = await this._repository.update(newModel.toMap());
-    if (result) {
-      int index = this._tasks.indexOf(oldModel);
-      this._tasks[index] = newModel;
-    }
+  Future<bool> updateTask(TaskModel model) async {
+    bool result = await this._repository.update(model.toMap());
     return result;
   }
 

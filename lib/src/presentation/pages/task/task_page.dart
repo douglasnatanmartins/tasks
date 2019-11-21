@@ -70,7 +70,7 @@ class _TaskPageState extends State<TaskPage> {
     return WillPopScope(
       onWillPop: () async {
         final TasksBloc bloc = Provider.of(context, component: TasksBloc);
-        final bool result = await bloc.updateTask(this.widget.data, this.data);
+        final bool result = await bloc.updateTask(this.data);
         return true;
       },
       child: Scaffold(
