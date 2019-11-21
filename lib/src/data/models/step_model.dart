@@ -67,4 +67,21 @@ class StepModel implements ModelContract {
     object['task_id'] = this._taskId;
     return object;
   }
+
+  @override
+  bool operator == (object) {
+    return object is StepModel
+        && object.id == this.id
+        && object.title == this.title
+        && object.done == this.done
+        && object.taskId == this.taskId;
+  }
+
+  @override
+  int get hashCode {
+    return this.id.hashCode
+         ^ this.title.hashCode
+         ^ this.done.hashCode
+         ^ this.taskId.hashCode;
+  }
 }

@@ -114,4 +114,26 @@ class ProjectModel implements ModelContract{
     project['icon'] = icon;
     return project;
   }
+
+  @override
+  bool operator == (object) {
+    return object is ProjectModel
+        && object.id == this.id
+        && object.description == this.description
+        && object.categoryId == this.categoryId
+        && object.created == this.created
+        && object.color == this.color
+        && object.icon == this.icon;
+  }
+
+  @override
+  int get hashCode {
+    return this.id.hashCode
+         ^ this.title.hashCode
+         ^ this.description.hashCode
+         ^ this.categoryId.hashCode
+         ^ this.created.hashCode
+         ^ this.color.hashCode
+         ^ this.icon.hashCode;
+  }
 }

@@ -114,4 +114,29 @@ class TaskModel implements ModelContract {
     object['due_date'] = this.dueDate != null ? DateFormat('yyyy-MM-dd').format(this._dueDate) : null;
     return object;
   }
+
+  @override
+  bool operator == (object) {
+    return object is TaskModel
+        && object.id == this.id
+        && object.title == this.title
+        && object.done == this.done
+        && object.projectId == this.projectId
+        && object.note == this.note
+        && object.important == this.important
+        && object.createdDate == this.createdDate
+        && object.dueDate == this.dueDate;
+  }
+
+  @override
+  int get hashCode {
+    return this.id.hashCode ^
+           this.title.hashCode ^
+           this.done.hashCode ^
+           this.projectId.hashCode ^
+           this.note.hashCode ^
+           this.important.hashCode ^
+           this.createdDate.hashCode ^
+           this.dueDate.hashCode;
+  }
 }

@@ -46,12 +46,12 @@ class CategoryModel implements ModelContract {
   /// 
   /// The [title] argument must not be null.
   set title(String title) {
-    if (title.length <= 255) {
-      this._title = title;
-    }
+    this._title = title;
   }
 
   /// Set new category description.
+  /// 
+  /// The [description] argument must not be null.
   set description(String description) {
     this._description = description;
   }
@@ -65,5 +65,22 @@ class CategoryModel implements ModelContract {
     result['description'] = this._description;
     result['created'] = this._created.toString();
     return result;
+  }
+
+  @override
+  bool operator == (object) {
+    return object is CategoryModel
+        && object.id == this.id
+        && object.title == this.title
+        && object.description == this.description
+        && object.created == this.created;
+  }
+
+  @override
+  int get hashCode {
+    return this.id.hashCode
+         ^ this.title.hashCode
+         ^ this.description.hashCode
+         ^ this.created.hashCode;
   }
 }
