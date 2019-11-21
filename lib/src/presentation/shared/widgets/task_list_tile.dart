@@ -7,52 +7,60 @@ import 'package:tasks/src/utils/date_time_util.dart';
 import 'icon_checkbox.dart';
 
 class TaskListTile extends StatefulWidget {
+  /// Create a TaskListTile widget.
   TaskListTile({
     Key key,
-    @required this.task,
+    @required this.data,
     @required this.onChanged,
-  }): assert(task != null),
+  }): assert(data != null),
       assert(onChanged != null),
       super(key: key);
-
-  final TaskModel task;
+  
+  final TaskModel data;
   final ValueChanged<TaskModel> onChanged;
 
+  /// Creates the mutable state for this widget at a given location in the tree.
   @override
   State<TaskListTile> createState() => _TaskListTileState();
 }
 
 class _TaskListTileState extends State<TaskListTile> {
+  TaskModel data;
   Color metaColor = Color(0xff878787);
-  TaskModel task;
 
+  /// Called when this state first inserted into tree.
   @override
   void initState() {
     super.initState();
-    this.task = this.widget.task;
+    this.data = this.widget.data;
   }
 
+  /// Called when a dependency of this state object changes.
   @override
-  void didUpdateWidget(TaskListTile oldWidget) {
-    if (oldWidget.task != this.widget.task) {
-      this.task = this.widget.task;
-    }
-
-    super.didUpdateWidget(oldWidget);
+  void didChangeDependencies() {
+    super.didChangeDependencies();
   }
 
+  /// Called whenever the widget configuration changes.
+  @override
+  void didUpdateWidget(TaskListTile old) {
+    super.didUpdateWidget(old);
+  }
+
+  /// Called when this state removed from the tree.
   @override
   void dispose() {
     super.dispose();
   }
 
+  /// Build the TaskListTile widget with state.
   @override
   Widget build(BuildContext context) {
     List<Widget> children = <Widget>[];
 
     children.add(
       Text(
-        this.task.title,
+        this.data.title,
         overflow: TextOverflow.ellipsis,
         style: const TextStyle(
           fontSize: 17.0,
@@ -61,8 +69,8 @@ class _TaskListTileState extends State<TaskListTile> {
       ),
     );
 
-    if (this.task.dueDate != null) {
-      int days = DateTimeUtil.difference(this.task.dueDate).inDays;
+    if (this.data.dueDate != null) {
+      int days = DateTimeUtil.difference(this.data.dueDate).inDays;
       this.metaColor = days >= 0 ? Colors.blue : Colors.red;
       children.add(const SizedBox(height: 5.0));
       children.add(
@@ -75,7 +83,7 @@ class _TaskListTileState extends State<TaskListTile> {
             ),
             const SizedBox(width: 4.5),
             Text(
-              DateFormat('EEEE, y/M/d').format(this.task.dueDate),
+              DateFormat('EEEE, y/M/d').format(this.data.dueDate),
               style: TextStyle(
                 fontSize: 14.0,
                 color: this.metaColor,
@@ -94,10 +102,10 @@ class _TaskListTileState extends State<TaskListTile> {
           vertical: 5.0,
         ),
         leading: CircleCheckbox(
-          value: task.done,
+          value: this.data.done,
           onChanged: (bool checked) {
-            this.task.done = checked;
-            this.widget.onChanged(task);
+            this.data.done = checked;
+            this.widget.onChanged(this.data);
           },
         ),
         title: Column(
@@ -105,15 +113,15 @@ class _TaskListTileState extends State<TaskListTile> {
           children: children,
         ),
         trailing: IconCheckbox(
-          value: this.task.important,
+          value: this.data.important,
           icon: Icons.star,
           onChanged: (bool checked) {
-            this.task.important = checked;
-            this.widget.onChanged(this.task);
+            this.data.important = checked;
+            this.widget.onChanged(this.data);
           },
         ),
         onTap: () {
-          Navigator.of(this.context).pushNamed('/task', arguments: this.task);
+          Navigator.of(this.context).pushNamed('/task', arguments: this.data);
         },
       ),
     );

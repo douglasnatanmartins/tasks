@@ -69,7 +69,7 @@ class _GroupListTileState extends State<GroupListTile> {
       int index = this.items.indexOf(task);
       children.add(
         TaskListTile(
-          task: task,
+          data: task,
           onChanged: (TaskModel checked) {
             task.done = checked.done;
             this.widget.onChanged(task);

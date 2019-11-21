@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tasks/src/core/contracts/bloc_contract.dart';
 import 'package:tasks/src/core/provider.dart';
 import 'package:tasks/src/data/models/task_model.dart';
 import 'package:tasks/src/presentation/blocs/tasks_bloc.dart';
@@ -29,12 +28,12 @@ class TaskListView extends StatelessWidget {
               padding: const EdgeInsets.all(0),
               itemCount: snapshot.data.length,
               itemBuilder: (BuildContext context, int index) {
-                final TaskModel item = snapshot.data.elementAt(index);
+                TaskModel item = snapshot.data.elementAt(index);
                 return TaskListTile(
                   key: Key(item.id.toString()),
-                  task: item,
+                  data: item,
                   onChanged: (TaskModel model) {
-                    bloc.updateTask(item, model);
+                    bloc.updateTask(model);
                   },
                 );
               },
