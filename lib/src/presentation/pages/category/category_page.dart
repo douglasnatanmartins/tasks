@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:tasks/src/core/provider.dart';
 
 import 'package:tasks/src/data/models/category_model.dart';
 import 'package:tasks/src/data/models/project_model.dart';
+import 'package:tasks/src/presentation/blocs/categories_bloc.dart';
 import 'package:tasks/src/presentation/pages/project_new/project_new_screen.dart';
 import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
 
@@ -144,28 +146,33 @@ class _CategoryPageState extends State<CategoryPage> {
                 ),
               ),
               // Delete button.
-              FlatButton(
-                padding: const EdgeInsets.all(12.0),
-                shape: const CircleBorder(
-                  side: BorderSide(color: Colors.white, width: 4.0),
-                ),
-                color: Colors.red,
-                textColor: Colors.white,
-                child: const Icon(Icons.delete),
-                // Show a dialog to confirm the user wants delete.
-                onPressed: () async {
-                  final result = await showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return this.dialogWhenDeleteCategory();
-                    }
-                  );
+              Consumer(
+                requires: [CategoriesBloc],
+                builder: (context, components) {
+                  final CategoriesBloc bloc = components[CategoriesBloc];
+                  return FlatButton(
+                    padding: const EdgeInsets.all(12.0),
+                    shape: const CircleBorder(
+                      side: BorderSide(color: Colors.white, width: 4.0),
+                    ),
+                    color: Colors.red,
+                    textColor: Colors.white,
+                    child: const Icon(Icons.delete),
+                    // Show a dialog to confirm the user wants delete.
+                    onPressed: () async {
+                      final result = await showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return this.dialogWhenDeleteCategory();
+                        }
+                      );
 
-                  if (result != null && result) {
-                    if (await this.bloc.deleteCategory(category)) {
-                      Navigator.of(this.context).pop();
-                    }
-                  }
+                      if (result != null && result) {
+                        await bloc.deleteCategory(category);
+                        Navigator.of(this.context).pop();
+                      }
+                    },
+                  );
                 },
               ),
             ],

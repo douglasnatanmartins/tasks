@@ -7,6 +7,7 @@ import 'package:tasks/src/presentation/pages/planned/planned_page.dart';
 import 'package:tasks/src/presentation/pages/settings/settings_page.dart';
 
 class HomePage extends StatefulWidget {
+  /// Create a HomePage widget.
   HomePage(): super(key: Keys.homePage);
 
   /// Creates the mutable state for this widget at a given location in the tree.
@@ -15,7 +16,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<Widget> pages = <Widget>[
+  List<Widget> screens = [
     SettingsPage(),
     ImportantPage(),
     PlannedPage(),
@@ -29,6 +30,12 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     this.current = 2;
+  }
+
+  /// Called when a dependency of this state object changes.
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
   }
 
   /// Called whenever the widget configuration changes.
@@ -49,11 +56,11 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  /// Build this state.
+  /// Build the widget with this state.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: this.pages.elementAt(this.current),
+      body: this.screens.elementAt(this.current),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.grey[200],
         type: BottomNavigationBarType.fixed,

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:package_info/package_info.dart';
+import 'package:tasks/src/core/provider.dart';
 
 import 'core/router.dart';
+import 'presentation/blocs/categories_bloc.dart';
 
 class App extends StatelessWidget {
   /// The root widget application.
@@ -27,11 +29,19 @@ class App extends StatelessWidget {
     // Set device orientation.
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: this.information.appName,
-      initialRoute: '/',
-      onGenerateRoute: Router.generateRoute,
+    return Provider(
+      components: <Component>[
+        Component<CategoriesBloc>(
+          onCreated: () => CategoriesBloc(),
+          onDispose: (component) => component?.dispose(),
+        ),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: this.information.appName,
+        initialRoute: '/',
+        onGenerateRoute: Router.generateRoute,
+      ),
     );
   }
 }
