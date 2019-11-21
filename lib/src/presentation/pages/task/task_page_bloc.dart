@@ -8,72 +8,73 @@ import 'package:tasks/src/data/repositories/task_repository.dart';
 
 /// Task Page Business Logic Component
 class TaskPageBloc implements BLoCContract {
-  TaskPageBloc(TaskModel task) {
-    this.task = task;
-    this.taskRepository = TaskRepository();
-    this.stepRepository = StepRepository();
+  /// Create a Task Page Business Logic Component.
+  /// 
+  /// The [data] argument must not be null.
+  TaskPageBloc(TaskModel data) {
+    this.data = data;
+    this._fetchSteps().then((result) {
+      this.pushSteps();
+    });
   }
 
-  TaskRepository taskRepository;
-  StepRepository stepRepository;
-  TaskModel task;
+  final StepRepository _stepRepository = StepRepository();
+  TaskModel data;
+  List<StepModel> _steps = <StepModel>[];
 
   // Stream of step list.
-  final _controllerSteps = StreamController();
-  Sink get sinkSteps => _controllerSteps.sink;
-  Stream get streamSteps => _controllerSteps.stream;
-
-  /// Update the task.
-  Future<bool> updateTask(TaskModel task) async {
-    bool result = await this.taskRepository.update(task.toMap());
-    return result;
-  }
-
-  /// Delete the task.
-  Future<bool> deleteTask(TaskModel task) async {
-    return await this.taskRepository.delete(task.id);
-  }
+  final _stepsController = StreamController<List<StepModel>>();
+  Stream<List<StepModel>> get steps => this._stepsController.stream;
 
   /// Add a step into task.
-  Future<bool> addStep(StepModel step) async {
-    bool result = await this.stepRepository.add(step.toMap());
+  Future<bool> addStep(StepModel model) async {
+    bool result = await this._stepRepository.add(model.toMap());
     if (result) {
-      await this.refreshSteps();
+      await this._fetchSteps();
+      this.pushSteps();
     }
     return result;
   }
 
   /// Update a step.
-  Future<bool> updateStep(StepModel step) async {
-    bool result = await this.stepRepository.update(step.toMap());
+  Future<bool> updateStep(StepModel oldModel, StepModel newModel) async {
+    bool result = await this._stepRepository.update(newModel.toMap());
     if (result) {
-      await this.refreshSteps();
+      int index = this._steps.indexOf(oldModel);
+      this._steps[index] = newModel;
+      this.pushSteps();
     }
     return result;
   }
 
   /// Delete a step.
-  Future<bool> deleteStep(StepModel step) async {
-    bool result = await this.stepRepository.delete(step.id);
+  Future<bool> deleteStep(StepModel model) async {
+    bool result = await this._stepRepository.delete(model.id);
     if (result) {
-      await this.refreshSteps();
+      bool completed = this._steps.remove(model);
+      if (completed) {
+        this.pushSteps();
+      }
     }
     return result;
   }
 
   /// Refresh step list in the task.
-  Future<void> refreshSteps() async {
-    final data = await this.stepRepository.getStepsByTaskId(this.task.id);
-    List<StepModel> steps = [];
-    data.forEach((Map<String, dynamic> task) {
-      steps.add(StepModel.from(task));
-    });
-    this.sinkSteps.add(steps);
+  Future<void> pushSteps() async {
+    this._stepsController.add(this._steps);
+  }
+
+  /// Fetch all steps of task.
+  Future<void> _fetchSteps() async {
+    final data = await this._stepRepository.getStepsByTaskId(this.data.id);
+    this._steps = data.map((Map<String, dynamic> item) {
+      return StepModel.from(item);
+    }).toList();
   }
 
   /// Dispose this business logic component.
   @override
   void dispose() {
-    _controllerSteps.close();
+    _stepsController.close();
   }
 }

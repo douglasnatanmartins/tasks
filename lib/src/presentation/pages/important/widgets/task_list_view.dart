@@ -1,83 +1,56 @@
 import 'package:flutter/material.dart';
+import 'package:tasks/src/core/contracts/bloc_contract.dart';
+import 'package:tasks/src/core/provider.dart';
 import 'package:tasks/src/data/models/task_model.dart';
+import 'package:tasks/src/presentation/blocs/tasks_bloc.dart';
+import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
 import 'package:tasks/src/presentation/shared/widgets/task_list_tile.dart';
 
-class TaskListView extends StatefulWidget {
+class TaskListView extends StatelessWidget {
+  /// Create a TaskListView widget.
   TaskListView({
     Key key,
-    @required this.data,
-    @required this.onChanged,
-    this.whenOnTap
-  }): assert(data != null),
-      assert(onChanged != null),
-      super(key: key);
-  
-  final List<TaskModel> data;
+  }): super(key: key);
 
-  /// When item changed.
-  final ValueChanged<TaskModel> onChanged;
-
-  /// After open task page
-  final Function whenOnTap;
-
-  @override
-  State<TaskListView> createState() => _TaskListViewState();
-}
-
-class _TaskListViewState extends State<TaskListView> {
-  List<TaskModel> data;
-
-  @override
-  void initState() {
-    super.initState();
-    this.data = this.widget.data;
-  }
-
-  @override
-  void didUpdateWidget(TaskListView oldWidget) {
-    if (oldWidget.data.length != this.widget.data.length) {
-      this.data = this.widget.data;
-    }
-
-    super.didUpdateWidget(oldWidget);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
+  /// Build this widget.
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      padding: const EdgeInsets.all(0),
-      itemCount: this.data.length,
-      itemBuilder: (BuildContext context, int index) {
-        final TaskModel task = this.data.elementAt(index);
-
-        return TaskListTile(
-          key: Key(task.id.toString()),
-          task: task,
-          onChanged: (TaskModel newTask) {
-            this.widget.onChanged(newTask);
-
-            if (!newTask.important) {
-              setState(() {
-                this.data.removeAt(index);
-                if (this.data.length == 0) {
-                  this.widget.whenOnTap();
-                }
-              });
-            }
-          },
-          whenOnTap: this.widget.whenOnTap,
-        );
-      },
-      separatorBuilder: (BuildContext context, int index) {
-        return Divider(
-          height: 0,
-          color: Color(0xff979797),
-        );
+    TasksBloc bloc = Provider.of(context, component: TasksBloc);
+    return StreamBuilder(
+      stream: bloc.tasks,
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else {
+          if (snapshot.hasData && snapshot.data.isNotEmpty) {
+            return ListView.separated(
+              padding: const EdgeInsets.all(0),
+              itemCount: snapshot.data.length,
+              itemBuilder: (BuildContext context, int index) {
+                final TaskModel item = snapshot.data.elementAt(index);
+                return TaskListTile(
+                  key: Key(item.id.toString()),
+                  task: item,
+                  onChanged: (TaskModel model) {
+                    bloc.updateTask(item, model);
+                  },
+                );
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return Divider(
+                  height: 0,
+                  color: Color(0xff979797),
+                );
+              },
+            );
+          } else {
+            return EmptyContentBox(
+              message: 'empty tasks',
+            );
+          }
+        }
       },
     );
   }

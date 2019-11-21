@@ -74,7 +74,6 @@ class _GroupListTileState extends State<GroupListTile> {
             task.done = checked.done;
             this.widget.onChanged(task);
           },
-          whenOnTap: this.widget.whenOnTap,
         )
       );
 

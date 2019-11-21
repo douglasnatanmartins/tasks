@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:tasks/src/data/models/category_model.dart';
 
-class NewCategoryForm extends StatefulWidget {
-  NewCategoryForm({
-    Key key
+class CategoryNewForm extends StatefulWidget {
+  /// Create a CategoryNewForm widget.
+  CategoryNewForm({
+    Key key,
   }): super(key: key);
 
+  /// Creates the mutable state for this widget at a given location in the tree.
   @override
-  State<NewCategoryForm> createState() => _NewCategoryFormState();
+  State<CategoryNewForm> createState() => _CategoryNewFormState();
 }
 
-class _NewCategoryFormState extends State<NewCategoryForm> {
+class _CategoryNewFormState extends State<CategoryNewForm> {
   GlobalKey<FormState> key;
   TextEditingController titleController;
   TextEditingController descriptionController;
 
+  /// Called when this state first inserted into tree.
   @override
   void initState() {
     super.initState();
@@ -23,13 +26,27 @@ class _NewCategoryFormState extends State<NewCategoryForm> {
     this.descriptionController = TextEditingController();
   }
 
+  /// Called when a dependency of this state object changes.
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
+
+  /// Called whenever the widget configuration changes.
+  @override
+  void didUpdateWidget(CategoryNewForm old) {
+    super.didUpdateWidget(old);
+  }
+
+  /// Called when this state removed from the tree.
   @override
   void dispose() {
-    this.titleController.dispose();
-    this.descriptionController.dispose();
+    titleController.dispose();
+    descriptionController.dispose();
     super.dispose();
   }
 
+  /// Build the CategoryNewForm widget with state.
   @override
   Widget build(BuildContext context) {
     return Dialog(

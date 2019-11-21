@@ -1,25 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:tasks/src/core/provider.dart';
 import 'package:tasks/src/data/models/step_model.dart';
 import 'package:tasks/src/data/models/task_model.dart';
-import 'package:tasks/src/presentation/pages/task/widgets/editable_title.dart';
-import 'package:tasks/src/presentation/pages/task/widgets/important_checkbox.dart';
+import 'package:tasks/src/presentation/blocs/tasks_bloc.dart';
 import 'package:tasks/src/presentation/shared/pickers/date_picker/date_picker.dart';
 import 'package:tasks/src/presentation/shared/widgets/circle_checkbox.dart';
 
 import 'task_page_bloc.dart';
-import 'widgets/item_list_tile.dart';
-import 'widgets/note_textfield.dart';
+import 'widgets/step_list_tile.dart';
+import 'widgets/task_note_text_field.dart';
+import 'widgets/task_title_text_field.dart';
+import 'widgets/important_checkbox.dart';
+import 'widgets/task_delete_dialog.dart';
 
 class TaskPage extends StatefulWidget {
+  /// Create a TaskPage widget.
+  /// 
+  /// The [data] argument must not be null.
   TaskPage({
     Key key,
-    @required this.task
-  }): assert(task != null),
-      super(key: key);
+    @required this.data,
+  }): super(key: key);
 
-  final TaskModel task;
+  final TaskModel data;
 
+  /// Creates the mutable state for this widget at a given location in the tree.
   @override
   State<TaskPage> createState() => _TaskPageState();
 }
@@ -27,82 +33,83 @@ class TaskPage extends StatefulWidget {
 class _TaskPageState extends State<TaskPage> {
   // Business Logic Component.
   TaskPageBloc bloc;
-  TaskModel task;
+  TaskModel data;
   String title;
   List<StepModel> steps;
 
-  /// Called when this state inserted into tree.
+  /// Called when this state first inserted into tree.
   @override
   void initState() {
     super.initState();
-    this.bloc = TaskPageBloc(this.widget.task);
-    this.task = this.widget.task;
-    this.title = this.task.title;
-    this.bloc.refreshSteps();
+    this.data = this.widget.data;
+    this.title = this.data.title;
+    this.bloc = TaskPageBloc(this.data);
   }
 
+  /// Called when a dependency of this state object changes.
   @override
-  void didUpdateWidget(TaskPage oldWidget) {
-    if (oldWidget.task != this.widget.task) {
-      this.task = this.widget.task;
-    }
-
-    super.didUpdateWidget(oldWidget);
+  void didChangeDependencies() {
+    super.didChangeDependencies();
   }
 
-  /// Called when this state removed from tree.
+  /// Called whenever the widget configuration changes.
+  @override
+  void didUpdateWidget(TaskPage old) {
+    super.didUpdateWidget(old);
+  }
+
+  /// Called when this state removed from the tree.
   @override
   void dispose() {
-    this.bloc.dispose();
     super.dispose();
   }
 
-  Future<bool> update() async {
-    if (this.title.isNotEmpty) {
-      this.task.title = this.title;
-    }
-
-    await this.bloc.updateTask(this.task);
-    return true;
-  }
-
-  /// Build this widget.
+  /// Build the TaskPage widget with this state.
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: this.update,
+      onWillPop: () async {
+        final TasksBloc bloc = Provider.of(context, component: TasksBloc);
+        final bool result = await bloc.updateTask(this.widget.data, this.data);
+        return true;
+      },
       child: Scaffold(
         body: this.buildPage(),
         backgroundColor: Colors.grey[200],
         bottomNavigationBar: BottomAppBar(
           child: Container(
-            decoration: const BoxDecoration(),
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  'Created on ${DateFormat.yMMMd().format(this.task.createdDate)}',
+                  'Created on ${DateFormat.yMMMd().format(this.data.createdDate)}',
                   style: Theme.of(this.context).textTheme.subtitle.copyWith(
-                    fontWeight: FontWeight.w300
-                  )
+                    fontWeight: FontWeight.w300,
+                  ),
                 ),
-                IconButton(
-                  color: Colors.red[400],
-                  icon: const Icon(Icons.delete),
-                  onPressed: () async {
-                    final result = await showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return this.dialogWhenDeleteTask();
-                      }
-                    );
+                Consumer(
+                  requires: [TasksBloc],
+                  builder: (context, components) {
+                    final component = components[TasksBloc];
+                    return IconButton(
+                      color: Colors.red[400],
+                      icon: const Icon(Icons.delete),
+                      onPressed: () async {
+                        final result = await showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return TaskDeleteDialog();
+                          },
+                        );
 
-                    if (result != null && result) {
-                      if (await this.bloc.deleteTask(task)) {
-                        Navigator.of(this.context).pop();
-                      }
-                    }
+                        if (result != null && result) {
+                          if (await component.deleteTask(this.data)) {
+                            Navigator.of(this.context).pop();
+                          }
+                        }
+                      },
+                    );
                   },
                 ),
               ],
@@ -146,7 +153,6 @@ class _TaskPageState extends State<TaskPage> {
               child: const Icon(Icons.arrow_back),
               textColor: Colors.black.withOpacity(0.5),
               onPressed: () async {
-                await this.update();
                 Navigator.of(this.context).pop();
               },
             ),
@@ -156,19 +162,24 @@ class _TaskPageState extends State<TaskPage> {
             child: Row(
               children: <Widget>[
                 CircleCheckbox(
-                  value: this.task.done,
+                  value: this.data.done,
                   onChanged: (bool checked) {
-                    this.task.done = checked;
+                    this.data.done = checked;
                   },
                 ),
                 const SizedBox(width: 10.0),
                 Expanded(
-                  child: this.editableTitle()
+                  child: TaskTitleTextField(
+                    data: this.data.title,
+                    onChanged: (String newTitle) {
+                      this.title = newTitle;
+                    },
+                  ),
                 ),
                 ImportantCheckBox(
-                  value: this.task.important,
+                  value: this.data.important,
                   onChanged: (bool checked) {
-                    this.task.important = checked;
+                    this.data.important = checked;
                   },
                 ),
               ],
@@ -179,60 +190,11 @@ class _TaskPageState extends State<TaskPage> {
     );
   }
 
-  /// Build editable title.
-  Widget editableTitle() {
-    return EditableTitle(
-      title: this.task.title,
-      onChanged: (String newTitle) {
-        this.title = newTitle;
-      },
-    );
-  }
-
-  /// Build dialog when delete category.
-  Widget dialogWhenDeleteTask() {
-    return AlertDialog(
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      content: const Text('Are you sure delete this task?'),
-      actions: <Widget>[
-        // Cancel button.
-        FlatButton(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(7.0),
-          ),
-          color: Colors.grey[400],
-          textColor: Colors.white,
-          child: const Text('Cancel'),
-          onPressed: () { // When the user pressed CANCEL button.
-            Navigator.of(context).pop(false);
-          },
-        ),
-        // Yes Button.
-        FlatButton(
-          padding: const EdgeInsets.symmetric(horizontal: 30.0),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(7.0),
-          ),
-          color: Theme.of(context).errorColor,
-          textColor: Colors.white,
-          child: const Text('Yes'),
-          onPressed: () { // When the user pressed YES button.
-            Navigator.of(context).pop(true);
-          },
-        ),
-      ],
-    );
-  }
-
   /// Build main content this page.
   Widget bodyPage() {
     return Expanded(
       child: StreamBuilder(
-        stream: this.bloc.streamSteps,
+        stream: this.bloc.steps,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
@@ -248,14 +210,14 @@ class _TaskPageState extends State<TaskPage> {
 
   /// Build a listview to show steps of task.
   Widget buildListView(List<StepModel> steps) {
-    List<ItemListTile> tiles = [];
+    List<StepListTile> tiles = [];
 
     steps.forEach((step) {
       tiles.add(this.buildItemInListView(step));
     });
 
     tiles.add(this.buildItemInListView(
-      StepModel(id: null, title: '', done: false, taskId: widget.task.id)
+      StepModel(id: null, title: '', done: false, taskId: widget.data.id)
     ));
 
     return Container(
@@ -267,17 +229,17 @@ class _TaskPageState extends State<TaskPage> {
 
   /// Build a children in listview.
   Widget buildItemInListView(StepModel step) {
-    return ItemListTile(
+    return StepListTile(
       key: Key(step.id.toString()),
-      step: step,
-      onChanged: (StepModel step) {
+      data: step,
+      onChanged: (StepModel newModel) {
         if (step.title == null) {
           this.bloc.deleteStep(step);
         } else {
           if (step.id == null) {
             this.bloc.addStep(step);
           } else {
-            this.bloc.updateStep(step);
+            this.bloc.updateStep(step, newModel);
           }
         }
       },
@@ -291,25 +253,18 @@ class _TaskPageState extends State<TaskPage> {
         DatePicker(
           title: 'Add due date',
           icon: Icons.date_range,
-          initialDate: this.task.dueDate,
+          initialDate: this.data.dueDate,
           onSelected: (DateTime date) async {
-            this.task.dueDate = date;
-            await this.bloc.updateTask(this.task);
+            this.data.dueDate = date;
           },
         ),
-        this.buildNoteForm(this.task),
+        TaskNoteTextField(
+          data: this.data.note,
+          onChanged: (String note) {
+            this.data.note = note;
+          },
+        ),
       ],
-    );
-  }
-
-  /// Build the task note form.
-  Widget buildNoteForm(TaskModel task) {
-    return NoteTextField(
-      note: task.note,
-      onChanged: (String note) {
-        task.note = note;
-        this.bloc.updateTask(task);
-      },
     );
   }
 }

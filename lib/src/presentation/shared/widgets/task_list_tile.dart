@@ -11,15 +11,12 @@ class TaskListTile extends StatefulWidget {
     Key key,
     @required this.task,
     @required this.onChanged,
-    @required this.whenOnTap
   }): assert(task != null),
       assert(onChanged != null),
-      assert(whenOnTap != null),
       super(key: key);
 
   final TaskModel task;
   final ValueChanged<TaskModel> onChanged;
-  final Function whenOnTap;
 
   @override
   State<TaskListTile> createState() => _TaskListTileState();
@@ -116,8 +113,7 @@ class _TaskListTileState extends State<TaskListTile> {
           },
         ),
         onTap: () {
-          Navigator.of(this.context).pushNamed('/task', arguments: this.task)
-            .then((result) => this.widget.whenOnTap());
+          Navigator.of(this.context).pushNamed('/task', arguments: this.task);
         },
       ),
     );

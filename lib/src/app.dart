@@ -5,6 +5,7 @@ import 'package:tasks/src/core/provider.dart';
 
 import 'core/router.dart';
 import 'presentation/blocs/categories_bloc.dart';
+import 'presentation/blocs/tasks_bloc.dart';
 
 class App extends StatelessWidget {
   /// The root widget application.
@@ -33,6 +34,10 @@ class App extends StatelessWidget {
       components: <Component>[
         Component<CategoriesBloc>(
           onCreated: () => CategoriesBloc(),
+          onDispose: (component) => component?.dispose(),
+        ),
+        Component<TasksBloc>(
+          onCreated: () => TasksBloc(),
           onDispose: (component) => component?.dispose(),
         ),
       ],

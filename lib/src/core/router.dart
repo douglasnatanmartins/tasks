@@ -36,7 +36,7 @@ class Router {
       case '/task':
         return MaterialPageRoute(
           builder: (BuildContext context) {
-            return TaskPage(task: settings.arguments);
+            return TaskPage(data: settings.arguments);
           },
         );
       

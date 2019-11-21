@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tasks/src/data/models/project_model.dart';
 import 'package:tasks/src/data/models/task_model.dart';
 import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
-import 'package:tasks/src/presentation/shared/forms/new_task_form.dart';
+import 'package:tasks/src/presentation/shared/forms/task_new_form.dart';
 
 import 'project_page_bloc.dart';
 import 'widgets/task_list_view.dart';
@@ -73,7 +73,7 @@ class _ProjectPageState extends State<ProjectPage> {
         onPressed: () async {
           final result = await showDialog(
             context: this.context,
-            builder: (BuildContext context) => NewTaskForm(project: project.id)
+            builder: (BuildContext context) => TaskNewForm(project: project.id)
           );
 
           if (result is TaskModel) {

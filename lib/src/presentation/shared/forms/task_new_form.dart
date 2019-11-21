@@ -2,23 +2,30 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tasks/src/data/models/task_model.dart';
 
-class NewTaskForm extends StatefulWidget {
-  NewTaskForm({
+class TaskNewForm extends StatefulWidget {
+  /// Create a TaskNewForm widget.
+  /// 
+  /// The [project] argument must not be null and greater than or equal zero.
+  /// The `project` argument is the project id.
+  TaskNewForm({
     Key key,
-    @required this.project
+    @required this.project,
   }): assert(project != null),
+      assert(project >= 0),
       super(key: key);
 
   final int project;
 
+  /// Creates the mutable state for this widget at a given location in the tree.
   @override
-  State<NewTaskForm> createState() => _NewTaskFormState();
+  State<TaskNewForm> createState() => _TaskNewFormState();
 }
 
-class _NewTaskFormState extends State<NewTaskForm> {
+class _TaskNewFormState extends State<TaskNewForm> {
   GlobalKey<FormState> key;
   TextEditingController controller;
 
+  /// Called when this state first inserted into tree.
   @override
   void initState() {
     super.initState();
@@ -26,12 +33,25 @@ class _NewTaskFormState extends State<NewTaskForm> {
     this.controller = TextEditingController();
   }
 
+  /// Called when a dependency of this state object changes.
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
+
+  /// Called whenever the widget configuration changes.
+  @override
+  void didUpdateWidget(TaskNewForm old) {
+    super.didUpdateWidget(old);
+  }
+
+  /// Called when this state removed from the tree.
   @override
   void dispose() {
-    this.controller.dispose();
     super.dispose();
   }
 
+  /// Build the TaskNewForm widget with state.
   @override
   Widget build(BuildContext context) {
     return AlertDialog(

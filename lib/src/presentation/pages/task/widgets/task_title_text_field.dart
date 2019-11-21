@@ -1,32 +1,33 @@
 import 'package:flutter/material.dart';
 
-class EditableTitle extends StatefulWidget {
-  EditableTitle({
+class TaskTitleTextField extends StatefulWidget {
+  /// Create a TaskTitleTextField widget.
+  TaskTitleTextField({
     Key key,
-    @required this.title,
-    @required this.onChanged
-  }): assert(title != null),
-      assert(onChanged != null),
-      super(key: key);
+    @required this.data,
+    @required this.onChanged,
+  }): super(key: key);
 
-  final String title;
+  final String data;
   final ValueChanged<String> onChanged;
 
+  /// Creates the mutable state for this widget at a given location in the tree.
   @override
-  State<EditableTitle> createState() => _EditableTitleState();
+  State<TaskTitleTextField> createState() => _TaskTitleTextFieldState();
 }
 
-class _EditableTitleState extends State<EditableTitle> {
-  String title;
+class _TaskTitleTextFieldState extends State<TaskTitleTextField> {
+  String data;
   FocusNode focusNode;
   TextEditingController controller;
 
+  /// Called when this state first inserted into tree.
   @override
   void initState() {
     super.initState();
-    this.title = this.widget.title;
+    this.data = this.widget.data;
     this.focusNode = FocusNode();
-    this.controller = TextEditingController(text: this.title);
+    this.controller = TextEditingController(text: this.data);
 
     this.focusNode.addListener(() {
       if (!this.focusNode.hasFocus) {
@@ -34,8 +35,8 @@ class _EditableTitleState extends State<EditableTitle> {
         if (value.isEmpty) {
           this.controller.text = value;
         } else {
-          if (value != this.title) {
-            this.title = value;
+          if (value != this.data) {
+            this.data = value;
             this.widget.onChanged(value);
           }
         }
@@ -43,6 +44,19 @@ class _EditableTitleState extends State<EditableTitle> {
     });
   }
 
+  /// Called when a dependency of this state object changes.
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
+
+  /// Called whenever the widget configuration changes.
+  @override
+  void didUpdateWidget(TaskTitleTextField old) {
+    super.didUpdateWidget(old);
+  }
+
+  /// Called when this state removed from the tree.
   @override
   void dispose() {
     this.focusNode.dispose();
@@ -50,6 +64,7 @@ class _EditableTitleState extends State<EditableTitle> {
     super.dispose();
   }
 
+  /// Build the TaskTitleTextField widget with state.
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -59,19 +74,19 @@ class _EditableTitleState extends State<EditableTitle> {
         decoration: InputDecoration.collapsed(
           hintText: 'Title',
           hintStyle: TextStyle(
-            color: Colors.grey.withOpacity(0.5)
-          )
+            color: Colors.grey.withOpacity(0.5),
+          ),
         ),
         style: TextStyle(
           color: Colors.blue.shade400,
           fontSize: 20.0,
-          fontWeight: FontWeight.w600
+          fontWeight: FontWeight.w600,
         ),
         cursorColor: Colors.blue,
         onChanged: (String value) {
           this.widget.onChanged(value.trim());
-        }
-      )
+        },
+      ),
     );
   }
 }

@@ -5,7 +5,7 @@ import 'package:tasks/src/core/provider.dart';
 import 'package:tasks/src/data/models/category_model.dart';
 import 'package:tasks/src/presentation/blocs/categories_bloc.dart';
 import 'package:tasks/src/presentation/pages/categories/widgets/category_list_view.dart';
-import 'package:tasks/src/presentation/shared/forms/new_category_form.dart';
+import 'package:tasks/src/presentation/shared/forms/category_new_form.dart';
 
 class CategoriesPage extends StatelessWidget {
   /// Create a CategoriesPage widget.
@@ -49,7 +49,7 @@ class CategoriesPage extends StatelessWidget {
               final result = await showDialog(
                 context: context,
                 builder: (BuildContext context) {
-                  return NewCategoryForm();
+                  return CategoryNewForm();
                 }
               );
 
