@@ -70,7 +70,7 @@ class _TaskPageState extends State<TaskPage> {
     return WillPopScope(
       onWillPop: () async {
         final TasksBloc bloc = Provider.of(context, component: TasksBloc);
-        final bool result = await bloc.updateTask(this.data);
+        await bloc.updateTask(this.data);
         return true;
       },
       child: Scaffold(
@@ -153,7 +153,7 @@ class _TaskPageState extends State<TaskPage> {
               child: const Icon(Icons.arrow_back),
               textColor: Colors.black.withOpacity(0.5),
               onPressed: () async {
-                Navigator.of(this.context).pop();
+                Navigator.of(this.context).maybePop();
               },
             ),
           ),

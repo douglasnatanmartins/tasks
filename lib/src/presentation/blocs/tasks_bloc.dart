@@ -32,6 +32,12 @@ class TasksBloc implements BLoCContract {
     return result;
   }
 
+  /// Delete task.
+  Future<bool> deleteTask(TaskModel model) async {
+    bool result = await this._repository.delete(model.id);
+    return result;
+  }
+
   Future<void> pushTasks() async {
     this._tasksController.add(this._tasks);
   }
