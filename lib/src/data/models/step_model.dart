@@ -4,9 +4,8 @@ import 'package:tasks/src/core/contracts/model_contract.dart';
 class StepModel implements ModelContract {
   /// Constructor of a step model object.
   /// 
-  /// The [title], [done] and [taskId] arguments must not be null.
+  /// The [done] and [taskId] arguments must not be null.
   /// 
-  /// The `title` argument must not empty.
   /// The `taskId` argument must greater than or equal zero.
   StepModel({
     int id,
@@ -14,7 +13,6 @@ class StepModel implements ModelContract {
     @required bool done,
     @required int taskId,
   }) {
-    assert(title != null && title.isNotEmpty);
     assert(done != null);
     assert(taskId != null && taskId >= 0);
     this._id = id;

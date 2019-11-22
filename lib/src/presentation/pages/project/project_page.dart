@@ -156,7 +156,8 @@ class _ProjectPageState extends State<ProjectPage> {
                 );
               } else {
                 return EmptyContentBox(
-                  message: 'not task found',
+                  title: 'no task created yet',
+                  description: 'click add button to get started',
                   textColor: Colors.white.withOpacity(0.75),
                 );
               }

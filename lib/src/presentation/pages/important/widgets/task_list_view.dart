@@ -46,7 +46,7 @@ class TaskListView extends StatelessWidget {
             );
           } else {
             return EmptyContentBox(
-              message: 'empty tasks',
+              title: 'no important task created yet',
             );
           }
         }

@@ -254,7 +254,7 @@ class _TaskPageState extends State<TaskPage> {
           title: 'Add due date',
           icon: Icons.date_range,
           initialDate: this.data.dueDate,
-          onSelected: (DateTime date) async {
+          onChanged: (DateTime date) {
             this.data.dueDate = date;
           },
         ),

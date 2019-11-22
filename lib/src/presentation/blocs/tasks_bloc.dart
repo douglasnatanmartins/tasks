@@ -27,7 +27,7 @@ class TasksBloc implements BLoCContract {
   List<TaskModel> _tasks;
 
   /// Update task.
-  Future<bool> updateTask(TaskModel model) async {
+  Future<bool> updateTask(TaskModel model, {bool pushRequest}) async {
     bool result = await this._repository.update(model.toMap());
     return result;
   }

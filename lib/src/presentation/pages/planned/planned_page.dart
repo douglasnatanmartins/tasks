@@ -80,7 +80,9 @@ class _PlannedPageState extends State<PlannedPage> {
               if (snapshot.hasData && snapshot.data.isNotEmpty) {
                 return this.buildListView(snapshot.data);
               } else {
-                return EmptyContentBox(message: 'NO TASK');
+                return EmptyContentBox(
+                  title: 'no planned task created yet',
+                );
               }
             }
           },

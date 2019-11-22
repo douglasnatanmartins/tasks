@@ -45,7 +45,8 @@ class CategoryListView extends StatelessWidget {
       );
     } else {
       return EmptyContentBox(
-        message: 'empty categories',
+        title: 'not category created yet',
+        description: 'click the add button to get started',
       );
     }
   }

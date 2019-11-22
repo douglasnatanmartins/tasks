@@ -236,13 +236,16 @@ class _CategoryPageState extends State<CategoryPage> {
                 child: CircularProgressIndicator(),
               );
             } else {
-              if (snapshot.data.isNotEmpty) { // Has the stream data.
+              if (snapshot.hasData && snapshot.data.isNotEmpty) { // Has the stream data.
                 return ProjectListView(
                   data: snapshot.data,
                   whenOpened: () => this.bloc.refreshProjects(),
                 );
               } else {
-                return EmptyContentBox(message: 'not project found');
+                return EmptyContentBox(
+                  title: 'no project created yet',
+                  description: 'click green button to get started',
+                );
               }
             }
           },

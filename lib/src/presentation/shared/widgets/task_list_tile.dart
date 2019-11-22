@@ -8,6 +8,10 @@ import 'icon_checkbox.dart';
 
 class TaskListTile extends StatefulWidget {
   /// Create a TaskListTile widget.
+  /// 
+  /// The [data] argument must not be null.
+  /// 
+  /// The [onChanged] argument must not be null.
   TaskListTile({
     Key key,
     @required this.data,
@@ -44,6 +48,9 @@ class _TaskListTileState extends State<TaskListTile> {
   /// Called whenever the widget configuration changes.
   @override
   void didUpdateWidget(TaskListTile old) {
+    if (old.data != this.widget.data) {
+      this.data = data;
+    }
     super.didUpdateWidget(old);
   }
 
