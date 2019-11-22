@@ -36,14 +36,12 @@ class _DatePickerState extends State<DatePicker> {
 
   Color textColor;
 
-  Widget deleteButton;
-
   /// Called when this state first inserted into tree.
   @override
   void initState() {
     super.initState();
+    this.today = DateTimeUtil.onlyDate(DateTime.now());
     this.current = this.widget.initialDate;
-    this.onCurrentChanged(this.current);
   }
 
   /// Called when a dependency of this state object changes.
@@ -67,10 +65,13 @@ class _DatePickerState extends State<DatePicker> {
     super.dispose();
   }
 
-  void onCurrentChanged(DateTime date) {
-    if (date != null) {
-      this.title = DateFormat.yMMMd().format(date);
-      this.textColor = today.difference(date).inDays <= 0 ? Colors.blue : Colors.red;
+  /// Set title, text color when changing the selected date.
+  void onCurrentChanged() {
+    if (this.current != null) {
+      this.title = DateFormat.yMMMd().format(this.current);
+      this.textColor = DateTimeUtil.difference(this.current).inDays >= 0
+                       ? Colors.blue
+                       : Colors.red;
     } else {
       this.title = this.widget.title ?? 'No date selected';
       this.textColor = Colors.grey;
@@ -80,7 +81,7 @@ class _DatePickerState extends State<DatePicker> {
   /// Build the DatePicker widget with state.
   @override
   Widget build(BuildContext context) {
-    this.onCurrentChanged(this.current);
+    this.onCurrentChanged();
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -90,7 +91,7 @@ class _DatePickerState extends State<DatePicker> {
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: ListTile(
         contentPadding: const EdgeInsets.symmetric(horizontal: 10.0),
-        leading: Icon(this.widget.icon),
+        leading: this.widget.icon != null ? Icon(this.widget.icon) : null,
         title: InkWell(
           child: Text(
             this.title,
@@ -99,6 +100,8 @@ class _DatePickerState extends State<DatePicker> {
             ),
           ),
           onTap: () async {
+            // If not has given the initial date,
+            // using today for replace to initial date.
             final date = this.current ?? this.today;
             DateTime result = await showDatePicker(
               context: context,
@@ -107,6 +110,7 @@ class _DatePickerState extends State<DatePicker> {
               lastDate: DateTime(date.year + 10),
             );
 
+            // If the user has selected date.
             if (result != null) {
               result = DateTimeUtil.onlyDate(result);
               setState(() {
@@ -116,18 +120,19 @@ class _DatePickerState extends State<DatePicker> {
             }
           },
         ),
-        trailing: this.current != null ? deleteButton : null,
+        trailing: this.current != null ? this._buildDeleteButton() : null,
       ),
     );
   }
 
-  Widget trailing() {
+  /// Build the delete button.
+  Widget _buildDeleteButton() {
     return IconButton(
       icon: const Icon(Icons.clear),
       onPressed: () {
         setState(() {
           this.current = null;
-          this.widget.onChanged(null);
+          this.widget.onChanged(this.current);
         });
       },
     );
