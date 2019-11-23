@@ -7,6 +7,7 @@ class DatePicker extends StatefulWidget {
   /// Create a DatePicker widget.
   /// 
   /// The [onChanged] arugment must not be null.
+  /// The `onChanged` function called when select the different date.
   DatePicker({
     Key key,
     this.icon,
@@ -32,8 +33,10 @@ class _DatePickerState extends State<DatePicker> {
   /// The date is current selected.
   DateTime current;
 
+  /// The title will show if not has selected date.
   String title;
 
+  /// The text color 
   Color textColor;
 
   /// Called when this state first inserted into tree.
@@ -113,10 +116,12 @@ class _DatePickerState extends State<DatePicker> {
             // If the user has selected date.
             if (result != null) {
               result = DateTimeUtil.onlyDate(result);
-              setState(() {
-                this.current = result;
-                this.widget.onChanged(result);
-              });
+              if (result != this.current) {
+                setState(() {
+                  this.current = result;
+                  this.widget.onChanged(result);
+                });
+              }
             }
           },
         ),

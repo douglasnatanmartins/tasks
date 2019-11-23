@@ -22,15 +22,15 @@ class EmptyContentBox extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Widget> children = <Widget>[];
     children.add(Image.asset('lib/assets/images/character.png'));
-    children.add(const SizedBox(height: 10.0));
+    children.add(const SizedBox(height: 15.0));
     children.add(
       Text(
         this.title,
         overflow: TextOverflow.ellipsis,
         style: TextStyle(
-          color: (this.textColor ?? Colors.black),
-          fontSize: 19.0,
-          fontWeight: FontWeight.w600,
+          color: (this.textColor ?? Colors.black87),
+          fontSize: 18.0,
+          fontWeight: FontWeight.w500,
         ),
       ),
     );
@@ -43,8 +43,8 @@ class EmptyContentBox extends StatelessWidget {
           this.description,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
-            color: (this.textColor ?? Colors.black).withOpacity(0.65),
-            fontSize: 15,
+            color: (this.textColor ?? Colors.black87).withOpacity(0.65),
+            fontSize: 14,
           ),
         ),
       );

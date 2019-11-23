@@ -11,9 +11,10 @@ class App extends StatelessWidget {
   /// The root widget application.
   /// 
   /// The [information] arguments must not be null.
+  /// The `information` contains application metadata.
   const App({
     Key key,
-    @required this.information
+    @required this.information,
   }): assert(information != null),
       super(key: key);
 

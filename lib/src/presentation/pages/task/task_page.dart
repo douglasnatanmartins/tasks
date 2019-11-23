@@ -151,7 +151,8 @@ class _TaskPageState extends State<TaskPage> {
               padding: const EdgeInsets.all(10.0),
               shape: const CircleBorder(),
               child: const Icon(Icons.arrow_back),
-              textColor: Colors.black.withOpacity(0.5),
+              color: Colors.grey[400],
+              textColor: Colors.black.withOpacity(0.75),
               onPressed: () async {
                 Navigator.of(this.context).maybePop();
               },
@@ -161,13 +162,6 @@ class _TaskPageState extends State<TaskPage> {
             padding: const EdgeInsets.symmetric(horizontal: 15.0),
             child: Row(
               children: <Widget>[
-                CircleCheckbox(
-                  value: this.data.done,
-                  onChanged: (bool checked) {
-                    this.data.done = checked;
-                  },
-                ),
-                const SizedBox(width: 10.0),
                 Expanded(
                   child: TaskTitleTextField(
                     data: this.data.title,
@@ -175,6 +169,13 @@ class _TaskPageState extends State<TaskPage> {
                       this.title = newTitle;
                     },
                   ),
+                ),
+                const SizedBox(width: 10.0),
+                CircleCheckbox(
+                  value: this.data.done,
+                  onChanged: (bool checked) {
+                    this.data.done = checked;
+                  },
                 ),
                 ImportantCheckBox(
                   value: this.data.important,
