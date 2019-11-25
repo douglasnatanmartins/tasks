@@ -21,7 +21,8 @@ class TaskPage extends StatefulWidget {
   TaskPage({
     Key key,
     @required this.data,
-  }): super(key: key);
+  }): assert(data != null),
+      super(key: key);
 
   final TaskModel data;
 
@@ -69,7 +70,7 @@ class _TaskPageState extends State<TaskPage> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        final TasksBloc bloc = Provider.of(context, component: TasksBloc);
+        final TasksBloc bloc = Component.of<TasksBloc>(context);
         await bloc.updateTask(this.data);
         return true;
       },
@@ -88,10 +89,8 @@ class _TaskPageState extends State<TaskPage> {
                     fontWeight: FontWeight.w300,
                   ),
                 ),
-                Consumer(
-                  requires: [TasksBloc],
-                  builder: (context, components) {
-                    final component = components[TasksBloc];
+                Consumer<TasksBloc>(
+                  builder: (context, component) {
                     return IconButton(
                       color: Colors.red[400],
                       icon: const Icon(Icons.delete),

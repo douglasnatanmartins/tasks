@@ -146,10 +146,8 @@ class _CategoryPageState extends State<CategoryPage> {
                 ),
               ),
               // Delete button.
-              Consumer(
-                requires: [CategoriesBloc],
-                builder: (context, components) {
-                  final CategoriesBloc bloc = components[CategoriesBloc];
+              Consumer<CategoriesBloc>(
+                builder: (context, component) {
                   return FlatButton(
                     padding: const EdgeInsets.all(12.0),
                     shape: const CircleBorder(

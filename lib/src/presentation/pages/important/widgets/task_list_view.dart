@@ -14,9 +14,9 @@ class TaskListView extends StatelessWidget {
   /// Build this widget.
   @override
   Widget build(BuildContext context) {
-    TasksBloc bloc = Provider.of(context, component: TasksBloc);
+    TasksBloc component = Component.of<TasksBloc>(context);
     return StreamBuilder(
-      stream: bloc.tasks,
+      stream: component.tasks,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
@@ -33,7 +33,7 @@ class TaskListView extends StatelessWidget {
                   key: Key(item.id.toString()),
                   data: item,
                   onChanged: (TaskModel model) {
-                    bloc.updateTask(model);
+                    component.updateTask(model);
                   },
                 );
               },

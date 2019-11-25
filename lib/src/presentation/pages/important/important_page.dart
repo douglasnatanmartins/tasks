@@ -13,7 +13,7 @@ class ImportantPage extends StatelessWidget {
   /// Build this widget.
   @override
   Widget build(BuildContext context) {
-    final bloc = Provider.of(context, component: TasksBloc);
+    final bloc = Component.of<TasksBloc>(context);
     bloc.event.add(TaskType.Important);
     return Scaffold(
       appBar: null,

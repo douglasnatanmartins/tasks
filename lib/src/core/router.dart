@@ -1,93 +1,42 @@
 import 'package:flutter/material.dart';
 
-import '../presentation/pages/home/home_page.dart';
-import '../presentation/pages/category/category_page.dart';
-import '../presentation/pages/project/project_page.dart';
-import '../presentation/pages/task/task_page.dart';
+typedef RouteGenerator = Route Function(RouteSettings settings);
 
-class Router {
-  static Route<dynamic> generateRoute(RouteSettings settings) {
-    switch (settings.name) {
-      // Home Page.
-      case '/':
-        return MaterialPageRoute(
-          builder: (BuildContext context) {
-            return HomePage();
-          },
-        );
+class Router extends StatelessWidget {
+  /// Create a Router widget.
+  /// 
+  /// The [onGenerateRoute] argument must not be null.
+  Router({
+    Key key,
+    @required this.onGenerateRoute,
+  }): assert(onGenerateRoute != null),
+      super(key: key);
 
-      // Category Page.
-      case '/category':
-        return MaterialPageRoute(
-          builder: (BuildContext context) {
-            return CategoryPage(category: settings.arguments);
-          },
-        );
-      
-      // Project Page.
-      case '/project':
-        return MaterialPageRoute(
-          builder: (BuildContext context) {
-            return ProjectPage(project: settings.arguments);
-          },
-        );
-      
-      // Task Page.
-      case '/task':
-        return MaterialPageRoute(
-          builder: (BuildContext context) {
-            return TaskPage(data: settings.arguments);
-          },
-        );
-      
-      // Default Page.
-      default: return errorRoute();
-    }
+  final RouteGenerator onGenerateRoute;
+  final GlobalKey<NavigatorState> navigator = GlobalKey<NavigatorState>();
+
+  static Router of(BuildContext context) {
+    return context.ancestorWidgetOfExactType(Router) as Router;
   }
 
-  static Route<dynamic> errorRoute() {
-    return MaterialPageRoute(
-      builder: (BuildContext context) {
-        return Scaffold(
-          body: SafeArea(
-            child: Center(
-              child: Container(
-                height: 100.0,
-                width: 340.0,
-                padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
-                decoration: BoxDecoration(
-                  color: Colors.orange,
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      'Page not defined or feature is comming.',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16.0,
-                      ),
-                    ),
-                    InkWell(
-                      child: Text(
-                        'Back previous screen ...',
-                        style: TextStyle(
-                          decoration: TextDecoration.underline,
-                          color: Colors.white,
-                        ),
-                      ),
-                      onTap: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        );
-      },
+  /// Build the Router widget.
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+      onWillPop: this.pop,
+      child: Navigator(
+        key: this.navigator,
+        onGenerateRoute: this.onGenerateRoute,
+      ),
     );
+  }
+
+  Future<bool> pop() async {
+    if (navigator.currentState.canPop()) {
+      return await navigator.currentState.maybePop();
+    } else {
+      Navigator.of(navigator.currentContext).maybePop();
+      return true;
+    }
   }
 }
