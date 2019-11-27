@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tasks/src/core/provider.dart';
 import 'package:tasks/src/data/models/category_model.dart';
-import 'package:tasks/src/presentation/pages/category/category_page.dart';
 
 import '../categories_controller.dart';
 
@@ -60,15 +59,12 @@ class CategoryCard extends StatelessWidget {
       ),
       onTap: () {
         final component = Component.of<CategoriesController>(context);
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (BuildContext context) {
-              return Component<CategoriesController>.value(
-                value: component,
-                child: CategoryPage(category: this.category),
-              );
-            },
-          ),
+        Navigator.of(context).pushNamed(
+          '/category',
+          arguments: <String, dynamic>{
+            'component': component,
+            'model': this.category,
+          },
         );
       },
     );

@@ -3,7 +3,8 @@ import 'package:tasks/src/core/provider.dart';
 
 import 'package:tasks/src/data/models/category_model.dart';
 import 'package:tasks/src/data/models/project_model.dart';
-import 'package:tasks/src/presentation/pages/categories/categories_controller.dart';
+import 'package:tasks/src/presentation/controllers/categories_controller_interface.dart';
+import 'package:tasks/src/presentation/pages/category/widgets/category_delete_dialog.dart';
 import 'package:tasks/src/presentation/pages/project_new/project_new_screen.dart';
 import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
 
@@ -143,7 +144,7 @@ class _CategoryPageState extends State<CategoryPage> {
                 ),
               ),
               // Delete button.
-              Consumer<CategoriesController>(
+              Consumer<CategoriesControllerInterface>(
                 builder: (context, component) {
                   return FlatButton(
                     padding: const EdgeInsets.all(12.0),
@@ -158,7 +159,7 @@ class _CategoryPageState extends State<CategoryPage> {
                       final result = await showDialog(
                         context: context,
                         builder: (BuildContext context) {
-                          return this.dialogWhenDeleteCategory();
+                          return CategoryDeleteDialog();
                         }
                       );
 
@@ -174,45 +175,6 @@ class _CategoryPageState extends State<CategoryPage> {
           ),
         ],
       ),
-    );
-  }
-
-  /// Build dialog when delete category.
-  Widget dialogWhenDeleteCategory() {
-    return AlertDialog(
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      content: const Text('Are you want delete this category?'),
-      actions: <Widget>[
-        // Cancel button.
-        FlatButton(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(7.0)
-          ),
-          color: Colors.grey[400],
-          textColor: Colors.white,
-          child: const Text('Cancel'),
-          onPressed: () { // When the user pressed CANCEL button.
-            Navigator.of(context).pop(false);
-          },
-        ),
-        // Yes Button.
-        FlatButton(
-          padding: const EdgeInsets.symmetric(horizontal: 30.0),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(7.0),
-          ),
-          color: Theme.of(this.context).errorColor,
-          textColor: Colors.white,
-          child: const Text('Yes'),
-          onPressed: () { // When the user pressed YES button.
-            Navigator.of(context).pop(true);
-          },
-        ),
-      ],
     );
   }
 
@@ -232,9 +194,7 @@ class _CategoryPageState extends State<CategoryPage> {
               );
             } else {
               if (snapshot.hasData && snapshot.data.isNotEmpty) { // Has the stream data.
-                return ProjectListView(
-                  data: snapshot.data,
-                );
+                return ProjectListView(items: snapshot.data);
               } else {
                 return EmptyContentBox(
                   title: 'no project created yet',

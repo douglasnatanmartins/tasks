@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:tasks/src/presentation/controllers/categories_controller_interface.dart';
+import 'package:tasks/src/presentation/controllers/projects_controller_interface.dart';
 import 'package:tasks/src/presentation/controllers/tasks_controller_interface.dart';
-import 'package:tasks/src/presentation/pages/categories/categories_controller.dart';
-import 'package:tasks/src/presentation/pages/category/category_controller.dart';
 
 import '../presentation/pages/home/home_page.dart';
 import '../presentation/pages/category/category_page.dart';
@@ -25,7 +25,7 @@ class Router {
         return MaterialPageRoute(
           builder: (BuildContext context) {
             final Map<String, dynamic> args = settings.arguments;
-            return Component<CategoriesController>.value(
+            return Component<CategoriesControllerInterface>.value(
               value: args['component'],
               child: CategoryPage(category: args['model']),
             );
@@ -37,7 +37,7 @@ class Router {
         return MaterialPageRoute(
           builder: (BuildContext context) {
             final Map<String, dynamic> args = settings.arguments;
-            return Component<CategoryController>.value(
+            return Component<ProjectsControllerInterface>.value(
               value: args['component'],
               child: ProjectPage(model: args['model']),
             );

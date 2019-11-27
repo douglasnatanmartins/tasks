@@ -1,25 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:tasks/src/core/provider.dart';
 import 'package:tasks/src/data/models/project_model.dart';
 
+import '../category_controller.dart';
+
 class ProjectCard extends StatelessWidget {
+  /// Create a ProjectCard widget.
   ProjectCard({
     Key key,
-    @required this.project,
-    @required this.progress
-  }): assert(project != null),
+    @required this.model,
+    @required this.progress,
+  }): assert(model != null),
+      assert(progress != null),
       super(key: key);
 
-  final ProjectModel project;
+  final ProjectModel model;
   final double progress;
 
+  /// Build the ProjectCard widget.
   @override
   Widget build(BuildContext context) {
+    return GestureDetector(
+      child: this._buildTile(),
+      onTap: () {
+        final component = Component.of<CategoryController>(context);
+        Navigator.of(context).pushNamed(
+          '/project',
+          arguments: <String, dynamic>{
+            'component': component,
+            'model': this.model,
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildTile() {
     List<Widget> children = <Widget>[];
 
     children.add(
       Text(
-        this.project.title,
+        this.model.title,
         overflow: TextOverflow.ellipsis,
         style: TextStyle(
           color: Colors.blue[600],
@@ -29,11 +51,11 @@ class ProjectCard extends StatelessWidget {
       ),
     );
 
-    if (this.project.description.isNotEmpty) {
+    if (this.model.description.isNotEmpty) {
       children.add(const SizedBox(height: 6.0));
       children.add(
         Text(
-          this.project.description,
+          this.model.description,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
             color: Colors.black.withOpacity(0.8),
@@ -45,7 +67,7 @@ class ProjectCard extends StatelessWidget {
     children.add(const SizedBox(height: 5.0));
     children.add(
       Text(
-        'Created: ${DateFormat.yMMMd().format(this.project.created)}',
+        'Created on ${DateFormat.yMMMd().format(this.model.created)}',
         style: TextStyle(
           color: Colors.black.withOpacity(0.45),
         ),
@@ -66,9 +88,9 @@ class ProjectCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.only(right: 12.0),
                 child: Icon(
-                  project.icon,
+                  this.model.icon,
                   size: 30.0,
-                  color: project.color,
+                  color: this.model.color,
                 ),
               ),
               Expanded(
@@ -89,7 +111,7 @@ class ProjectCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 10.0),
-              Text((progress * 100).round().toString() + '%'),
+              Text((this.progress * 100).round().toString() + '%'),
             ],
           ),
         ],

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tasks/src/core/provider.dart';
 import 'package:tasks/src/data/models/task_model.dart';
-import 'package:tasks/src/presentation/controllers/tasks_controller_interface.dart';
-import 'package:tasks/src/presentation/pages/task/task_page.dart';
 import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
 import 'package:tasks/src/presentation/shared/widgets/task_list_tile.dart';
 
@@ -41,15 +39,12 @@ class TaskListView extends StatelessWidget {
                     },
                   ),
                   onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (BuildContext context) {
-                          return Component<TasksControllerInterface>.value(
-                            value: component,
-                            child: TaskPage(model: item),
-                          );
-                        },
-                      ),
+                    Navigator.of(context).pushNamed(
+                      '/task',
+                      arguments: <String, dynamic>{
+                        'component': component,
+                        'model': item,
+                      },
                     );
                   },
                 );
