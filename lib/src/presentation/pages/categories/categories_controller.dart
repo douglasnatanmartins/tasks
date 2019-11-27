@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:tasks/src/core/contracts/controller.dart';
 import 'package:tasks/src/data/models/category_model.dart';
 import 'package:tasks/src/data/repositories/category_repository.dart';
+import 'package:tasks/src/presentation/controllers/categories_controller_interface.dart';
 
-class CategoriesController implements Controller {
+class CategoriesController implements CategoriesControllerInterface {
   CategoriesController() {
     this._fetchCategories().then((result) {
       this.pushCategories();
@@ -16,6 +16,7 @@ class CategoriesController implements Controller {
   Stream<List<CategoryModel>> get categories => _categoriesController.stream;
   List<CategoryModel> _categories = <CategoryModel>[];
 
+  @override
   Future<bool> addCategory(CategoryModel model) async {
     final result = await this._categoryRepository.add(model.toMap());
     if (result) {
@@ -25,6 +26,7 @@ class CategoriesController implements Controller {
     return result;
   }
 
+  @override
   Future<bool> updateCategory(CategoryModel previous, CategoryModel current) async {
     final result = await this._categoryRepository.update(current.toMap());
     if (result) {
@@ -35,6 +37,7 @@ class CategoriesController implements Controller {
     return result;
   }
 
+  @override
   Future<bool> deleteCategory(CategoryModel model) async {
     final result = await this._categoryRepository.delete(model.id);
     if (result) {

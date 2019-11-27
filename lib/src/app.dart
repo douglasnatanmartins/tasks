@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:package_info/package_info.dart';
-import 'package:tasks/src/presentation/shared/widgets/route_not_defined.dart';
 import 'core/router.dart';
-import 'presentation/pages/home/home_page.dart';
 
 class App extends StatelessWidget {
   /// The root widget application.

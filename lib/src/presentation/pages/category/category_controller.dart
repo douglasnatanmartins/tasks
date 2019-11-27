@@ -1,13 +1,13 @@
 import 'dart:async';
 
-import 'package:tasks/src/core/contracts/controller.dart';
 import 'package:tasks/src/data/models/category_model.dart';
 import 'package:tasks/src/data/models/project_model.dart';
 import 'package:tasks/src/data/repositories/project_repository.dart';
 import 'package:tasks/src/data/repositories/task_repository.dart';
+import 'package:tasks/src/presentation/controllers/projects_controller_interface.dart';
 
 /// Category Page Business Logic Component.
-class CategoryController implements Controller {
+class CategoryController implements ProjectsControllerInterface {
   /// Business Logic Component for the Category Page.
   CategoryController(CategoryModel category) {
     this.category = category;
@@ -26,6 +26,7 @@ class CategoryController implements Controller {
   List<Map<String, dynamic>> _projects = <Map<String, dynamic>>[];
 
   /// Add new a project
+  @override
   Future<bool> addProject(ProjectModel project) async {
     bool result = await this._projectRepository.add(project.toMap());
     if (result) {
@@ -36,6 +37,7 @@ class CategoryController implements Controller {
   }
 
   /// Delete a project.
+  @override
   Future<bool> deleteProject(ProjectModel project) async {
     bool result = await this._projectRepository.delete(project.id);
     if (result) {
@@ -46,8 +48,9 @@ class CategoryController implements Controller {
   }
 
   /// Update project object.
-  Future<bool> updateProject(ProjectModel project) async {
-    bool result = await this._projectRepository.update(project.toMap());
+  @override
+  Future<bool> updateProject(ProjectModel previous, ProjectModel current) async {
+    bool result = await this._projectRepository.update(current.toMap());
     if (result) {
       await this._fetchProjects();
       this.pushProjects();
@@ -78,14 +81,16 @@ class CategoryController implements Controller {
 
   Future<void> _fetchProjects() async {
     final data = await this._projectRepository.getProjectsByCategoryId(this.category.id);
+    List<Map<String, dynamic>> items = <Map<String, dynamic>>[];
     for (var item in data) {
       final model = ProjectModel.from(item);
       final progress = await this.getProgressProject(model.id);
-      this._projects.add({
+      items.add({
         'project': model,
         'progress': progress,
       });
     }
+    this._projects = items;
   }
 
   /// Dispose this business logic component.
