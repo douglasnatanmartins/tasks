@@ -1,7 +1,7 @@
 import 'package:meta/meta.dart';
-import 'package:tasks/src/core/contracts/model_contract.dart';
+import 'package:tasks/src/core/contracts/model.dart';
 
-class StepModel implements ModelContract {
+class StepModel implements Model {
   /// Constructor of a step model object.
   /// 
   /// The [done] and [taskId] arguments must not be null.

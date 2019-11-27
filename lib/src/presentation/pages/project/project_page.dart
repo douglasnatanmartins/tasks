@@ -1,61 +1,76 @@
 import 'package:flutter/material.dart';
+import 'package:tasks/src/core/provider.dart';
 
 import 'package:tasks/src/data/models/project_model.dart';
 import 'package:tasks/src/data/models/task_model.dart';
-import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
 import 'package:tasks/src/presentation/shared/forms/task_new_form.dart';
 
-import 'project_page_bloc.dart';
-import 'widgets/task_list_view.dart';
+import 'project_controller.dart';
+import 'widgets/page_body.dart';
+import 'widgets/page_header.dart';
 
 class ProjectPage extends StatefulWidget {
+  /// Create a ProjectPage widget.
   ProjectPage({
     Key key,
-    @required this.project
-  }): assert(project != null),
-      super(key: key);
+    @required this.model,
+  }): super(key: key);
 
-  final ProjectModel project;
+  final ProjectModel model;
 
+  /// Creates the mutable state for this widget at a given location in the tree.
   @override
   State<ProjectPage> createState() => _ProjectPageState();
 }
 
 class _ProjectPageState extends State<ProjectPage> {
-  ProjectPageBloc bloc;
+  ProjectController controller;
+  ProjectModel model;
 
-  /// Called when this state inserted into tree.
+  /// Called when this state first inserted into tree.
   @override
   void initState() {
     super.initState();
-    // Create business logic component.
-    this.bloc = ProjectPageBloc(this.widget.project);
-    this.bloc.refreshTasks();
+    this.model = this.widget.model;
+    this.controller = ProjectController(this.model);
+  }
+
+  /// Called when a dependency of this state object changes.
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
+
+  /// Called whenever the widget configuration changes.
+  @override
+  void didUpdateWidget(ProjectPage old) {
+    super.didUpdateWidget(old);
   }
 
   /// Called when this state removed from the tree.
   @override
   void dispose() {
-    // Close business logic component.
-    this.bloc.dispose();
+    this.controller.dispose();
     super.dispose();
   }
 
-  /// Build this widget.
+  /// Build the ProjectPage widget with state.
   @override
   Widget build(BuildContext context) {
-    return this.buildPage(this.widget.project);
+    return Component<ProjectController>.value(
+      value: this.controller,
+      child: this.buildPage(),
+    );
   }
 
-  /// Build a project page.
-  Widget buildPage(ProjectModel project) {
+  Widget buildPage() {
     return Scaffold(
-      backgroundColor: project.color,
+      backgroundColor: this.model.color,
       body: SafeArea(
         child: Column(
           children: <Widget>[
-            this.headerPage(project),
-            this.bodyPage(),
+            PageHeader(model: this.model),
+            PageBody(),
           ],
         ),
       ),
@@ -73,97 +88,15 @@ class _ProjectPageState extends State<ProjectPage> {
         onPressed: () async {
           final result = await showDialog(
             context: this.context,
-            builder: (BuildContext context) => TaskNewForm(project: project.id)
+            builder: (BuildContext context) {
+              return TaskNewForm(project: this.model.id);
+            },
           );
 
           if (result is TaskModel) {
-            this.bloc.addTask(result);
+            this.controller.addTask(result);
           }
         },
-      ),
-    );
-  }
-
-  /// Build header this page.
-  Widget headerPage(ProjectModel object) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 15.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Hero(
-            tag: 'previous-screen-button',
-            child: FlatButton(
-              padding: const EdgeInsets.all(10.0),
-              color: Colors.white,
-              shape: const CircleBorder(),
-              child: const Icon(Icons.arrow_back),
-              onPressed: () => Navigator.of(this.context).pop(),
-            ),
-          ),
-          Expanded(
-            child: Text(
-              object.title,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18.0,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-          // Edit project button.
-          FlatButton(
-            padding: EdgeInsets.all(12.0),
-            shape: const CircleBorder(
-              side: BorderSide(
-                color: Colors.white,
-                width: 4.0,
-              ),
-            ),
-            child: const Icon(Icons.edit),
-            textColor: Colors.white,
-            onPressed: () {
-              Navigator.of(this.context).pushNamed('/project/task');
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  /// Build body this page.
-  Widget bodyPage() {
-    return Expanded(
-      child: Container(
-        child: StreamBuilder(
-          stream: this.bloc.streamTasks,
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            } else {
-              if (snapshot.hasData && snapshot.data.isNotEmpty) {
-                return TaskListView(
-                  data: snapshot.data,
-                  onChanged: (TaskModel task) {
-                    this.bloc.updateTask(task);
-                  },
-                  whenOpened: () {
-                    this.bloc.refreshTasks();
-                  },
-                );
-              } else {
-                return EmptyContentBox(
-                  title: 'no task created yet',
-                  description: 'click add button to get started',
-                  textColor: Colors.white.withOpacity(0.75),
-                );
-              }
-            }
-          },
-        ),
       ),
     );
   }

@@ -1,38 +1,57 @@
 import 'dart:async';
 
 import 'package:intl/intl.dart';
-import 'package:tasks/src/core/contracts/bloc_contract.dart';
 import 'package:tasks/src/data/models/task_model.dart';
 import 'package:tasks/src/data/repositories/task_repository.dart';
+import 'package:tasks/src/presentation/controllers/tasks_controller_interface.dart';
 
 /// Home Page Business Logic Component.
-class PlannedPageBloc implements BLoCContract {
-  PlannedPageBloc() {
-    this.taskRepository = TaskRepository();
+class PlannedController implements TasksControllerInterface {
+  PlannedController() {
+    this._fetchTasks().then((result) {
+      this.pushTasks();
+    });
   }
 
-  TaskRepository taskRepository;
+  final _taskRepository = TaskRepository();
 
-  final _controllerTasks = StreamController<Map<String, List<TaskModel>>>.broadcast();
-  Sink get sinkTasks => _controllerTasks.sink;
-  Stream get streamTasks => _controllerTasks.stream;
+  final _tasksController = StreamController<Map<String, List<TaskModel>>>.broadcast();
+  Stream<Map<String, List<TaskModel>>> get tasks => this._tasksController.stream;
+  Map<String, List<TaskModel>> _tasks = Map<String, List<TaskModel>>();
 
-  /// Update a task.
-  Future<bool> updateTask(TaskModel task) async {
-    bool result = await this.taskRepository.update(task.toMap());
+  @override
+  Future<bool> addTask(TaskModel model) {
+    return null;
+  }
+
+  @override
+  Future<bool> deleteTask(TaskModel model) {
+    return null;
+  }
+
+  @override
+  Future<bool> updateTask(TaskModel model) async {
+    final result = await this._taskRepository.update(model.toMap());
+    if (result) {
+    }
     return result;
   }
 
-  Future<void> fetchAll() async {
-    final data = await this.taskRepository.allTaskWithDueDate();
-    final Map<String, List<TaskModel>> tasks = {};
+  Future<void> pushTasks() async {
+    this._tasksController.add(this._tasks);
+  }
+
+  Future<void> _fetchTasks() async {
+    final data = await this._taskRepository.allTaskWithDueDate();
 
     if (data.length == 0) {
-      this.sinkTasks.add(tasks);
+      this._tasks = Map<String, List<TaskModel>>();
       return;
     }
 
-    // Get date with format (YYYY-MM-DD)
+    final Map<String, List<TaskModel>> tasks = {};
+
+    // Get date with format (YYYY-MM-DD).
     DateTime today = DateTime.now();
     today = DateTime(today.year, today.month, today.day);
 
@@ -67,13 +86,11 @@ class PlannedPageBloc implements BLoCContract {
         tasks[currentGroup].add(model);
       }
     });
-
-    this.sinkTasks.add(tasks);
   }
 
   /// Dispose business logic component.
   @override
   void dispose() {
-    _controllerTasks.close();
+    _tasksController.close();
   }
 }

@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:package_info/package_info.dart';
-import 'package:tasks/src/core/provider.dart';
 import 'package:tasks/src/presentation/shared/widgets/route_not_defined.dart';
-
 import 'core/router.dart';
-import 'presentation/blocs/categories_bloc.dart';
-import 'presentation/blocs/tasks_bloc.dart';
 import 'presentation/pages/home/home_page.dart';
 
 class App extends StatelessWidget {
@@ -33,36 +29,11 @@ class App extends StatelessWidget {
     // Set device orientation.
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
-    return Component<CategoriesBloc>(
-      creator: (context) => CategoriesBloc(),
-      disposer: (context, component) => component?.dispose(),
-      child: Component<TasksBloc>(
-        creator: (context) => TasksBloc(),
-        disposer: (context, component) => component?.dispose(),
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: this.information.appName,
-          initialRoute: '/',
-          onGenerateRoute: (RouteSettings settings) {
-            switch (settings.name) {
-              case '/':
-                return MaterialPageRoute(
-                  builder: (BuildContext context) {
-                    return HomePage();
-                  },
-                );
-                break;
-              default:
-                return MaterialPageRoute(
-                  builder: (BuildContext context) {
-                    return RouteNotDefined(route: settings.name);
-                  },
-                );
-                break;
-            }
-          },
-        ),
-      ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: this.information.appName,
+      initialRoute: '/',
+      onGenerateRoute: Router.generateRoute,
     );
   }
 }

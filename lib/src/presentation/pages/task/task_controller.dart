@@ -1,16 +1,16 @@
 import 'dart:async';
 
-import 'package:tasks/src/core/contracts/bloc_contract.dart';
+import 'package:tasks/src/core/contracts/controller.dart';
 import 'package:tasks/src/data/models/step_model.dart';
 import 'package:tasks/src/data/models/task_model.dart';
 import 'package:tasks/src/data/repositories/step_repository.dart';
 
 /// Task Page Business Logic Component
-class TaskPageBloc implements BLoCContract {
+class TaskController implements Controller {
   /// Create a Task Page Business Logic Component.
   /// 
   /// The [data] argument must not be null.
-  TaskPageBloc(TaskModel data) {
+  TaskController(TaskModel data) {
     this.data = data;
     this._fetchSteps().then((result) {
       this.pushSteps();

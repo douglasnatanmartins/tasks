@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tasks/src/core/provider.dart';
-import 'package:tasks/src/presentation/blocs/categories_bloc.dart';
+
+import '../categories_controller.dart';
 
 class PageHeader extends StatelessWidget {
   /// Create a PageHeader widget.
@@ -39,20 +40,22 @@ class PageHeader extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 15.0),
-              Consumer<CategoriesBloc>(
+              Consumer<CategoriesController>(
                 builder: (context, component) {
                   return StreamBuilder(
-                    stream: component.state,
+                    stream: component.categories,
                     builder: (BuildContext context, AsyncSnapshot snapshot) {
                       String description = '...';
-                      final data = component.categories;
-                      if (data.isEmpty) {
-                        description = 'You not have category';
-                      } else if (data.length == 1) {
-                        description = 'You have 1 category';
-                      } else {
-                        description = 'You have ${data.length} categories';
+                      if (snapshot.hasData) {
+                        if (snapshot.data.isEmpty) {
+                          description = 'You not have category';
+                        } else if (snapshot.data.length == 1) {
+                          description = 'You have 1 category';
+                        } else {
+                          description = 'You have ${snapshot.data.length} categories';
+                        }
                       }
+
                       return Text(
                         description,
                         style: TextStyle(

@@ -1,39 +1,70 @@
 import 'package:flutter/material.dart';
 import 'package:tasks/src/core/provider.dart';
-import 'package:tasks/src/presentation/blocs/tasks_bloc.dart';
+import 'important_controller.dart';
 import 'widgets/page_header.dart';
 import 'widgets/task_list_view.dart';
 
-class ImportantPage extends StatelessWidget {
+class ImportantPage extends StatefulWidget {
   /// Create a ImportantPage widget.
   ImportantPage({
     Key key,
   }): super(key: key);
 
-  /// Build this widget.
+  /// Creates the mutable state for this widget at a given location in the tree.
+  @override
+  State<ImportantPage> createState() => _ImportantPageState();
+}
+
+class _ImportantPageState extends State<ImportantPage> {
+  ImportantController controller;
+
+  /// Called when this state first inserted into tree.
+  @override
+  void initState() {
+    super.initState();
+    this.controller = ImportantController();
+  }
+
+  /// Called when a dependency of this state object changes.
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
+
+  /// Called whenever the widget configuration changes.
+  @override
+  void didUpdateWidget(ImportantPage old) {
+    super.didUpdateWidget(old);
+  }
+
+  /// Called when this state removed from the tree.
+  @override
+  void dispose() {
+    this.controller.dispose();
+    super.dispose();
+  }
+
+  /// Build the ImportantPage widget with state.
   @override
   Widget build(BuildContext context) {
-    final bloc = Component.of<TasksBloc>(context);
-    bloc.event.add(TaskType.Important);
-    return Scaffold(
-      appBar: null,
-      body: this.buildPage(),
+    return Component<ImportantController>.value(
+      value: this.controller,
+      child: this.buildPage(),
     );
   }
 
   Widget buildPage() {
-    return SafeArea(
-      child: Column(
-        children: <Widget>[
-          this.headerPage(),
-          this.bodyPage(),
-        ],
+    return Scaffold(
+      appBar: null,
+      body: SafeArea(
+        child: Column(
+          children: <Widget>[
+            PageHeader(),
+            this.bodyPage(),
+          ],
+        ),
       ),
     );
-  }
-
-  Widget headerPage() {
-    return PageHeader();
   }
 
   Widget bodyPage() {

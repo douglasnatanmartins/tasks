@@ -1,7 +1,7 @@
 import 'package:meta/meta.dart';
-import 'package:tasks/src/core/contracts/model_contract.dart';
+import 'package:tasks/src/core/contracts/model.dart';
 
-class CategoryModel implements ModelContract {
+class CategoryModel implements Model {
   /// Create a category model object.
   /// 
   /// The [title] and [created] arguments must not be null.

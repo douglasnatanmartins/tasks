@@ -101,34 +101,28 @@ class _TaskListTileState extends State<TaskListTile> {
       );
     }
 
-    return Container(
-      margin: const EdgeInsets.all(0.0),
-      child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 5.0,
-          vertical: 5.0,
-        ),
-        leading: CircleCheckbox(
-          value: this.data.done,
-          onChanged: (bool checked) {
-            this.data.done = checked;
-            this.widget.onChanged(this.data);
-          },
-        ),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: children,
-        ),
-        trailing: IconCheckbox(
-          value: this.data.important,
-          icon: Icons.star,
-          onChanged: (bool checked) {
-            this.data.important = checked;
-            this.widget.onChanged(this.data);
-          },
-        ),
-        onTap: () {
-          Navigator.of(this.context).pushNamed('/task', arguments: this.data);
+    return ListTile(
+      contentPadding: const EdgeInsets.symmetric(
+        horizontal: 5.0,
+        vertical: 5.0,
+      ),
+      leading: CircleCheckbox(
+        value: this.data.done,
+        onChanged: (bool checked) {
+          this.data.done = checked;
+          this.widget.onChanged(this.data);
+        },
+      ),
+      title: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: children,
+      ),
+      trailing: IconCheckbox(
+        value: this.data.important,
+        icon: Icons.star,
+        onChanged: (bool checked) {
+          this.data.important = checked;
+          this.widget.onChanged(this.data);
         },
       ),
     );

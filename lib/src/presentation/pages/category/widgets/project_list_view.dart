@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:tasks/src/core/provider.dart';
 import 'package:tasks/src/data/models/project_model.dart';
+import 'package:tasks/src/presentation/pages/project/project_page.dart';
 
+import '../category_controller.dart';
 import 'project_card.dart';
 
 class ProjectListView extends StatefulWidget {
   ProjectListView({
     Key key,
     @required this.data,
-    @required this.whenOpened
   }): assert(data != null),
-      assert(whenOpened != null),
       super(key: key);
 
   final List<Map<String, dynamic>> data;
-  final Function whenOpened;
 
   @override
   State<ProjectListView> createState() => _ProjectListViewState();
@@ -46,9 +46,9 @@ class _ProjectListViewState extends State<ProjectListView> {
   Widget build(BuildContext context) {
     return ListView.builder(
       padding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 5.0),
-      itemCount: data.length,
+      itemCount: this.data.length,
       itemBuilder: (BuildContext context, int index) {
-        final project = data[index];
+        final project = this.data[index];
         return this.buildItem(project['project'], project['progress']);
       },
     );
@@ -61,8 +61,17 @@ class _ProjectListViewState extends State<ProjectListView> {
         progress: progress,
       ),
       onTap: () {
-        Navigator.of(this.context).pushNamed('/project', arguments: project)
-          .then((result) => this.widget.whenOpened());
+        final component = Component.of<CategoryController>(context);
+        Navigator.of(this.context).push(
+          MaterialPageRoute(
+            builder: (BuildContext context) {
+              return Component<CategoryController>.value(
+                value: component,
+                child: ProjectPage(model: project),
+              );
+            }
+          ),
+        );
       },
     );
   }

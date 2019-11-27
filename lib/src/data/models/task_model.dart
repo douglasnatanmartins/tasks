@@ -1,8 +1,8 @@
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
-import 'package:tasks/src/core/contracts/model_contract.dart';
+import 'package:tasks/src/core/contracts/model.dart';
 
-class TaskModel implements ModelContract {
+class TaskModel implements Model {
   /// Constructor of a task model object.
   /// 
   /// The [title], [done], [projectId], [important] and [createdDate]

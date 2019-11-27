@@ -3,11 +3,11 @@ import 'package:tasks/src/core/provider.dart';
 
 import 'package:tasks/src/data/models/category_model.dart';
 import 'package:tasks/src/data/models/project_model.dart';
-import 'package:tasks/src/presentation/blocs/categories_bloc.dart';
+import 'package:tasks/src/presentation/pages/categories/categories_controller.dart';
 import 'package:tasks/src/presentation/pages/project_new/project_new_screen.dart';
 import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
 
-import 'category_page_bloc.dart';
+import 'category_controller.dart';
 import 'widgets/project_list_view.dart';
 
 class CategoryPage extends StatefulWidget {
@@ -25,49 +25,47 @@ class CategoryPage extends StatefulWidget {
 
 class _CategoryPageState extends State<CategoryPage> {
   // Business Logic Component.
-  CategoryPageBloc bloc;
+  CategoryController controller;
+  CategoryModel category;
 
   /// Called when this state inserted into tree.
   @override
   void initState() {
     super.initState();
-    this.bloc = CategoryPageBloc(this.widget.category);
-    this.bloc.refreshProjects();
+    this.category = this.widget.category;
+    this.controller = CategoryController(this.category);
   }
 
   /// Called when this state removed from the tree.
   @override
   void dispose() {
-    this.bloc.dispose();
+    this.controller.dispose();
     super.dispose();
   }
 
   /// Build this widget.
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      initialData: this.widget.category,
-      stream: this.bloc.streamCategory,
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        final CategoryModel category = snapshot.data;
-        return this.buildPage(category);
-      },
+    return Component<CategoryController>.value(
+      value: this.controller,
+      child: this.buildPage(),
     );
   }
 
   /// Build a category page.
-  Widget buildPage(CategoryModel category) {
+  Widget buildPage() {
     return Scaffold(
       backgroundColor: Colors.grey[300],
       body: SafeArea(
         child: Column(
           children: <Widget>[
-            this.headerPage(category),
+            this.headerPage(this.widget.category),
             this.bodyPage(),
           ],
         ),
       ),
       // Create new project button.
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
         heroTag: 'floating-button',
         elevation: 0,
@@ -78,18 +76,17 @@ class _CategoryPageState extends State<CategoryPage> {
             MaterialPageRoute(
               builder: (BuildContext context) {
                 return ProjectNewScreen(
-                  category: category.id
+                  category: this.category.id,
                 );
               },
             ),
           );
 
           if (result is ProjectModel) {
-            this.bloc.addProject(result);
+            this.controller.addProject(result);
           }
         },
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
@@ -146,7 +143,7 @@ class _CategoryPageState extends State<CategoryPage> {
                 ),
               ),
               // Delete button.
-              Consumer<CategoriesBloc>(
+              Consumer<CategoriesController>(
                 builder: (context, component) {
                   return FlatButton(
                     padding: const EdgeInsets.all(12.0),
@@ -166,7 +163,7 @@ class _CategoryPageState extends State<CategoryPage> {
                       );
 
                       if (result != null && result) {
-                        await bloc.deleteCategory(category);
+                        await component.deleteCategory(category);
                         Navigator.of(this.context).pop();
                       }
                     },
@@ -227,7 +224,7 @@ class _CategoryPageState extends State<CategoryPage> {
           color: Colors.white,
         ),
         child: StreamBuilder(
-          stream: this.bloc.streamProjects,
+          stream: this.controller.projects,
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
@@ -237,7 +234,6 @@ class _CategoryPageState extends State<CategoryPage> {
               if (snapshot.hasData && snapshot.data.isNotEmpty) { // Has the stream data.
                 return ProjectListView(
                   data: snapshot.data,
-                  whenOpened: () => this.bloc.refreshProjects(),
                 );
               } else {
                 return EmptyContentBox(

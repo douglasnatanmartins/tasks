@@ -1,24 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:tasks/src/core/provider.dart';
 import 'package:tasks/src/data/models/task_model.dart';
 import 'package:tasks/src/presentation/shared/widgets/task_list_tile.dart';
+
+import '../planned_controller.dart';
 
 class GroupListTile extends StatefulWidget {
   GroupListTile({
     Key key,
     @required this.title,
     @required this.items,
-    @required this.onChanged,
-    @required this.whenOnTap
   }): assert(title != null),
       assert(items != null),
-      assert(onChanged != null),
-      assert(whenOnTap != null),
       super(key: key);
 
   final String title;
   final List<TaskModel> items;
-  final ValueChanged<TaskModel> onChanged;
-  final Function whenOnTap;
 
   @override
   State<GroupListTile> createState() => _GroupListTileState();
@@ -51,6 +48,7 @@ class _GroupListTileState extends State<GroupListTile> {
 
   @override
   Widget build(BuildContext context) {
+    final component = Component.of<PlannedController>(context);
     return Theme(
       data: Theme.of(this.context).copyWith(
         dividerColor: Colors.transparent,
@@ -58,23 +56,35 @@ class _GroupListTileState extends State<GroupListTile> {
       child: ExpansionTile(
         initiallyExpanded: true,
         title: Text(this.title),
-        children: this.buildChildren(),
+        children: this.buildChildren(component),
       ),
     );
   }
 
-  List<Widget> buildChildren() {
+  List<Widget> buildChildren(PlannedController component) {
     List<Widget> children = <Widget>[];
-    this.items.forEach((TaskModel task) {
-      int index = this.items.indexOf(task);
+
+    this.items.forEach((TaskModel item) {
+      int index = this.items.indexOf(item);
       children.add(
-        TaskListTile(
-          data: task,
-          onChanged: (TaskModel checked) {
-            task.done = checked.done;
-            this.widget.onChanged(task);
+        GestureDetector(
+          child: TaskListTile(
+            data: item,
+            onChanged: (TaskModel updated) {
+              component.updateTask(updated);
+            },
+          ),
+          onTap: () {
+            Navigator.pushNamed(
+              context,
+              '/task',
+              arguments: <String, dynamic>{
+                'component': component,
+                'model': item,
+              },
+            );
           },
-        )
+        ),
       );
 
       if (index != this.items.length - 1) {

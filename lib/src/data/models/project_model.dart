@@ -2,10 +2,10 @@ import 'dart:ui';
 
 import 'package:flutter/widgets.dart';
 import 'package:meta/meta.dart';
-import 'package:tasks/src/core/contracts/model_contract.dart';
+import 'package:tasks/src/core/contracts/model.dart';
 import 'package:tasks/src/utils/data_support.dart';
 
-class ProjectModel implements ModelContract{
+class ProjectModel implements Model {
   /// Constructor of a project model object.
   /// 
   /// The [title], [categoryId], [created], [color]
