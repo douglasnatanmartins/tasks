@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tasks/src/data/models/task_model.dart';
+import 'package:tasks/src/domain/entities/task_entity.dart';
 
 class TaskNewForm extends StatefulWidget {
   /// Create a TaskNewForm widget.
@@ -103,11 +103,14 @@ class _TaskNewFormState extends State<TaskNewForm> {
           child: const Text('Add'),
           onPressed: () {
             if (this.key.currentState.validate()) {
-              final task = TaskModel(
-                title: this.controller.text.trim(),
-                done: false,
+              final task = TaskEntity(
+                id: null,
                 projectId: this.widget.project,
-                important: false,
+                title: this.controller.text.trim(),
+                note: null,
+                isDone: false,
+                isImportant: false,
+                dueDate: null,
                 createdDate: DateTime.now(),
               );
               Navigator.of(this.context).pop(task);

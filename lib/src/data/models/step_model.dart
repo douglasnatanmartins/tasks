@@ -1,94 +1,25 @@
 import 'package:meta/meta.dart';
-import 'package:tasks/src/core/contracts/model.dart';
+import 'package:tasks/src/domain/entities/step_entity.dart';
 
-class StepModel implements Model {
-  /// Constructor of a step model object.
-  /// 
-  /// The [done] and [taskId] arguments must not be null.
-  /// 
-  /// The `taskId` argument must greater than or equal zero.
+class StepModel extends StepEntity {
   StepModel({
     int id,
-    @required String title,
-    @required bool done,
     @required int taskId,
-  }) {
-    assert(done != null);
-    assert(taskId != null && taskId >= 0);
-    this._id = id;
-    this._title = title;
-    this._done = done ? 1 : 0;
-    this._taskId = taskId;
-  }
+    @required String message,
+    @required bool isDone,
+  }): super(
+    id: id,
+    taskId: taskId,
+    message: message,
+    isDone: isDone,
+  );
 
-  /// Constructor of a task model object from a Map object.
-  /// 
-  /// The [data] argument must not be null.
-  StepModel.from(Map<String, dynamic> data) {
-    assert(data != null);
-    this._id = data['id'];
-    this._title = data['title'];
-    this._done = data['done'];
-    this._taskId = data['task_id'];
-  }
-
-  int _id;
-  String _title;
-  int _done;
-  int _taskId;
-
-  /// Get the step id.
-  int get id => this._id;
-
-  /// Get the step title.
-  String get title => this._title;
-
-  /// Get the step complete status.
-  bool get done => this._done == 1 ? true : false;
-
-  /// Get the task id of step.
-  int get taskId => this._taskId;
-
-  /// Set new the step title.
-  set title(String title) {
-    this._title = title;
-  }
-
-  /// Set new the step complete status.
-  set done(bool done) {
-    this._done = done ? 1 : 0;
-  }
-
-  /// Set new the task id of step.
-  set taskId(int id) {
-    this._taskId = id;
-  }
-
-  /// Returns a map object to representation of this model object.
-  @override
-  Map<String, dynamic> toMap() {
-    var object = Map<String, dynamic>();
-    object['id'] = this._id;
-    object['title'] = this._title;
-    object['done'] = this._done;
-    object['task_id'] = this._taskId;
-    return object;
-  }
-
-  @override
-  bool operator == (object) {
-    return object is StepModel
-        && object.id == this.id
-        && object.title == this.title
-        && object.done == this.done
-        && object.taskId == this.taskId;
-  }
-
-  @override
-  int get hashCode {
-    return this.id.hashCode
-         ^ this.title.hashCode
-         ^ this.done.hashCode
-         ^ this.taskId.hashCode;
+  factory StepModel.from(Map<String, dynamic> object) {
+    return StepModel(
+      id: object['id'],
+      taskId: object['task_id'],
+      message: object['message'],
+      isDone: object['is_done'] == 1 ? true : false,
+    );
   }
 }

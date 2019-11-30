@@ -33,12 +33,9 @@ class _TaskTitleTextFieldState extends State<TaskTitleTextField> {
       if (!this.focusNode.hasFocus) {
         String value = this.controller.text.trim();
         if (value.isEmpty) {
-          this.controller.text = value;
-        } else {
-          if (value != this.data) {
-            this.data = value;
-            this.widget.onChanged(value);
-          }
+          this.controller.text = this.widget.data;
+          this.data = this.widget.data;
+          this.widget.onChanged(this.widget.data);
         }
       }
     });
@@ -84,7 +81,11 @@ class _TaskTitleTextFieldState extends State<TaskTitleTextField> {
         ),
         cursorColor: Colors.blue,
         onChanged: (String value) {
-          this.widget.onChanged(value.trim());
+          if (value.trim().isEmpty) {
+            this.widget.onChanged(this.widget.data);
+          } else {
+            this.widget.onChanged(value.trim());
+          }
         },
       ),
     );

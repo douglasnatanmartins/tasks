@@ -52,8 +52,9 @@ class _IconCheckboxState extends State<IconCheckbox> {
   /// Called whenever the widget configuration changes.
   @override
   void didUpdateWidget(IconCheckbox old) {
-    if (this.value != this.widget.value) {
+    if (old.value != this.widget.value) {
       this.value = this.widget.value;
+      this.onChangedColor(this.value);
     }
 
     super.didUpdateWidget(old);

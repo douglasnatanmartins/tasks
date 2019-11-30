@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tasks/src/presentation/controllers/categories_controller_interface.dart';
-import 'package:tasks/src/presentation/controllers/projects_controller_interface.dart';
-import 'package:tasks/src/presentation/controllers/tasks_controller_interface.dart';
+import 'package:tasks/src/presentation/controllers/category_manager_contract.dart';
+import 'package:tasks/src/presentation/controllers/project_manager_contract.dart';
+import 'package:tasks/src/presentation/controllers/task_manager_contract.dart';
 
 import '../presentation/pages/home/home_page.dart';
 import '../presentation/pages/category/category_page.dart';
@@ -25,7 +25,7 @@ class Router {
         return MaterialPageRoute(
           builder: (BuildContext context) {
             final Map<String, dynamic> args = settings.arguments;
-            return Component<CategoriesControllerInterface>.value(
+            return Component<CategoryManagerContract>.value(
               value: args['component'],
               child: CategoryPage(category: args['model']),
             );
@@ -37,7 +37,7 @@ class Router {
         return MaterialPageRoute(
           builder: (BuildContext context) {
             final Map<String, dynamic> args = settings.arguments;
-            return Component<ProjectsControllerInterface>.value(
+            return Component<ProjectManagerContract>.value(
               value: args['component'],
               child: ProjectPage(model: args['model']),
             );
@@ -49,9 +49,9 @@ class Router {
         return MaterialPageRoute(
           builder: (BuildContext context) {
             Map<String, dynamic> arguments = settings.arguments;
-            return Component<TasksControllerInterface>.value(
+            return Component<TaskManagerContract>.value(
               value: arguments['component'],
-              child: TaskPage(model: arguments['model']),
+              child: TaskPage(data: arguments['model']),
             );
           },
         );

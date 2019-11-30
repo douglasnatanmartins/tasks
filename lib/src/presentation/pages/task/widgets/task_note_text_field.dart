@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 
 class TaskNoteTextField extends StatefulWidget {
   /// Create a TaskNoteTextField widget.
+  /// 
+  /// The [onChanged] argument must not be null.
   TaskNoteTextField({
     Key key,
     @required this.data,
     @required this.onChanged,
-  }): super(key: key);
+  }): assert(onChanged != null),
+      super(key: key);
 
   final String data;
   final ValueChanged<String> onChanged;

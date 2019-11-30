@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tasks/src/core/provider.dart';
 
-import 'package:tasks/src/data/models/category_model.dart';
+import 'package:tasks/src/domain/entities/category_entity.dart';
 import 'package:tasks/src/presentation/shared/forms/category_new_form.dart';
 
 import 'categories_controller.dart';
@@ -44,6 +44,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
   /// Called when this state removed from the tree.
   @override
   void dispose() {
+    this.controller.dispose();
     super.dispose();
   }
 
@@ -89,7 +90,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                 }
               );
 
-              if (result is CategoryModel) {
+              if (result is CategoryEntity) {
                 component.addCategory(result);
               }
             },

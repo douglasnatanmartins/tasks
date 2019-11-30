@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tasks/src/domain/entities/project_entity.dart';
 import 'project_card.dart';
 
 class ProjectListView extends StatelessWidget {
@@ -8,7 +9,7 @@ class ProjectListView extends StatelessWidget {
     @required this.items,
   }): super(key: key);
 
-  final List<Map<String, dynamic>> items;
+  final List<ProjectEntity> items;
 
   /// Build the ProjectListView widget.
   @override
@@ -17,10 +18,8 @@ class ProjectListView extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 5.0),
       itemCount: this.items.length,
       itemBuilder: (BuildContext context, int index) {
-        final item = this.items.elementAt(index);
         return ProjectCard(
-          model: item['project'],
-          progress: item['progress'],
+          model: this.items.elementAt(index),
         );
       },
     );

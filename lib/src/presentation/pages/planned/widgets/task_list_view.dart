@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tasks/src/data/models/task_model.dart';
+import 'package:tasks/src/domain/entities/task_entity.dart';
 
 import 'group_list_tile.dart';
 
@@ -11,7 +11,7 @@ class TaskListView extends StatelessWidget {
   }): assert(items != null),
       super(key: key);
 
-  final Map<String, List<TaskModel>> items;
+  final Map<DateTime, List<TaskEntity>> items;
 
   /// Build the TaskListView widget.
   @override
@@ -19,12 +19,12 @@ class TaskListView extends StatelessWidget {
     return ListView.builder(
       padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
       scrollDirection: Axis.vertical,
-      itemCount: 0,
+      itemCount: this.items.length,
       itemBuilder: (BuildContext context, int index) {
         final key = this.items.keys.elementAt(index);
         final data = this.items[key];
         return GroupListTile(
-          title: key,
+          date: key,
           items: data,
         );
       }

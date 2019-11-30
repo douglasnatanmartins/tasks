@@ -1,34 +1,42 @@
 import 'dart:async';
 
-import 'package:tasks/src/data/models/category_model.dart';
-import 'package:tasks/src/data/models/project_model.dart';
-import 'package:tasks/src/data/repositories/project_repository.dart';
-import 'package:tasks/src/data/repositories/task_repository.dart';
-import 'package:tasks/src/presentation/controllers/projects_controller_interface.dart';
+import 'package:tasks/src/core/contracts/controller.dart';
+import 'package:tasks/src/domain/entities/category_entity.dart';
+import 'package:tasks/src/domain/entities/project_entity.dart';
+import 'package:tasks/src/domain/repositories/project_repository_contract.dart';
+import 'package:tasks/src/domain/repositories/task_repository_contract.dart';
+import 'package:tasks/src/domain/usecases/get_project_repository.dart';
+import 'package:tasks/src/domain/usecases/get_task_repository.dart';
+import 'package:tasks/src/presentation/controllers/project_manager_contract.dart';
 
 /// Category Page Business Logic Component.
-class CategoryController implements ProjectsControllerInterface {
+class CategoryController extends Controller with ProjectManagerContract {
   /// Business Logic Component for the Category Page.
-  CategoryController(CategoryModel category) {
-    this.category = category;
+  CategoryController(this.category) {
+    this._projectRepository = GetProjectRepository().getRepository();
+    this._taskRepository = GetTaskRepository().getRepository();
+    this._projectsController = StreamController<List<ProjectEntity>>.broadcast();
+
+    // Initial
     this._fetchProjects().then((result) {
       this.pushProjects();
     });
   }
 
   // Stream of project in the category.
-  final _projectsController = StreamController<List<Map<String, dynamic>>>();
-  Stream get projects => this._projectsController.stream;
+  StreamController<List<ProjectEntity>> _projectsController;
+  Stream<List<ProjectEntity>> get projects => this._projectsController.stream;
 
-  final ProjectRepository _projectRepository = ProjectRepository();
-  TaskRepository _taskRepository = TaskRepository();
-  CategoryModel category;
-  List<Map<String, dynamic>> _projects = <Map<String, dynamic>>[];
+  ProjectRepositoryContract _projectRepository;
+  TaskRepositoryContract _taskRepository;
+
+  final CategoryEntity category;
+  List<ProjectEntity> _projects;
 
   /// Add new a project
   @override
-  Future<bool> addProject(ProjectModel project) async {
-    bool result = await this._projectRepository.add(project.toMap());
+  Future<bool> addProject(ProjectEntity entity) async {
+    bool result = await this._projectRepository.createProject(entity);
     if (result) {
       await this._fetchProjects();
       this.pushProjects();
@@ -38,8 +46,8 @@ class CategoryController implements ProjectsControllerInterface {
 
   /// Delete a project.
   @override
-  Future<bool> deleteProject(ProjectModel project) async {
-    bool result = await this._projectRepository.delete(project.id);
+  Future<bool> deleteProject(ProjectEntity project) async {
+    bool result = await this._projectRepository.deleteProject(project);
     if (result) {
       await this._fetchProjects();
       this.pushProjects();
@@ -49,8 +57,8 @@ class CategoryController implements ProjectsControllerInterface {
 
   /// Update project object.
   @override
-  Future<bool> updateProject(ProjectModel previous, ProjectModel current) async {
-    bool result = await this._projectRepository.update(current.toMap());
+  Future<bool> updateProject(ProjectEntity previous, ProjectEntity current) async {
+    bool result = await this._projectRepository.updateProject(current);
     if (result) {
       await this._fetchProjects();
       this.pushProjects();
@@ -60,18 +68,17 @@ class CategoryController implements ProjectsControllerInterface {
 
   /// Get progress completed of the project.
   Future<double> getProgressProject(int projectId) async {
-    final data = await this._taskRepository.getTasksByProjectId(projectId);
-    int total = data.length;
+    final data = await this._taskRepository.getAllTaskByProjectId(projectId);
+    if (data != null && data.length > 0) {
+      int total = data.length;
+      int completed = 0;
+      data.forEach((task) {
+        if (task.isDone) completed++;
+      });
 
-    // Fixes NaN.
-    if (total == 0) return 0;
-
-    int completed = 0;
-    data.forEach((task) {
-      if (task['done'] == 1) completed++;
-    });
-
-    return completed / total;
+      return completed / total;
+    }
+    return 0.0;
   }
 
   /// Refresh project list.
@@ -80,17 +87,7 @@ class CategoryController implements ProjectsControllerInterface {
   }
 
   Future<void> _fetchProjects() async {
-    final data = await this._projectRepository.getProjectsByCategoryId(this.category.id);
-    List<Map<String, dynamic>> items = <Map<String, dynamic>>[];
-    for (var item in data) {
-      final model = ProjectModel.from(item);
-      final progress = await this.getProgressProject(model.id);
-      items.add({
-        'project': model,
-        'progress': progress,
-      });
-    }
-    this._projects = items;
+    this._projects = await this._projectRepository.getAllProjectByCategoryId(this.category.id);
   }
 
   /// Dispose this business logic component.

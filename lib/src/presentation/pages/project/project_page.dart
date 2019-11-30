@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tasks/src/core/provider.dart';
 
-import 'package:tasks/src/data/models/project_model.dart';
-import 'package:tasks/src/data/models/task_model.dart';
+import 'package:tasks/src/domain/entities/project_entity.dart';
+import 'package:tasks/src/domain/entities/task_entity.dart';
 import 'package:tasks/src/presentation/shared/forms/task_new_form.dart';
 
 import 'project_controller.dart';
@@ -11,12 +11,14 @@ import 'widgets/page_header.dart';
 
 class ProjectPage extends StatefulWidget {
   /// Create a ProjectPage widget.
+  /// 
+  /// The [model] argument must not be null.
   ProjectPage({
     Key key,
     @required this.model,
   }): super(key: key);
 
-  final ProjectModel model;
+  final ProjectEntity model;
 
   /// Creates the mutable state for this widget at a given location in the tree.
   @override
@@ -25,7 +27,7 @@ class ProjectPage extends StatefulWidget {
 
 class _ProjectPageState extends State<ProjectPage> {
   ProjectController controller;
-  ProjectModel model;
+  ProjectEntity model;
 
   /// Called when this state first inserted into tree.
   @override
@@ -44,6 +46,10 @@ class _ProjectPageState extends State<ProjectPage> {
   /// Called whenever the widget configuration changes.
   @override
   void didUpdateWidget(ProjectPage old) {
+    if (old.model != this.widget.model) {
+      this.model = this.widget.model;
+    }
+
     super.didUpdateWidget(old);
   }
 
@@ -93,7 +99,7 @@ class _ProjectPageState extends State<ProjectPage> {
             },
           );
 
-          if (result is TaskModel) {
+          if (result is TaskEntity) {
             this.controller.addTask(result);
           }
         },

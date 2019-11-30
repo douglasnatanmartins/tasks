@@ -1,40 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:tasks/src/core/provider.dart';
-import 'package:tasks/src/data/models/task_model.dart';
+import 'package:tasks/src/domain/entities/task_entity.dart';
 import 'package:tasks/src/presentation/shared/widgets/task_list_tile.dart';
+import 'package:tasks/src/utils/date_time_util.dart';
 
 import '../planned_controller.dart';
 
 class GroupListTile extends StatefulWidget {
   GroupListTile({
     Key key,
-    @required this.title,
+    @required this.date,
     @required this.items,
-  }): assert(title != null),
+  }): assert(date != null),
       assert(items != null),
       super(key: key);
 
-  final String title;
-  final List<TaskModel> items;
+  final DateTime date;
+  final List<TaskEntity> items;
 
   @override
   State<GroupListTile> createState() => _GroupListTileState();
 }
 
 class _GroupListTileState extends State<GroupListTile> {
-  String title;
-  List<TaskModel> items;
+  DateTime date;
+  List<TaskEntity> items;
 
   @override
   void initState() {
     super.initState();
-    this.title = this.widget.title;
+    this.date = this.widget.date;
     this.items = this.widget.items;
   }
 
   @override
   void didUpdateWidget(GroupListTile oldWidget) {
-    if (oldWidget.items.length != this.widget.items.length) {
+    if (oldWidget.items != this.widget.items) {
       this.items = this.widget.items;
     }
 
@@ -49,13 +51,20 @@ class _GroupListTileState extends State<GroupListTile> {
   @override
   Widget build(BuildContext context) {
     final component = Component.of<PlannedController>(context);
+    String title;
+    if (this.date == DateTimeUtil.onlyDate(DateTime.now())) {
+      title = 'Today';
+    } else {
+      title = DateFormat.yMMMd().format(date);
+    }
+
     return Theme(
       data: Theme.of(this.context).copyWith(
         dividerColor: Colors.transparent,
       ),
       child: ExpansionTile(
         initiallyExpanded: true,
-        title: Text(this.title),
+        title: Text(title),
         children: this.buildChildren(component),
       ),
     );
@@ -64,14 +73,14 @@ class _GroupListTileState extends State<GroupListTile> {
   List<Widget> buildChildren(PlannedController component) {
     List<Widget> children = <Widget>[];
 
-    this.items.forEach((TaskModel item) {
+    this.items.forEach((TaskEntity item) {
       int index = this.items.indexOf(item);
       children.add(
         GestureDetector(
           child: TaskListTile(
             data: item,
-            onChanged: (TaskModel updated) {
-              component.updateTask(updated);
+            onChanged: (TaskEntity updated) {
+              component.updateTask(item, updated);
             },
           ),
           onTap: () {

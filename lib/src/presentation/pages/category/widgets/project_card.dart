@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tasks/src/core/provider.dart';
-import 'package:tasks/src/data/models/project_model.dart';
+import 'package:tasks/src/domain/entities/project_entity.dart';
 
 import '../category_controller.dart';
 
@@ -10,13 +10,10 @@ class ProjectCard extends StatelessWidget {
   ProjectCard({
     Key key,
     @required this.model,
-    @required this.progress,
   }): assert(model != null),
-      assert(progress != null),
       super(key: key);
 
-  final ProjectModel model;
-  final double progress;
+  final ProjectEntity model;
 
   /// Build the ProjectCard widget.
   @override
@@ -51,7 +48,7 @@ class ProjectCard extends StatelessWidget {
       ),
     );
 
-    if (this.model.description.isNotEmpty) {
+    if (this.model.description != null && this.model.description.isNotEmpty) {
       children.add(const SizedBox(height: 6.0));
       children.add(
         Text(
@@ -67,7 +64,7 @@ class ProjectCard extends StatelessWidget {
     children.add(const SizedBox(height: 5.0));
     children.add(
       Text(
-        'Created on ${DateFormat.yMMMd().format(this.model.created)}',
+        'Created on ${DateFormat.yMMMd().format(this.model.createdDate)}',
         style: TextStyle(
           color: Colors.black.withOpacity(0.45),
         ),
@@ -103,16 +100,26 @@ class ProjectCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 10.0),
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: LinearProgressIndicator(
-                  value: this.progress,
-                ),
-              ),
-              const SizedBox(width: 10.0),
-              Text((this.progress * 100).round().toString() + '%'),
-            ],
+          Consumer<CategoryController>(
+            builder: (context, component) {
+              return FutureBuilder<double>(
+                initialData: 0.0,
+                future: component.getProgressProject(this.model.id),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  return Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: LinearProgressIndicator(
+                          value: snapshot.data,
+                        ),
+                      ),
+                      const SizedBox(width: 10.0),
+                      Text((snapshot.data * 100).round().toString() + '%'),
+                    ],
+                  );
+                },
+              );
+            },
           ),
         ],
       ),

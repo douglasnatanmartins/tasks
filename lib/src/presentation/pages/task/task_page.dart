@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tasks/src/core/provider.dart';
-import 'package:tasks/src/data/models/task_model.dart';
-import 'package:tasks/src/presentation/controllers/tasks_controller_interface.dart';
+import 'package:tasks/src/domain/entities/task_entity.dart';
+import 'package:tasks/src/presentation/controllers/task_manager_contract.dart';
 
 import 'task_controller.dart';
 import 'widgets/bottom_bar.dart';
@@ -15,11 +15,11 @@ class TaskPage extends StatefulWidget {
   /// The [data] argument must not be null.
   TaskPage({
     Key key,
-    @required this.model,
-  }): assert(model != null),
+    @required this.data,
+  }): assert(data != null),
       super(key: key);
 
-  final TaskModel model;
+  final TaskEntity data;
 
   /// Creates the mutable state for this widget at a given location in the tree.
   @override
@@ -29,16 +29,14 @@ class TaskPage extends StatefulWidget {
 class _TaskPageState extends State<TaskPage> {
   // Business Logic Component.
   TaskController controller;
-  TaskModel model;
-  String title;
+  TaskEntity data;
 
   /// Called when this state first inserted into tree.
   @override
   void initState() {
     super.initState();
-    this.model = this.widget.model;
-    this.title = this.model.title;
-    this.controller = TaskController(this.model);
+    this.data = this.widget.data;
+    this.controller = TaskController(this.data);
   }
 
   /// Called when a dependency of this state object changes.
@@ -56,12 +54,13 @@ class _TaskPageState extends State<TaskPage> {
   /// Called when this state removed from the tree.
   @override
   void dispose() {
+    // Close controller component.
     this.controller.dispose();
     super.dispose();
   }
 
-  void changeModel(TaskModel model) {
-    this.model = model;
+  void changeEntity(TaskEntity entity) {
+    this.data = entity;
   }
 
   /// Build the TaskPage widget with this state.
@@ -69,8 +68,8 @@ class _TaskPageState extends State<TaskPage> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        final component = Component.of<TasksControllerInterface>(context);
-        await component.updateTask(this.model);
+        final component = Component.of<TaskManagerContract>(context);
+        await component.updateTask(this.widget.data, this.data);
         return true;
       },
       child: Component<TaskController>.value(
@@ -88,16 +87,22 @@ class _TaskPageState extends State<TaskPage> {
           child: IntrinsicHeight(
             child: Column(
               children: <Widget>[
-                PageHeader(model: this.model),
-                PageBody(model: this.model),
-                PageFooter(model: this.model),
+                PageHeader(
+                  data: this.data,
+                  onChanged: this.changeEntity,
+                ),
+                PageBody(data: this.data),
+                PageFooter(
+                  data: this.data,
+                  onChanged: this.changeEntity,
+                ),
               ],
             ),
           ),
         ),
       ),
       backgroundColor: Colors.grey[200],
-      bottomNavigationBar: BottomBar(model: this.model),
+      bottomNavigationBar: BottomBar(data: this.data),
     );
   }
 }

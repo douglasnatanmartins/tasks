@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:tasks/src/core/provider.dart';
 
-import 'package:tasks/src/data/models/category_model.dart';
-import 'package:tasks/src/data/models/project_model.dart';
-import 'package:tasks/src/presentation/controllers/categories_controller_interface.dart';
+import 'package:tasks/src/domain/entities/category_entity.dart';
+import 'package:tasks/src/domain/entities/project_entity.dart';
+import 'package:tasks/src/presentation/controllers/category_manager_contract.dart';
 import 'package:tasks/src/presentation/pages/category/widgets/category_delete_dialog.dart';
 import 'package:tasks/src/presentation/pages/project_new/project_new_screen.dart';
-import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
 
 import 'category_controller.dart';
-import 'widgets/project_list_view.dart';
+import 'widgets/page_body.dart';
 
 class CategoryPage extends StatefulWidget {
   CategoryPage({
@@ -18,7 +17,7 @@ class CategoryPage extends StatefulWidget {
   }): assert(category != null),
       super(key: key);
 
-  final CategoryModel category;
+  final CategoryEntity category;
 
   @override
   State<CategoryPage> createState() => _CategoryPageState();
@@ -27,7 +26,7 @@ class CategoryPage extends StatefulWidget {
 class _CategoryPageState extends State<CategoryPage> {
   // Business Logic Component.
   CategoryController controller;
-  CategoryModel category;
+  CategoryEntity category;
 
   /// Called when this state inserted into tree.
   @override
@@ -61,7 +60,7 @@ class _CategoryPageState extends State<CategoryPage> {
         child: Column(
           children: <Widget>[
             this.headerPage(this.widget.category),
-            this.bodyPage(),
+            PageBody(),
           ],
         ),
       ),
@@ -83,7 +82,7 @@ class _CategoryPageState extends State<CategoryPage> {
             ),
           );
 
-          if (result is ProjectModel) {
+          if (result is ProjectEntity) {
             this.controller.addProject(result);
           }
         },
@@ -92,7 +91,7 @@ class _CategoryPageState extends State<CategoryPage> {
   }
 
   /// Build header this page.
-  Widget headerPage(CategoryModel category) {
+  Widget headerPage(CategoryEntity category) {
     List<Widget> headerTitle = <Widget>[];
     headerTitle.add(
       Text(
@@ -144,7 +143,7 @@ class _CategoryPageState extends State<CategoryPage> {
                 ),
               ),
               // Delete button.
-              Consumer<CategoriesControllerInterface>(
+              Consumer<CategoryManagerContract>(
                 builder: (context, component) {
                   return FlatButton(
                     padding: const EdgeInsets.all(12.0),
@@ -174,36 +173,6 @@ class _CategoryPageState extends State<CategoryPage> {
             ],
           ),
         ],
-      ),
-    );
-  }
-
-  /// Build body this page.
-  Widget bodyPage() {
-    return Expanded(
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-        ),
-        child: StreamBuilder(
-          stream: this.controller.projects,
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            } else {
-              if (snapshot.hasData && snapshot.data.isNotEmpty) { // Has the stream data.
-                return ProjectListView(items: snapshot.data);
-              } else {
-                return EmptyContentBox(
-                  title: 'no project created yet',
-                  description: 'click green button to get started',
-                );
-              }
-            }
-          },
-        ),
       ),
     );
   }

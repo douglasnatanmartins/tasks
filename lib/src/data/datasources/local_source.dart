@@ -5,6 +5,7 @@ import 'dart:async';
 class LocalSource {
   static LocalSource _instance;
   static Database _database;
+  final int version = 1;
 
   LocalSource._internal();
 
@@ -16,6 +17,7 @@ class LocalSource {
     return _instance;
   }
 
+  /// Get database
   Future<Database> get database async {
     if (_database == null) {
       _database = await _initialDatabase();
@@ -24,60 +26,36 @@ class LocalSource {
     return _database;
   }
 
+  /// Initial database.
   Future<Database> _initialDatabase() async {
     String databasesPath = await getDatabasesPath();
-    String path = join(databasesPath, 'data.db');
+    String path = join(databasesPath, 'off.db');
     var database = await openDatabase(
       path,
-      version: 3,
+      version: this.version,
       onConfigure: _onConfigure,
       onCreate: _onCreate,
-      onUpgrade: _onUpgrade
+      onUpgrade: _onUpgrade,
     );
+
     return database;
   }
 
-  void _onConfigure(Database db) async {
+  Future<void> _onConfigure(Database db) async {
     await db.execute('PRAGMA foreign_keys = ON');
   }
 
-  /// Create database file.
-  void _onCreate(Database db, int version) async {
+  /// Create database file if file not exist.
+  Future<void> _onCreate(Database db, int version) async {
     var batch = db.batch();
-    this._createTables(batch);
-    // Commit this batch.
-    await batch.commit();
-  }
 
-  /// Upgrade database file.
-  void _onUpgrade(Database db, int oldVersion, int newVersion) async {
-    Batch batch = db.batch();
-
-    // When old version less 2.
-    if (oldVersion < 2) {
-      batch.execute('DROP TABLE IF EXISTS Category');
-      batch.execute('DROP TABLE IF EXISTS Project');
-      batch.execute('DROP TABLE IF EXISTS Task');
-      batch.execute('DROP TABLE IF EXISTS Step');
-      this._createTables(batch);
-    }
-
-    if (oldVersion < 3) {
-      this._updateCode_3(batch);
-    }
-
-    // Commit this batch.
-    batch.commit();
-  }
-
-  void _createTables(Batch batch) {
     // Create the category table.
     batch.execute('''
       CREATE TABLE Category(
         id INTEGER PRIMARY KEY,
         title TEXT NOT NULL,
         description TEXT,
-        created TEXT NOT NULL
+        created_date TEXT NOT NULL
       )
     ''');
 
@@ -85,11 +63,12 @@ class LocalSource {
     batch.execute('''
       CREATE TABLE Project(
         id INTEGER PRIMARY KEY,
+        category_id INTEGER NOT NULL,
         title TEXT NOT NULL,
         description TEXT,
         color TEXT NOT NULL,
-        created TEXT NOT NULL,
-        category_id INTEGER NOT NULL,
+        icon TEXT NOT NULL,
+        created_date TEXT NOT NULL,
         FOREIGN KEY (category_id) REFERENCES Category(id) ON DELETE CASCADE
       )
     ''');
@@ -98,13 +77,13 @@ class LocalSource {
     batch.execute('''
       CREATE TABLE Task(
         id INTEGER PRIMARY KEY,
-        title TEXT NOT NULL,
-        done INTEGER NOT NULL,
-        note TEXT,
-        important INTEGER NOT NULL,
-        created_date TEXT NOT NULL,
-        due_date TEXT,
         project_id INTEGER NOT NULL,
+        title TEXT NOT NULL,
+        note TEXT,
+        is_done INTEGER NOT NULL,
+        is_important INTEGER NOT NULL,
+        due_date TEXT,
+        created_date TEXT NOT NULL,
         FOREIGN KEY (project_id) REFERENCES Project(id) ON DELETE CASCADE
       )
     ''');
@@ -113,18 +92,22 @@ class LocalSource {
     batch.execute('''
       CREATE TABLE Step(
         id INTEGER PRIMARY KEY,
-        title TEXT NOT NULL,
-        done INTEGER NOT NULL,
+        message TEXT NOT NULL,
+        is_done INTEGER NOT NULL,
         task_id INTEGER NOT NULL,
         FOREIGN KEY (task_id) REFERENCES Task(id) ON DELETE CASCADE
       )
     ''');
+
+    // Commit this batch.
+    await batch.commit();
   }
 
-  void _updateCode_3(Batch batch) {
-    batch.execute('''
-      ALTER TABLE Project
-      ADD COLUMN icon TEXT DEFAULT 'folder'
-    ''');
+  /// Upgrade database file.
+  Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    // Batch batch = db.batch();
+
+    // // Commit this batch.
+    // batch.commit();
   }
 }

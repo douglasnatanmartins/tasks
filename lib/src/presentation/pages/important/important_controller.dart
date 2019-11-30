@@ -1,44 +1,65 @@
 import 'dart:async';
 
-import 'package:tasks/src/data/models/task_model.dart';
-import 'package:tasks/src/data/repositories/task_repository.dart';
-import 'package:tasks/src/presentation/controllers/tasks_controller_interface.dart';
+import 'package:tasks/src/core/contracts/controller.dart';
+import 'package:tasks/src/domain/entities/task_entity.dart';
+import 'package:tasks/src/domain/repositories/task_repository_contract.dart';
+import 'package:tasks/src/domain/usecases/get_task_repository.dart';
+import 'package:tasks/src/presentation/controllers/task_manager_contract.dart';
 
-class ImportantController implements TasksControllerInterface {
+class ImportantController extends Controller with TaskManagerContract {
   ImportantController() {
+    this._taskRepository = GetTaskRepository().getRepository();
+    this._tasksController = StreamController<List<TaskEntity>>.broadcast();
+
+    // Initial
     this._fetchTasks().then((result) {
       this.pushTasks();
     });
   }
 
-  final TaskRepository _taskRepository = TaskRepository();
-  final _tasksController = StreamController<List<TaskModel>>.broadcast();
-  Stream<List<TaskModel>> get tasks => this._tasksController.stream;
-  List<TaskModel> _tasks = <TaskModel>[];
+  TaskRepositoryContract _taskRepository;
+  StreamController<List<TaskEntity>> _tasksController;
+  Stream<List<TaskEntity>> get tasks => this._tasksController.stream;
+
+  List<TaskEntity> _tasks = <TaskEntity>[];
 
   @override
-  Future<bool> addTask(TaskModel model) {
+  Future<bool> addTask(TaskEntity entity) {
     return null;
   }
 
   @override
-  Future<bool> deleteTask(TaskModel model) {
-    return null;
-  }
-
-  @override
-  Future<bool> updateTask(TaskModel model) async {
-    final result = await this._taskRepository.update(model.toMap());
+  Future<bool> deleteTask(TaskEntity entity) async {
+    final result = await this._taskRepository.deleteTask(entity);
     if (result) {
+      this._tasks.remove(entity);
+      this.pushTasks();
     }
+
+    return result;
+  }
+
+  @override
+  Future<bool> updateTask(TaskEntity previous, TaskEntity current) async {
+    final result = await this._taskRepository.updateTask(current);
+
+    if (result) {
+      // When the task is not important
+      if (!current.isImportant) {
+        this._tasks.remove(previous);
+      } else {
+        int index = this._tasks.indexOf(previous);
+        this._tasks[index] = current;
+      }
+
+      this.pushTasks();
+    }
+
     return result;
   }
 
   Future<void> _fetchTasks() async {
-    final data = await this._taskRepository.allImportantTasks();
-    this._tasks = data.map((Map<String, dynamic> item) {
-      return TaskModel.from(item);
-    }).toList();
+    this._tasks = await this._taskRepository.getAllImportantTask();
   }
 
   Future<void> pushTasks() async {

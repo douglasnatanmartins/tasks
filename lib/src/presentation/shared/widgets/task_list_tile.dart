@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:tasks/src/data/models/task_model.dart';
+
+import 'package:tasks/src/domain/entities/task_entity.dart';
 import 'package:tasks/src/presentation/shared/widgets/circle_checkbox.dart';
 import 'package:tasks/src/utils/date_time_util.dart';
 
@@ -20,8 +21,8 @@ class TaskListTile extends StatefulWidget {
       assert(onChanged != null),
       super(key: key);
   
-  final TaskModel data;
-  final ValueChanged<TaskModel> onChanged;
+  final TaskEntity data;
+  final ValueChanged<TaskEntity> onChanged;
 
   /// Creates the mutable state for this widget at a given location in the tree.
   @override
@@ -29,7 +30,7 @@ class TaskListTile extends StatefulWidget {
 }
 
 class _TaskListTileState extends State<TaskListTile> {
-  TaskModel data;
+  TaskEntity data;
   Color metaColor = Color(0xff878787);
 
   /// Called when this state first inserted into tree.
@@ -49,8 +50,9 @@ class _TaskListTileState extends State<TaskListTile> {
   @override
   void didUpdateWidget(TaskListTile old) {
     if (old.data != this.widget.data) {
-      this.data = data;
+      this.data = this.widget.data;
     }
+
     super.didUpdateWidget(old);
   }
 
@@ -107,9 +109,11 @@ class _TaskListTileState extends State<TaskListTile> {
         vertical: 5.0,
       ),
       leading: CircleCheckbox(
-        value: this.data.done,
+        value: this.data.isDone,
         onChanged: (bool checked) {
-          this.data.done = checked;
+          this.data = this.data.copyWith(
+            isDone: checked,
+          );
           this.widget.onChanged(this.data);
         },
       ),
@@ -118,10 +122,12 @@ class _TaskListTileState extends State<TaskListTile> {
         children: children,
       ),
       trailing: IconCheckbox(
-        value: this.data.important,
+        value: this.data.isImportant,
         icon: Icons.star,
         onChanged: (bool checked) {
-          this.data.important = checked;
+          this.data = this.data.copyWith(
+            isImportant: checked,
+          );
           this.widget.onChanged(this.data);
         },
       ),

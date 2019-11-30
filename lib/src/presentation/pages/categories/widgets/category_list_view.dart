@@ -22,7 +22,7 @@ class CategoryListView extends StatelessWidget {
       itemCount: this.items.length,
       itemBuilder: (BuildContext context, int index) {
         return CategoryCard(
-          category: this.items[index],
+          category: this.items.elementAt(index),
         );
       },
     );

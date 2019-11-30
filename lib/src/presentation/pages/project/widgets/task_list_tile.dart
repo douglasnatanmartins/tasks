@@ -1,55 +1,67 @@
 import 'package:flutter/material.dart';
 import 'package:tasks/src/core/provider.dart';
-import 'package:tasks/src/data/models/task_model.dart';
-import 'package:tasks/src/presentation/controllers/tasks_controller_interface.dart';
-import 'package:tasks/src/presentation/pages/task/task_page.dart';
+import 'package:tasks/src/domain/entities/task_entity.dart';
 import 'package:tasks/src/presentation/shared/widgets/circle_checkbox.dart';
 
 import '../project_controller.dart';
 
 class TaskListTile extends StatefulWidget {
+  /// Create a TaskListTile widget.
+  /// 
+  /// The [data] and [onChanged] arguments must not be null.
   TaskListTile({
     Key key,
-    @required this.model,
+    @required this.data,
     @required this.onChanged,
-  }): assert(model != null),
+  }): assert(data != null),
+      assert(onChanged != null),
       super(key: key);
 
-  final TaskModel model;
-  final ValueChanged<TaskModel> onChanged;
+  final TaskEntity data;
+  final ValueChanged<TaskEntity> onChanged;
 
+  /// Creates the mutable state for this widget at a given location in the tree.
   @override
   State<TaskListTile> createState() => _TaskListTileState();
 }
 
 class _TaskListTileState extends State<TaskListTile> {
-  TaskModel model;
+  TaskEntity data;
   TextDecoration decoration;
 
+  /// Called when this state first inserted into tree.
   @override
   void initState() {
     super.initState();
-    this.decoration = TextDecoration.none;
-    this.model = this.widget.model;
+    this.data = this.widget.data;
   }
 
+  /// Called when a dependency of this state object changes.
   @override
-  void didUpdateWidget(TaskListTile oldWidget) {
-    if (oldWidget.model != this.widget.model) {
-      this.model = this.widget.model;
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
+
+  /// Called whenever the widget configuration changes.
+  @override
+  void didUpdateWidget(TaskListTile old) {
+    if (old.data != this.widget.data) {
+      this.data = this.widget.data;
     }
 
-    super.didUpdateWidget(oldWidget);
+    super.didUpdateWidget(old);
   }
 
+  /// Called when this state removed from the tree.
   @override
   void dispose() {
     super.dispose();
   }
 
+  /// Build the TaskListTile widget with state.
   @override
   Widget build(BuildContext context) {
-    if (this.model.done) {
+    if (this.data.isDone) {
       this.decoration = TextDecoration.lineThrough;
     } else {
       this.decoration = TextDecoration.none;
@@ -57,16 +69,16 @@ class _TaskListTileState extends State<TaskListTile> {
 
     return ListTile(
       leading: CircleCheckbox(
-        value: this.model.done,
+        value: this.data.isDone,
         onChanged: (bool checked) {
           setState(() {
-            this.model.done = checked;
-            this.widget.onChanged(this.model);
+            this.data = this.data.copyWith(isDone: checked);
+            this.widget.onChanged(this.data);
           });
         }
       ),
       title: Text(
-        this.model.title,
+        this.data.title,
         overflow: TextOverflow.ellipsis,
         style: TextStyle(
           color: Colors.white,
@@ -76,26 +88,25 @@ class _TaskListTileState extends State<TaskListTile> {
       trailing: IconButton(
         icon: Icon(
           Icons.star,
-          color: this.model.important ? Colors.yellow.shade600 : null,
+          color: this.data.isImportant ? Colors.yellow.shade600 : null,
         ),
         onPressed: () {
           setState(() {
-            this.model.important = !this.model.important;
-            this.widget.onChanged(this.model);
+            this.data = this.data.copyWith(
+              isImportant: !this.data.isImportant
+            );
+            this.widget.onChanged(this.data);
           });
         },
       ),
       onTap: () {
         final component = Component.of<ProjectController>(context);
-        Navigator.of(this.context).push(
-          MaterialPageRoute(
-            builder: (BuildContext context) {
-              return Component<TasksControllerInterface>.value(
-                value: component,
-                child: TaskPage(model: this.model),
-              );
-            }
-          ),
+        Navigator.of(this.context).pushNamed(
+          '/task',
+          arguments: <String, dynamic>{
+            'component': component,
+            'model': this.data,
+          },
         );
       },
     );

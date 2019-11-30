@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tasks/src/data/models/task_model.dart';
+import 'package:tasks/src/domain/entities/task_entity.dart';
 import 'package:tasks/src/presentation/shared/widgets/circle_checkbox.dart';
 
 import 'important_checkbox.dart';
@@ -9,12 +9,12 @@ class PageHeader extends StatelessWidget {
   /// Create a PageHeader widget.
   PageHeader({
     Key key,
-    @required this.model,
-    this.onChanged,
+    @required this.data,
+    @required this.onChanged,
   }): super(key: key);
 
-  final TaskModel model;
-  final ValueChanged<TaskModel> onChanged;
+  final TaskEntity data;
+  final ValueChanged<TaskEntity> onChanged;
 
   /// Build the PageHeader widget.
   @override
@@ -44,23 +44,29 @@ class PageHeader extends StatelessWidget {
               children: <Widget>[
                 Expanded(
                   child: TaskTitleTextField(
-                    data: this.model.title,
+                    data: this.data.title,
                     onChanged: (String title) {
-                      this.model.title = title;
+                      this.onChanged(this.data.copyWith(
+                        title: title,
+                      ));
                     },
                   ),
                 ),
                 const SizedBox(width: 10.0),
                 CircleCheckbox(
-                  value: this.model.done,
+                  value: this.data.isDone,
                   onChanged: (bool checked) {
-                    this.model.done = checked;
+                    this.onChanged(this.data.copyWith(
+                      isDone: checked,
+                    ));
                   },
                 ),
                 ImportantCheckBox(
-                  value: this.model.important,
+                  value: this.data.isImportant,
                   onChanged: (bool checked) {
-                    this.model.important = checked;
+                    this.onChanged(this.data.copyWith(
+                      isImportant: checked,
+                    ));
                   },
                 ),
               ],

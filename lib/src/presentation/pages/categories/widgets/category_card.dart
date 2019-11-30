@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tasks/src/core/provider.dart';
-import 'package:tasks/src/data/models/category_model.dart';
+import 'package:tasks/src/domain/entities/category_entity.dart';
 
 import '../categories_controller.dart';
 
@@ -14,7 +14,7 @@ class CategoryCard extends StatelessWidget {
   }): assert(category != null),
       super(key: key);
 
-  final CategoryModel category;
+  final CategoryEntity category;
 
   /// Build this widget.
   @override
@@ -32,28 +32,7 @@ class CategoryCard extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              const Spacer(
-                flex: 5,
-              ),
-              Text(
-                category.description,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 2,
-                style: TextStyle(
-                  color: Colors.grey[400],
-                ),
-              ),
-              const SizedBox(height: 5),
-              Text(
-                category.title,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  color: Colors.blue[400],
-                  fontSize: 28.0,
-                ),
-              ),
-            ],
+            children: this._buildChildren(),
           ),
         ),
       ),
@@ -68,5 +47,39 @@ class CategoryCard extends StatelessWidget {
         );
       },
     );
+  }
+
+  List<Widget> _buildChildren() {
+    List<Widget> children = <Widget>[];
+    children.add(const Spacer(flex: 5));
+
+    // If has category description.
+    if (this.category.description != null) {
+      children.add(
+        Text(
+          category.description ?? '',
+          overflow: TextOverflow.ellipsis,
+          maxLines: 2,
+          style: TextStyle(
+            color: Colors.grey[400],
+          ),
+        ),
+      );
+      children.add(const SizedBox(height: 5));
+    }
+
+    // Add category title.
+    children.add(
+      Text(
+        category.title,
+        overflow: TextOverflow.ellipsis,
+        style: TextStyle(
+          color: Colors.blue[400],
+          fontSize: 28.0,
+        ),
+      ),
+    );
+
+    return children;
   }
 }

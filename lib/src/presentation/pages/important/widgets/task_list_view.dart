@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tasks/src/core/provider.dart';
-import 'package:tasks/src/data/models/task_model.dart';
+import 'package:tasks/src/domain/entities/task_entity.dart';
 import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
 import 'package:tasks/src/presentation/shared/widgets/task_list_tile.dart';
 
@@ -29,13 +29,13 @@ class TaskListView extends StatelessWidget {
               padding: const EdgeInsets.all(0),
               itemCount: snapshot.data.length,
               itemBuilder: (BuildContext context, int index) {
-                TaskModel item = snapshot.data.elementAt(index);
+                TaskEntity item = snapshot.data.elementAt(index);
                 return GestureDetector(
                   child: TaskListTile(
                     key: Key(item.id.toString()),
                     data: item,
-                    onChanged: (TaskModel model) {
-                      component.updateTask(model);
+                    onChanged: (TaskEntity model) {
+                      component.updateTask(item, model);
                     },
                   ),
                   onTap: () {

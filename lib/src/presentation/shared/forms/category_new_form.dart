@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tasks/src/data/models/category_model.dart';
+import 'package:tasks/src/domain/entities/category_entity.dart';
 
 class CategoryNewForm extends StatefulWidget {
   /// Create a CategoryNewForm widget.
@@ -41,8 +41,8 @@ class _CategoryNewFormState extends State<CategoryNewForm> {
   /// Called when this state removed from the tree.
   @override
   void dispose() {
-    titleController.dispose();
-    descriptionController.dispose();
+    this.titleController.dispose();
+    this.descriptionController.dispose();
     super.dispose();
   }
 
@@ -107,10 +107,11 @@ class _CategoryNewFormState extends State<CategoryNewForm> {
                     child: const Text('Create'),
                     onPressed: () {
                       if (this.key.currentState.validate()) {
-                        CategoryModel category = CategoryModel(
+                        String description = this.descriptionController.text.trim();
+                        CategoryEntity category = CategoryEntity(
                           title: this.titleController.text.trim(),
-                          description: this.descriptionController.text.trim(),
-                          created: DateTime.now(),
+                          description: description.isNotEmpty ? description : null,
+                          createdDate: DateTime.now(),
                         );
                         Navigator.of(context).pop(category);
                       }
