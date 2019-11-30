@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
 import 'package:tasks/src/app.dart';
+import 'package:tasks/src/core/provider.dart';
 
-import 'settings_page_bloc.dart';
+import 'settings_controller.dart';
 import 'widgets/page_header.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -16,30 +17,33 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   // Business Logic Component.
-  SettingsPageBloc bloc;
+  SettingsController controller;
   PackageInfo app;
 
   /// Called when this state inserted into tree.
   @override
   void initState() {
     super.initState();
-    this.bloc = SettingsPageBloc();
+    this.controller = SettingsController();
     this.app = App.of(this.context);
   }
 
   /// Called when this state removed from the tree.
   @override
   void dispose() {
-    this.bloc.dispose();
+    this.controller.dispose();
     super.dispose();
   }
 
   /// Build this widget.
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: this.buildPage(),
+    return Component<SettingsController>.value(
+      value: this.controller,
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: this.buildPage(),
+      ),
     );
   }
 

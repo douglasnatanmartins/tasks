@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:tasks/src/presentation/controllers/category_manager_contract.dart';
+import 'package:tasks/src/presentation/controllers/project_manager_contract.dart';
+import 'package:tasks/src/presentation/controllers/task_manager_contract.dart';
 
 import '../presentation/pages/home/home_page.dart';
 import '../presentation/pages/category/category_page.dart';
 import '../presentation/pages/project/project_page.dart';
 import '../presentation/pages/task/task_page.dart';
+import 'provider.dart';
 
 class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -20,7 +24,11 @@ class Router {
       case '/category':
         return MaterialPageRoute(
           builder: (BuildContext context) {
-            return CategoryPage(category: settings.arguments);
+            final Map<String, dynamic> args = settings.arguments;
+            return Component<CategoryManagerContract>.value(
+              value: args['component'],
+              child: CategoryPage(category: args['model']),
+            );
           },
         );
       
@@ -28,7 +36,11 @@ class Router {
       case '/project':
         return MaterialPageRoute(
           builder: (BuildContext context) {
-            return ProjectPage(project: settings.arguments);
+            final Map<String, dynamic> args = settings.arguments;
+            return Component<ProjectManagerContract>.value(
+              value: args['component'],
+              child: ProjectPage(model: args['model']),
+            );
           },
         );
       
@@ -36,7 +48,11 @@ class Router {
       case '/task':
         return MaterialPageRoute(
           builder: (BuildContext context) {
-            return TaskPage(task: settings.arguments);
+            Map<String, dynamic> arguments = settings.arguments;
+            return Component<TaskManagerContract>.value(
+              value: arguments['component'],
+              child: TaskPage(data: arguments['model']),
+            );
           },
         );
       

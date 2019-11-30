@@ -1,91 +1,75 @@
 import 'package:flutter/material.dart';
-import 'package:tasks/src/data/models/task_model.dart';
-import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
-
-import 'important_page_bloc.dart';
+import 'package:tasks/src/core/provider.dart';
+import 'important_controller.dart';
 import 'widgets/page_header.dart';
 import 'widgets/task_list_view.dart';
 
 class ImportantPage extends StatefulWidget {
+  /// Create a ImportantPage widget.
+  ImportantPage({
+    Key key,
+  }): super(key: key);
+
+  /// Creates the mutable state for this widget at a given location in the tree.
   @override
   State<ImportantPage> createState() => _ImportantPageState();
 }
 
 class _ImportantPageState extends State<ImportantPage> {
-  ImportantPageBloc bloc;
+  ImportantController controller;
 
+  /// Called when this state first inserted into tree.
   @override
   void initState() {
     super.initState();
-    this.bloc = ImportantPageBloc();
-    this.bloc.refreshTasks();
+    this.controller = ImportantController();
   }
 
+  /// Called when a dependency of this state object changes.
   @override
-  void didUpdateWidget(ImportantPage oldWidget) {
-    super.didUpdateWidget(oldWidget);
+  void didChangeDependencies() {
+    super.didChangeDependencies();
   }
 
+  /// Called whenever the widget configuration changes.
+  @override
+  void didUpdateWidget(ImportantPage old) {
+    super.didUpdateWidget(old);
+  }
+
+  /// Called when this state removed from the tree.
   @override
   void dispose() {
-    this.bloc.dispose();
+    this.controller.dispose();
     super.dispose();
   }
 
+  /// Build the ImportantPage widget with state.
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: this.buildPage(),
+    return Component<ImportantController>.value(
+      value: this.controller,
+      child: this.buildPage(),
     );
   }
 
   Widget buildPage() {
-    return SafeArea(
-      child: Column(
-        children: <Widget>[
-          this.headerPage(),
-          this.bodyPage(),
-        ],
-      ),
-    );
-  }
-
-  Widget headerPage() {
-    return PageHeader();
-  }
-
-  Widget bodyPage() {
-    return Expanded(
-      child: Container(
-        child: StreamBuilder(
-          stream: this.bloc.streamTasks,
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            } else {
-              if (snapshot.hasData && snapshot.data.isNotEmpty) {
-                return this.buildListView(snapshot.data);
-              } else {
-                return EmptyContentBox(message: 'not important task');
-              }
-            }
-          },
+    return Scaffold(
+      appBar: null,
+      body: SafeArea(
+        child: Column(
+          children: <Widget>[
+            PageHeader(),
+            this.bodyPage(),
+          ],
         ),
       ),
     );
   }
 
-  Widget buildListView(List<TaskModel> tasks) {
-    return TaskListView(
-      data: tasks,
-      onChanged: (TaskModel task) {
-        this.bloc.updateTask(task);
-      },
-      whenOnTap: () {
-        this.bloc.refreshTasks();
-      },
+  Widget bodyPage() {
+    return Expanded(
+      child: TaskListView(),
     );
   }
 }

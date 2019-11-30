@@ -97,4 +97,30 @@ class DataSupport {
     'orange': Colors.orange,
     'lime': Colors.lime,
   };
+
+  static bool hasIcon(IconData icon) {
+    return icons.containsValue(icon);
+  }
+
+  static String getIconKey(IconData icon) {
+    String result;
+    result = icons.keys.firstWhere((String key) {
+      return icons[key] == icon;
+    });
+
+    return result;
+  }
+
+  static bool hasColor(Color color) {
+    return colors.containsValue(colors);
+  }
+
+  static getColorKey(Color color) {
+    String result;
+    result = colors.keys.firstWhere((String key) {
+      return colors[key] == color;
+    });
+
+    return result;
+  }
 }
