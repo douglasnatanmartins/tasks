@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:tasks/src/core/provider.dart';
 
-import 'package:tasks/src/data/models/task_model.dart';
-import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
-
-import 'planned_page_bloc.dart';
+import 'planned_controller.dart';
+import 'widgets/page_body.dart';
 import 'widgets/page_header.dart';
-import 'widgets/task_list_view.dart';
 
 class PlannedPage extends StatefulWidget {
   PlannedPage({
@@ -18,14 +16,13 @@ class PlannedPage extends StatefulWidget {
 
 class _PlannedPageState extends State<PlannedPage> {
   // Business Logic Component
-  PlannedPageBloc bloc;
+  PlannedController controller;
 
   /// Called when this state inserted into tree.
   @override
   void initState() {
     super.initState();
-    this.bloc = PlannedPageBloc();
-    this.bloc.fetchAll();
+    this.controller = PlannedController();
   }
 
   @override
@@ -36,69 +33,30 @@ class _PlannedPageState extends State<PlannedPage> {
   /// Called when this state removed from the tree.
   @override
   void dispose() {
-    this.bloc.dispose();
+    this.controller.dispose();
     super.dispose();
   }
 
   /// Build this widget.
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: this.buildPage()
+    return Component<PlannedController>.value(
+      value: this.controller,
+      child: this.buildPage(),
     );
   }
 
   /// Build a planned page.
   Widget buildPage() {
-    return SafeArea(
-      child: Column(
-        children: <Widget>[
-          this.headerPage(),
-          this.bodyPage(),
-        ],
-      ),
-    );
-  }
-
-  /// Build header this page.
-  Widget headerPage() {
-    return PageHeader();
-  }
-
-  /// Build body this page.
-  Widget bodyPage() {
-    return Expanded(
-      child: Container(
-        child: StreamBuilder(
-          stream: this.bloc.streamTasks,
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            } else {
-              if (snapshot.hasData && snapshot.data.isNotEmpty) {
-                return this.buildListView(snapshot.data);
-              } else {
-                return EmptyContentBox(message: 'NO TASK');
-              }
-            }
-          },
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
+          children: <Widget>[
+            PageHeader(),
+            PageBody(),
+          ],
         ),
       ),
-    );
-  }
-
-  /// Build the list view.
-  Widget buildListView(Map<String, List<TaskModel>> data) {
-    return TaskListView(
-      data: data,
-      onChanged: (TaskModel task) {
-        this.bloc.updateTask(task);
-      },
-      whenOnTap: () {
-        this.bloc.fetchAll();
-      },
     );
   }
 }

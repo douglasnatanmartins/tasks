@@ -1,70 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:tasks/src/data/models/task_model.dart';
+import 'package:tasks/src/domain/entities/task_entity.dart';
 
 import 'group_list_tile.dart';
 
-class TaskListView extends StatefulWidget {
+class TaskListView extends StatelessWidget {
+  /// Create a TaskListView widget.
   TaskListView({
     Key key,
-    @required this.data,
-    @required this.onChanged,
-    @required this.whenOnTap,
-  }): assert(data != null),
-      assert(onChanged != null),
-      assert(whenOnTap != null),
+    @required this.items,
+  }): assert(items != null),
       super(key: key);
 
-  final Map<String, List<TaskModel>> data;
-  final ValueChanged<TaskModel> onChanged;
-  final Function whenOnTap;
+  final Map<DateTime, List<TaskEntity>> items;
 
-  @override
-  State<TaskListView> createState() => _TaskListViewState();
-}
-
-class _TaskListViewState extends State<TaskListView> {
-  Map<String, List<TaskModel>> data;
-
-  @override
-  void initState() {
-    super.initState();
-    this.data = this.widget.data;
-  }
-
-  @override
-  void didUpdateWidget(TaskListView oldWidget) {
-    if (oldWidget.data != this.widget.data) {
-      this.data = this.widget.data;
-    }
-
-    super.didUpdateWidget(oldWidget);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
+  /// Build the TaskListView widget.
   @override
   Widget build(BuildContext context) {
-    List<GroupListTile> children = <GroupListTile>[];
-
-    this.data.forEach((String title, List<TaskModel> tasks) {
-      if (tasks.length > 0) {
-        children.add(
-          GroupListTile(
-            title: title,
-            items: tasks,
-            onChanged: this.widget.onChanged,
-            whenOnTap: this.widget.whenOnTap,
-          ),
+    return ListView.builder(
+      padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
+      scrollDirection: Axis.vertical,
+      itemCount: this.items.length,
+      itemBuilder: (BuildContext context, int index) {
+        final key = this.items.keys.elementAt(index);
+        final data = this.items[key];
+        return GroupListTile(
+          date: key,
+          items: data,
         );
       }
-    });
-
-    return ListView(
-      padding: const EdgeInsets.all(0.0),
-      children: children,
     );
   }
 }

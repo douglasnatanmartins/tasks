@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:tasks/src/data/models/project_model.dart';
+import 'package:tasks/src/domain/entities/project_entity.dart';
 import 'package:tasks/src/presentation/shared/pickers/color_picker/color_picker.dart';
 import 'package:tasks/src/presentation/shared/pickers/icon_picker/icon_picker.dart';
 import 'package:tasks/src/utils/data_support.dart';
@@ -233,13 +233,14 @@ class _ProjectNewScreenState extends State<ProjectNewScreen> {
               final title = this.editingTitle.text.trim();
               if (title.isNotEmpty) {
                 final description = this.editingDescription.text.trim();
-                ProjectModel model = ProjectModel(
+                ProjectEntity model = ProjectEntity(
+                  id: null,
                   categoryId: this.widget.category,
                   title: this.editingTitle.text,
-                  description: description,
-                  created: DateTime.now(),
+                  description: description.isNotEmpty ? description : null,
                   color: this.color,
                   icon: this.icon,
+                  createdDate: DateTime.now(),
                 );
                 Navigator.of(this.context).pop(model);
               }

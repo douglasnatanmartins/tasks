@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:tasks/src/presentation/shared/pickers/color_picker/circle_color.dart';
 
 class ColorPicker extends StatefulWidget {
+  /// Create a ColorPicker widget.
   ColorPicker({
     Key key,
+    this.current,
     @required this.colors,
     @required this.onChanged,
   }): assert(colors != null),
@@ -11,8 +13,10 @@ class ColorPicker extends StatefulWidget {
       super(key: key);
 
   final List<Color> colors;
+  final Color current;
   final ValueChanged<Color> onChanged;
 
+  /// Creates the mutable state for this widget at a given location in the tree.
   @override
   State<ColorPicker> createState() => _ColorPickerState();
 }
@@ -21,18 +25,38 @@ class _ColorPickerState extends State<ColorPicker> {
   List<Color> colors;
   Color current;
 
+  /// Called when this state first inserted into tree.
   @override
   void initState() {
     super.initState();
     this.colors = this.widget.colors;
-    this.current = this.colors[0];
+
+    if (this.colors.indexOf(this.widget.current) >= 0) {
+      this.current = this.widget.current;
+    } else {
+      this.current = this.colors.elementAt(0);
+    }
   }
 
+  /// Called when a dependency of this state object changes.
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
+
+  /// Called whenever the widget configuration changes.
+  @override
+  void didUpdateWidget(ColorPicker old) {
+    super.didUpdateWidget(old);
+  }
+
+  /// Called when this state removed from the tree.
   @override
   void dispose() {
     super.dispose();
   }
 
+  /// Build the ColorPicker widget with state.
   @override
   Widget build(BuildContext context) {
     List<Container> children = <Container>[];

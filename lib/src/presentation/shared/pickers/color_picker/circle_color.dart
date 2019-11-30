@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 
 class CircleColor extends StatelessWidget {
+  /// Create a CircleColor widget.
+  /// 
+  /// The [selected], [color], and [onTap] arguments must not be null.
   CircleColor({
     Key key,
+    @required this.selected,
     @required this.color,
     @required this.onTap,
-    @required this.selected,
-  }): assert(color != null),
-      assert(onTap != null),
-      super(key: key);
+  }): super(key: key);
 
   final bool selected;
   final Color color;
   final VoidCallback onTap;
 
+  /// Build the CircleColor widget.
   @override
   Widget build(BuildContext context) {
     Border border;

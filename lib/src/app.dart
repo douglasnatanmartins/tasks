@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:package_info/package_info.dart';
-
 import 'core/router.dart';
 
 class App extends StatelessWidget {
+  /// The root widget application.
+  /// 
+  /// The [information] arguments must not be null.
+  /// The `information` contains application metadata.
   const App({
     Key key,
-    @required this.information
+    @required this.information,
   }): assert(information != null),
       super(key: key);
 
@@ -18,7 +21,7 @@ class App extends StatelessWidget {
     return (context.ancestorWidgetOfExactType(App) as App).information;
   }
 
-  /// Build the application.
+  /// Build root widget of the application.
   @override
   Widget build(BuildContext context) {
     // Set device orientation.

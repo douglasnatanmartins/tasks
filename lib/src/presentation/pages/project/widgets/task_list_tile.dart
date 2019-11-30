@@ -1,54 +1,67 @@
 import 'package:flutter/material.dart';
-import 'package:tasks/src/data/models/task_model.dart';
+import 'package:tasks/src/core/provider.dart';
+import 'package:tasks/src/domain/entities/task_entity.dart';
 import 'package:tasks/src/presentation/shared/widgets/circle_checkbox.dart';
 
+import '../project_controller.dart';
+
 class TaskListTile extends StatefulWidget {
+  /// Create a TaskListTile widget.
+  /// 
+  /// The [data] and [onChanged] arguments must not be null.
   TaskListTile({
     Key key,
-    @required this.task,
+    @required this.data,
     @required this.onChanged,
-    @required this.whenOpened
-  }): assert(task != null),
+  }): assert(data != null),
       assert(onChanged != null),
-      assert(whenOpened != null),
       super(key: key);
 
-  final TaskModel task;
-  final ValueChanged<TaskModel> onChanged;
-  final Function whenOpened;
+  final TaskEntity data;
+  final ValueChanged<TaskEntity> onChanged;
 
+  /// Creates the mutable state for this widget at a given location in the tree.
   @override
   State<TaskListTile> createState() => _TaskListTileState();
 }
 
 class _TaskListTileState extends State<TaskListTile> {
-  TaskModel task;
+  TaskEntity data;
   TextDecoration decoration;
 
+  /// Called when this state first inserted into tree.
   @override
   void initState() {
     super.initState();
-    this.decoration = TextDecoration.none;
-    this.task = this.widget.task;
+    this.data = this.widget.data;
   }
 
+  /// Called when a dependency of this state object changes.
   @override
-  void didUpdateWidget(TaskListTile oldWidget) {
-    if (oldWidget.task != this.widget.task) {
-      this.task = this.widget.task;
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
+
+  /// Called whenever the widget configuration changes.
+  @override
+  void didUpdateWidget(TaskListTile old) {
+    if (old.data != this.widget.data) {
+      this.data = this.widget.data;
     }
 
-    super.didUpdateWidget(oldWidget);
+    super.didUpdateWidget(old);
   }
 
+  /// Called when this state removed from the tree.
   @override
   void dispose() {
     super.dispose();
   }
 
+  /// Build the TaskListTile widget with state.
   @override
   Widget build(BuildContext context) {
-    if (this.task.done) {
+    if (this.data.isDone) {
       this.decoration = TextDecoration.lineThrough;
     } else {
       this.decoration = TextDecoration.none;
@@ -56,16 +69,16 @@ class _TaskListTileState extends State<TaskListTile> {
 
     return ListTile(
       leading: CircleCheckbox(
-        value: this.task.done,
+        value: this.data.isDone,
         onChanged: (bool checked) {
           setState(() {
-            this.task.done = checked;
-            this.widget.onChanged(this.task);
+            this.data = this.data.copyWith(isDone: checked);
+            this.widget.onChanged(this.data);
           });
         }
       ),
       title: Text(
-        task.title,
+        this.data.title,
         overflow: TextOverflow.ellipsis,
         style: TextStyle(
           color: Colors.white,
@@ -75,18 +88,26 @@ class _TaskListTileState extends State<TaskListTile> {
       trailing: IconButton(
         icon: Icon(
           Icons.star,
-          color: task.important ? Colors.yellow.shade600 : null,
+          color: this.data.isImportant ? Colors.yellow.shade600 : null,
         ),
         onPressed: () {
           setState(() {
-            this.task.important = !task.important;
-            this.widget.onChanged(this.task);
+            this.data = this.data.copyWith(
+              isImportant: !this.data.isImportant
+            );
+            this.widget.onChanged(this.data);
           });
         },
       ),
-      onTap: () { // Open a task page.
-        Navigator.of(this.context).pushNamed('/task', arguments: task)
-          .then((result) => this.widget.whenOpened());
+      onTap: () {
+        final component = Component.of<ProjectController>(context);
+        Navigator.of(this.context).pushNamed(
+          '/task',
+          arguments: <String, dynamic>{
+            'component': component,
+            'model': this.data,
+          },
+        );
       },
     );
   }

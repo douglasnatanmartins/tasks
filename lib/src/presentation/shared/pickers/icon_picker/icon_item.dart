@@ -1,27 +1,26 @@
 import 'package:flutter/material.dart';
 
 class IconItem extends StatelessWidget {
+  /// Create a IconItem widget.
+  /// 
+  /// The [icon] and [onTap] arguments must not be null.
   IconItem({
     Key key,
+    this.selected = false,
     @required this.icon,
-    @required this.selected,
-    @required this.onTap
+    @required this.onTap,
   }): assert(icon != null),
-      assert(selected != null),
       assert(onTap != null),
       super(key: key);
 
   final IconData icon;
-  final Function onTap;
   final bool selected;
+  final VoidCallback onTap;
 
+  /// Build the IconItem widget.
   @override
   Widget build(BuildContext context) {
-    Color color = Colors.grey[400];
-
-    if (this.selected) {
-      color = Colors.blue[400];
-    }
+    Color color = this.selected ? Colors.blue[400] : Colors.grey[400];
 
     return Center(
       child: InkWell(

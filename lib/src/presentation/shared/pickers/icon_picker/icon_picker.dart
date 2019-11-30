@@ -1,54 +1,81 @@
 import 'package:flutter/material.dart';
-import 'package:tasks/src/presentation/shared/pickers/icon_picker/icon_item.dart';
+import 'icon_item.dart';
 
 class IconPicker extends StatefulWidget {
+  /// Create a IconPicker widget.
+  IconPicker({
+    Key key,
+    this.current,
+    @required this.icons,
+    @required this.onChanged,
+  }): assert(icons != null),
+      assert(icons.length > 0),
+      assert(onChanged != null),
+      super(key: key);
+
   final List<IconData> icons;
   final IconData current;
   final ValueChanged<IconData> onChanged;
 
-  IconPicker({
-    Key key,
-    @required this.icons,
-    @required this.onChanged,
-    @required this.current,
-  }): assert(icons != null),
-      assert(icons.length >= 1),
-      assert(current != null),
-      assert(onChanged != null),
-      super(key: key);
-
+  /// Creates the mutable state for this widget at a given location in the tree.
   @override
   State<IconPicker> createState() => _IconPickerState();
 }
 
 class _IconPickerState extends State<IconPicker> {
+  List<IconData> icons;
   IconData current;
 
+  /// Called when this state first inserted into tree.
   @override
   void initState() {
     super.initState();
-    this.current = this.widget.current;
+    this.icons = this.widget.icons;
+    if (this.icons.contains(this.widget.current)) {
+      this.current = this.widget.current;
+    } else {
+      this.current = this.icons.elementAt(0);
+    }
   }
 
+  /// Called when a dependency of this state object changes.
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
+
+  /// Called whenever the widget configuration changes.
+  @override
+  void didUpdateWidget(IconPicker old) {
+    if (this.icons != this.widget.icons) {
+      this.icons = this.widget.icons;
+      if (this.icons.contains(this.widget.current)) {
+        this.current = this.widget.current;
+      } else {
+        this.current = this.icons.elementAt(0);
+      }
+    }
+
+    super.didUpdateWidget(old);
+  }
+
+  /// Called when this state removed from the tree.
   @override
   void dispose() {
     super.dispose();
   }
 
+  /// Build the IconPicker widget with state.
   @override
   Widget build(BuildContext context) {
-    List<Widget> children = <Widget>[];
-
-    this.widget.icons.forEach((IconData data) {
-      children.add(this.buildItem(data));
-    });
-
     return GridView.count(
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
       crossAxisCount: 5,
       crossAxisSpacing: 20.0,
       mainAxisSpacing: 20.0,
-      children: children,
+      children: this.icons.map((IconData item) {
+        return this.buildItem(item);
+      }).toList(),
     );
   }
 
