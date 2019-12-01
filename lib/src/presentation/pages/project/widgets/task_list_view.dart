@@ -1,17 +1,15 @@
-import 'package:flutter/material.dart';
-import 'package:tasks/src/core/provider.dart';
-import 'package:tasks/src/domain/entities/task_entity.dart';
-import 'package:tasks/src/presentation/pages/project/project_controller.dart';
+part of '../project_page.dart';
 
-import 'task_list_tile.dart';
-
-class TaskListView extends StatelessWidget {
-  TaskListView({
+class _TaskListView extends StatelessWidget {
+  /// Create a _TaskListView widget.
+  _TaskListView({
+    Key key,
     @required this.items,
-  }): assert(items != null);
+  }): super(key: key);
 
   final List<TaskEntity> items;
 
+  /// Build the _TaskListView widget.
   @override
   Widget build(BuildContext context) {
     final controller = Component.of<ProjectController>(context);
@@ -25,7 +23,7 @@ class TaskListView extends StatelessWidget {
       },
       itemBuilder: (BuildContext context, int index) {
         final item = this.items.elementAt(index);
-        return TaskListTile(
+        return _TaskListTile(
           data: item,
           onChanged: (TaskEntity entity) {
             controller.updateTask(item, entity);

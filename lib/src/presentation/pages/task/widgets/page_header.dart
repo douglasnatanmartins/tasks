@@ -1,13 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:tasks/src/domain/entities/task_entity.dart';
-import 'package:tasks/src/presentation/shared/widgets/circle_checkbox.dart';
+part of '../task_page.dart';
 
-import 'important_checkbox.dart';
-import 'task_title_text_field.dart';
-
-class PageHeader extends StatelessWidget {
-  /// Create a PageHeader widget.
-  PageHeader({
+class _PageHeader extends StatelessWidget {
+  /// Create a _PageHeader widget.
+  _PageHeader({
     Key key,
     @required this.data,
     @required this.onChanged,
@@ -16,7 +11,7 @@ class PageHeader extends StatelessWidget {
   final TaskEntity data;
   final ValueChanged<TaskEntity> onChanged;
 
-  /// Build the PageHeader widget.
+  /// Build the _PageHeader widget.
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -43,7 +38,7 @@ class PageHeader extends StatelessWidget {
             child: Row(
               children: <Widget>[
                 Expanded(
-                  child: TaskTitleTextField(
+                  child: _TaskTitleTextField(
                     data: this.data.title,
                     onChanged: (String title) {
                       this.onChanged(this.data.copyWith(
@@ -61,7 +56,7 @@ class PageHeader extends StatelessWidget {
                     ));
                   },
                 ),
-                ImportantCheckBox(
+                _ImportantCheckbox(
                   value: this.data.isImportant,
                   onChanged: (bool checked) {
                     this.onChanged(this.data.copyWith(

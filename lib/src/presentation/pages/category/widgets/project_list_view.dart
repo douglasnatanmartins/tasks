@@ -1,24 +1,22 @@
-import 'package:flutter/material.dart';
-import 'package:tasks/src/domain/entities/project_entity.dart';
-import 'project_card.dart';
+part of '../category_page.dart';
 
-class ProjectListView extends StatelessWidget {
-  /// Create a ProjectListView widget.
-  ProjectListView({
+class _ProjectListView extends StatelessWidget {
+  /// Create a _ProjectListView widget.
+  _ProjectListView({
     Key key,
     @required this.items,
-  }): super(key: key);
+  }) : super(key: key);
 
   final List<ProjectEntity> items;
 
-  /// Build the ProjectListView widget.
+  /// Build the _ProjectListView widget.
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
       padding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 5.0),
       itemCount: this.items.length,
       itemBuilder: (BuildContext context, int index) {
-        return ProjectCard(
+        return _ProjectCard(
           model: this.items.elementAt(index),
         );
       },

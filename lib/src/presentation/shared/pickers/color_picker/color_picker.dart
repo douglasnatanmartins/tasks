@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tasks/src/presentation/shared/pickers/color_picker/circle_color.dart';
+
+part 'color_grid_item.dart';
 
 class ColorPicker extends StatefulWidget {
   /// Create a ColorPicker widget.
@@ -59,37 +60,27 @@ class _ColorPickerState extends State<ColorPicker> {
   /// Build the ColorPicker widget with state.
   @override
   Widget build(BuildContext context) {
-    List<Container> children = <Container>[];
-
-    this.colors.forEach((Color color) {
-      children.add(
-        Container(
-          child: CircleColor(
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.5),
+      ),
+      child: GridView.count(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+        crossAxisCount: 5,
+        crossAxisSpacing: 20,
+        mainAxisSpacing: 20,
+        children: this.widget.colors.map((Color color) {
+          return _ColorGridItem(
             color: color,
-            selected: this.current == color,
+            isChecked: this.current == color,
             onTap: () {
               setState(() {
                 this.current = color;
                 this.widget.onChanged(color);
               });
             },
-          ),
-        ),
-      );
-    });
-
-    return Expanded(
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.5),
-        ),
-        child: GridView.count(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-          crossAxisCount: 5,
-          crossAxisSpacing: 20,
-          mainAxisSpacing: 20,
-          children: children,
-        ),
+          );
+        }).toList(),
       ),
     );
   }

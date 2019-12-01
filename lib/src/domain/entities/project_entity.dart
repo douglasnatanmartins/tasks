@@ -51,11 +51,11 @@ class ProjectEntity implements Entity<ProjectEntity> {
   @override
   String toString() {
     String str = '[Project Id: ${this.id}] - ';
-    str += 'title: ${this.title},';
-    str += 'description: ${this.description},';
-    str += 'color: ${this.color},';
-    str += 'icon: ${this.icon},';
-    str += 'created date: ${this.createdDate}';
+    str += 'title: ${this.title}, ';
+    str += 'description: ${this.description}, ';
+    str += 'color: ${this.color}, ';
+    str += 'icon: ${this.icon}, ';
+    str += 'created date: ${this.createdDate}.';
     return str;
   }
 

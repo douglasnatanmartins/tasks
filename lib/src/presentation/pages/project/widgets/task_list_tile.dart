@@ -1,15 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:tasks/src/core/provider.dart';
-import 'package:tasks/src/domain/entities/task_entity.dart';
-import 'package:tasks/src/presentation/shared/widgets/circle_checkbox.dart';
+part of '../project_page.dart';
 
-import '../project_controller.dart';
-
-class TaskListTile extends StatefulWidget {
-  /// Create a TaskListTile widget.
+class _TaskListTile extends StatefulWidget {
+  /// Create a _TaskListTile widget.
   /// 
   /// The [data] and [onChanged] arguments must not be null.
-  TaskListTile({
+  _TaskListTile({
     Key key,
     @required this.data,
     @required this.onChanged,
@@ -22,10 +17,10 @@ class TaskListTile extends StatefulWidget {
 
   /// Creates the mutable state for this widget at a given location in the tree.
   @override
-  State<TaskListTile> createState() => _TaskListTileState();
+  State<_TaskListTile> createState() => _TaskListTileState();
 }
 
-class _TaskListTileState extends State<TaskListTile> {
+class _TaskListTileState extends State<_TaskListTile> {
   TaskEntity data;
   TextDecoration decoration;
 
@@ -44,7 +39,7 @@ class _TaskListTileState extends State<TaskListTile> {
 
   /// Called whenever the widget configuration changes.
   @override
-  void didUpdateWidget(TaskListTile old) {
+  void didUpdateWidget(_TaskListTile old) {
     if (old.data != this.widget.data) {
       this.data = this.widget.data;
     }

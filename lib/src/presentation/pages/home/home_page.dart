@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:tasks/src/core/keys.dart';
 
-import 'package:tasks/src/presentation/pages/categories/categories_page.dart';
-import 'package:tasks/src/presentation/pages/important/important_page.dart';
-import 'package:tasks/src/presentation/pages/planned/planned_page.dart';
-import 'package:tasks/src/presentation/pages/settings/settings_page.dart';
+import '../categories/categories_page.dart';
+import '../important/important_page.dart';
+import '../planned/planned_page.dart';
+import '../settings/settings_page.dart';
 
 class HomePage extends StatefulWidget {
   /// Create a HomePage widget.
-  HomePage(): super(key: Keys.homePage);
+  HomePage() : super(key: Keys.homePage);
 
   /// Creates the mutable state for this widget at a given location in the tree.
   @override

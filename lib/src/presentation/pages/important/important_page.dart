@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
+
 import 'package:tasks/src/core/provider.dart';
+import 'package:tasks/src/domain/entities/task_entity.dart';
+import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
+import 'package:tasks/src/presentation/shared/widgets/task_list_tile.dart';
+
 import 'important_controller.dart';
-import 'widgets/page_header.dart';
-import 'widgets/task_list_view.dart';
+
+part 'widgets/page_body.dart';
+part 'widgets/page_header.dart';
+part 'widgets/task_list_view.dart';
 
 class ImportantPage extends StatefulWidget {
   /// Create a ImportantPage widget.
   ImportantPage({
     Key key,
-  }): super(key: key);
+  }) : super(key: key);
 
   /// Creates the mutable state for this widget at a given location in the tree.
   @override
@@ -54,22 +61,20 @@ class _ImportantPageState extends State<ImportantPage> {
   }
 
   Widget buildPage() {
-    return Scaffold(
-      appBar: null,
-      body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            PageHeader(),
-            this.bodyPage(),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget bodyPage() {
-    return Expanded(
-      child: TaskListView(),
+    return Builder(
+      builder: (BuildContext context) {
+        return Scaffold(
+          appBar: null,
+          body: SafeArea(
+            child: Column(
+              children: <Widget>[
+                _PageHeader(),
+                _PageBody(),
+              ],
+            ),
+          ),
+        );
+      }
     );
   }
 }

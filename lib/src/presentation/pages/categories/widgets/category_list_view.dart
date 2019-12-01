@@ -1,18 +1,15 @@
-import 'package:flutter/material.dart';
-import 'package:tasks/src/data/models/category_model.dart';
+part of '../categories_page.dart';
 
-import 'category_card.dart';
-
-class CategoryListView extends StatelessWidget {
-  /// Create a CategoryListView widget.
-  CategoryListView({
+class _CategoryListView extends StatelessWidget {
+  /// Create a _CategoryListView widget.
+  _CategoryListView({
     Key key,
     @required this.items,
   }): super(key: key);
 
-  final List<CategoryModel> items;
+  final List<CategoryEntity> items;
 
-  /// Build this widget.
+  /// Build the _CategoryListView widget.
   @override
   Widget build(BuildContext context) {
     return PageView.builder(
@@ -21,8 +18,8 @@ class CategoryListView extends StatelessWidget {
       ),
       itemCount: this.items.length,
       itemBuilder: (BuildContext context, int index) {
-        return CategoryCard(
-          category: this.items.elementAt(index),
+        return _CategoryCard(
+          data: this.items.elementAt(index),
         );
       },
     );

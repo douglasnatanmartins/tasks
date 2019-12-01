@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
+part of '../task_page.dart';
 
-class TaskTitleTextField extends StatefulWidget {
-  /// Create a TaskTitleTextField widget.
-  TaskTitleTextField({
+class _TaskTitleTextField extends StatefulWidget {
+  /// Create a _TaskTitleTextField widget.
+  _TaskTitleTextField({
     Key key,
     @required this.data,
     @required this.onChanged,
@@ -13,10 +13,10 @@ class TaskTitleTextField extends StatefulWidget {
 
   /// Creates the mutable state for this widget at a given location in the tree.
   @override
-  State<TaskTitleTextField> createState() => _TaskTitleTextFieldState();
+  State<_TaskTitleTextField> createState() => _TaskTitleTextFieldState();
 }
 
-class _TaskTitleTextFieldState extends State<TaskTitleTextField> {
+class _TaskTitleTextFieldState extends State<_TaskTitleTextField> {
   String data;
   FocusNode focusNode;
   TextEditingController controller;
@@ -49,7 +49,7 @@ class _TaskTitleTextFieldState extends State<TaskTitleTextField> {
 
   /// Called whenever the widget configuration changes.
   @override
-  void didUpdateWidget(TaskTitleTextField old) {
+  void didUpdateWidget(_TaskTitleTextField old) {
     super.didUpdateWidget(old);
   }
 

@@ -1,20 +1,15 @@
-import 'package:flutter/material.dart';
-import 'package:tasks/src/core/provider.dart';
-import 'package:tasks/src/domain/entities/task_entity.dart';
+part of '../task_page.dart';
 
-import '../task_controller.dart';
-import 'step_list_view.dart';
-
-class PageBody extends StatelessWidget {
-  /// Create a PageBody widget.
-  PageBody({
+class _PageBody extends StatelessWidget {
+  /// Create a _PageBody widget.
+  _PageBody({
     Key key,
     @required this.data,
   }): super(key: key);
 
   final TaskEntity data;
 
-  /// Build the PageBody widget.
+  /// Build the _PageBody widget.
   @override
   Widget build(BuildContext context) {
     final component = Component.of<TaskController>(context);
@@ -22,7 +17,7 @@ class PageBody extends StatelessWidget {
       child: StreamBuilder(
         stream: component.steps,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          return StepListView(
+          return _StepListView(
             taskId: data.id,
             items: snapshot.data,
           );

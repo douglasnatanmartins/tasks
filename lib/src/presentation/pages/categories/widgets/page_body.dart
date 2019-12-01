@@ -1,17 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:tasks/src/core/provider.dart';
-import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
+part of '../categories_page.dart';
 
-import '../categories_controller.dart';
-import 'category_list_view.dart';
-
-class PageBody extends StatelessWidget {
-  /// Create a PageBody widget.
-  PageBody({
+class _PageBody extends StatelessWidget {
+  /// Create a _PageBody widget.
+  _PageBody({
     Key key,
-  }): super(key: key);
+  }) : super(key: key);
 
-  /// Build the PageBody widget.
+  /// Build the _PageBody widget.
   @override
   Widget build(BuildContext context) {
     final component = Component.of<CategoriesController>(context);
@@ -25,9 +20,7 @@ class PageBody extends StatelessWidget {
             );
           } else {
             if (snapshot.hasData && snapshot.data.isNotEmpty) {
-              return CategoryListView(
-                items: snapshot.data,
-              );
+              return _CategoryListView(items: snapshot.data);
             } else {
               return EmptyContentBox(
                 title: 'not category created yet',

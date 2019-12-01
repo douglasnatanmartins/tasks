@@ -1,13 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:tasks/src/core/provider.dart';
-import 'package:tasks/src/domain/entities/step_entity.dart';
-import 'package:tasks/src/presentation/controllers/step_manager_contract.dart';
+part of '../task_page.dart';
 
-class StepListTile extends StatefulWidget {
-  /// Create a StepListTile widget.
+class _StepListTile extends StatefulWidget {
+  /// Create a _StepListTile widget.
   /// 
   /// The [data] and [onChanged] arguments must not be null.
-  StepListTile({
+  _StepListTile({
     Key key,
     @required this.data,
     @required this.onChanged,
@@ -20,10 +17,10 @@ class StepListTile extends StatefulWidget {
 
   /// Creates the mutable state for this widget at a given location in the tree.
   @override
-  State<StepListTile> createState() => _StepListTileState();
+  State<_StepListTile> createState() => _StepListTileState();
 }
 
-class _StepListTileState extends State<StepListTile> {
+class _StepListTileState extends State<_StepListTile> {
   StepEntity data;
   TextEditingController controller;
   TextEditingValue value;
@@ -58,7 +55,7 @@ class _StepListTileState extends State<StepListTile> {
 
   /// Called whenever the widget configuration changes.
   @override
-  void didUpdateWidget(StepListTile old) {
+  void didUpdateWidget(_StepListTile old) {
     if (old.data != this.widget.data) {
       this.data = this.widget.data;
     }
@@ -85,7 +82,7 @@ class _StepListTileState extends State<StepListTile> {
     });
   }
 
-  /// Build the StepListTile widget with state.
+  /// Build the _StepListTile widget with state.
   @override
   Widget build(BuildContext context) {
     return ListTile(
