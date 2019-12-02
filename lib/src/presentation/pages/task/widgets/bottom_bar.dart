@@ -1,21 +1,15 @@
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:tasks/src/core/provider.dart';
-import 'package:tasks/src/domain/entities/task_entity.dart';
-import 'package:tasks/src/presentation/controllers/task_manager_contract.dart';
+part of '../task_page.dart';
 
-import 'task_delete_dialog.dart';
-
-class BottomBar extends StatelessWidget {
-  /// Create a BottomBar widget.
-  BottomBar({
+class _BottomBar extends StatelessWidget {
+  /// Create a _BottomBar widget.
+  _BottomBar({
     Key key,
     @required this.data,
   }): super(key: key);
 
   final TaskEntity data;
 
-  /// Build the BottomBar widget.
+  /// Build the _BottomBar widget.
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
@@ -40,7 +34,7 @@ class BottomBar extends StatelessWidget {
                     final result = await showDialog(
                       context: context,
                       builder: (BuildContext context) {
-                        return TaskDeleteDialog();
+                        return _TaskDeleteDialog();
                       },
                     );
 

@@ -1,12 +1,12 @@
-import 'package:flutter/material.dart';
+part of '../task_page.dart';
 
-class TaskDeleteDialog extends StatelessWidget {
-  /// Create a TaskDeleteDialog widget.
-  TaskDeleteDialog({
+class _TaskDeleteDialog extends StatelessWidget {
+  /// Create a _TaskDeleteDialog widget.
+  _TaskDeleteDialog({
     Key key,
   }): super(key: key);
 
-  /// Build the TaskDeleteDialog widget.
+  /// Build the _TaskDeleteDialog widget.
   @override
   Widget build(BuildContext context) {
     return AlertDialog(

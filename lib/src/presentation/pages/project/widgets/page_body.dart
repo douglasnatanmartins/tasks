@@ -1,17 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:tasks/src/core/provider.dart';
-import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
+part of '../project_page.dart';
 
-import '../project_controller.dart';
-import 'task_list_view.dart';
-
-class PageBody extends StatelessWidget {
-  /// Create a PageBody widget.
-  PageBody({
+class _PageBody extends StatelessWidget {
+  /// Create a _PageBody widget.
+  _PageBody({
     Key key,
   }): super(key: key);
 
-  /// Build the PageBody widget.
+  /// Build the _PageBody widget.
   @override
   Widget build(BuildContext context) {
     final controller = Component.of<ProjectController>(context);
@@ -26,9 +21,7 @@ class PageBody extends StatelessWidget {
               );
             } else {
               if (snapshot.hasData && snapshot.data.isNotEmpty) {
-                return TaskListView(
-                  items: snapshot.data,
-                );
+                return _TaskListView(items: snapshot.data);
               } else {
                 return EmptyContentBox(
                   title: 'no task created yet',

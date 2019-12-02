@@ -1,54 +1,23 @@
-import 'package:flutter/material.dart';
+part of '../task_page.dart';
 
-class ImportantCheckBox extends StatefulWidget {
-  ImportantCheckBox({
+class _ImportantCheckbox extends StatelessWidget {
+  /// Create a _ImportantCheckbox widget.
+  _ImportantCheckbox({
     Key key,
     @required this.value,
-    @required this.onChanged
-  }): assert(value != null),
-      assert(onChanged != null),
-      super(key: key);
+    @required this.onChanged,
+  }): super(key: key);
 
   final bool value;
   final ValueChanged<bool> onChanged;
 
-  @override
-  State<ImportantCheckBox> createState() => _ImportantCheckboxState();
-}
-
-class _ImportantCheckboxState extends State<ImportantCheckBox> {
-  bool value;
-
-  @override
-  void initState() {
-    super.initState();
-    this.value = this.widget.value;
-  }
-
+  /// Build the _ImportantCheckbox widget.
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      splashColor: Colors.transparent,
-      highlightColor: Colors.transparent,
-      child: AnimatedContainer(
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Colors.white.withOpacity(0.15)
-        ),
-        duration: Duration(milliseconds: 150),
-        padding: const EdgeInsets.all(10),
-        child: Icon(
-          Icons.star,
-          color: this.value ? Colors.yellow[700] : Colors.black.withOpacity(0.5),
-          size: 24
-        )
-      ),
-      onTap: () {
-        setState(() {
-          this.value = !this.value;
-          this.widget.onChanged(this.value);
-        });
-      },
+    return IconCheckbox(
+      value: this.value,
+      icon: Icons.star,
+      onChanged: this.onChanged,
     );
   }
 }

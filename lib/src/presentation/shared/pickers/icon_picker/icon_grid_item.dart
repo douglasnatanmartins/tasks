@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
+part of 'icon_picker.dart';
 
-class IconItem extends StatelessWidget {
-  /// Create a IconItem widget.
+class _IconGridItem extends StatelessWidget {
+  /// Create a _IconGridItem widget.
   /// 
   /// The [icon] and [onTap] arguments must not be null.
-  IconItem({
+  _IconGridItem({
     Key key,
     this.selected = false,
     @required this.icon,
@@ -17,7 +17,7 @@ class IconItem extends StatelessWidget {
   final bool selected;
   final VoidCallback onTap;
 
-  /// Build the IconItem widget.
+  /// Build the _IconGridItem widget.
   @override
   Widget build(BuildContext context) {
     Color color = this.selected ? Colors.blue[400] : Colors.grey[400];

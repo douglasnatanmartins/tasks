@@ -1,14 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:tasks/src/core/provider.dart';
-import 'package:tasks/src/domain/entities/step_entity.dart';
-import 'package:tasks/src/presentation/controllers/step_manager_contract.dart';
-import 'package:tasks/src/presentation/pages/task/task_controller.dart';
+part of '../task_page.dart';
 
-import 'step_list_tile.dart';
-
-class StepListView extends StatelessWidget {
-  /// Create a StepListView widget.
-  StepListView({
+class _StepListView extends StatelessWidget {
+  /// Create a _StepListView widget.
+  _StepListView({
     Key key,
     @required this.taskId,
     @required this.items,
@@ -17,11 +11,11 @@ class StepListView extends StatelessWidget {
   final List<StepEntity> items;
   final int taskId;
 
-  /// Build the StepListView widget.
+  /// Build the _StepListView widget.
   @override
   Widget build(BuildContext context) {
     final com = Component.of<TaskController>(context);
-    List<StepListTile> tiles = <StepListTile>[];
+    List<_StepListTile> tiles = <_StepListTile>[];
 
     // Add exists steps.
     if (this.items != null) {
@@ -50,7 +44,7 @@ class StepListView extends StatelessWidget {
   }
 
   Widget buildItem(StepEntity item, StepManagerContract controller) {
-    return StepListTile(
+    return _StepListTile(
       key: Key(item.id.toString()),
       data: item,
       onChanged: (StepEntity step) {

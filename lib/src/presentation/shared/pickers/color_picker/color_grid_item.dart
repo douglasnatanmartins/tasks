@@ -1,32 +1,23 @@
-import 'package:flutter/material.dart';
+part of 'color_picker.dart';
 
-class CircleColor extends StatelessWidget {
-  /// Create a CircleColor widget.
+class _ColorGridItem extends StatelessWidget {
+  /// Create a _ColorGridItem widget.
   /// 
   /// The [selected], [color], and [onTap] arguments must not be null.
-  CircleColor({
+  _ColorGridItem({
     Key key,
-    @required this.selected,
+    @required this.isChecked,
     @required this.color,
     @required this.onTap,
   }): super(key: key);
 
-  final bool selected;
+  final bool isChecked;
   final Color color;
   final VoidCallback onTap;
 
-  /// Build the CircleColor widget.
+  /// Build the _ColorGridItem widget.
   @override
   Widget build(BuildContext context) {
-    Border border;
-
-    if (this.selected) {
-      border = Border.all(
-        color: this.color,
-        width: 3.0,
-      );
-    }
-
     return Center(
       child: InkWell(
         splashColor: Colors.transparent,
@@ -40,7 +31,9 @@ class CircleColor extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.transparent,
             shape: BoxShape.circle,
-            border: border,
+            border: this.isChecked
+                      ? Border.all(color: this.color, width: 3.0)
+                      : null,
           ),
           child: Container(
             decoration: BoxDecoration(

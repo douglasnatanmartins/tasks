@@ -1,67 +1,47 @@
-import 'package:flutter/material.dart';
-import 'package:tasks/src/core/provider.dart';
-import 'package:tasks/src/domain/entities/task_entity.dart';
-import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
-import 'package:tasks/src/presentation/shared/widgets/task_list_tile.dart';
+part of '../important_page.dart';
 
-import '../important_controller.dart';
-
-class TaskListView extends StatelessWidget {
-  /// Create a TaskListView widget.
-  TaskListView({
+class _TaskListView extends StatelessWidget {
+  /// Create a _TaskListView widget.
+  _TaskListView({
     Key key,
-  }): super(key: key);
+    @required this.items,
+  }) : super(key: key);
 
-  /// Build this widget.
+  final List<TaskEntity> items;
+
+  /// Build the _TaskListView widget.
   @override
   Widget build(BuildContext context) {
     final component = Component.of<ImportantController>(context);
-    return StreamBuilder(
-      stream: component.tasks,
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        } else {
-          if (snapshot.hasData && snapshot.data.isNotEmpty) {
-            return ListView.separated(
-              padding: const EdgeInsets.all(0),
-              itemCount: snapshot.data.length,
-              itemBuilder: (BuildContext context, int index) {
-                TaskEntity item = snapshot.data.elementAt(index);
-                return GestureDetector(
-                  child: TaskListTile(
-                    key: Key(item.id.toString()),
-                    data: item,
-                    onChanged: (TaskEntity model) {
-                      component.updateTask(item, model);
-                    },
-                  ),
-                  onTap: () {
-                    Navigator.of(context).pushNamed(
-                      '/task',
-                      arguments: <String, dynamic>{
-                        'component': component,
-                        'model': item,
-                      },
-                    );
-                  },
-                );
-              },
-              separatorBuilder: (BuildContext context, int index) {
-                return Divider(
-                  height: 0,
-                  color: Color(0xff979797),
-                );
+    return ListView.separated(
+      padding: const EdgeInsets.all(0),
+      itemCount: this.items.length,
+      itemBuilder: (BuildContext context, int index) {
+        TaskEntity item = this.items.elementAt(index);
+        return GestureDetector(
+          child: TaskListTile(
+            key: Key(item.id.toString()),
+            data: item,
+            onChanged: (TaskEntity model) {
+              component.updateTask(item, model);
+            },
+          ),
+          onTap: () {
+            Navigator.of(context).pushNamed(
+              '/task',
+              arguments: <String, dynamic>{
+                'component': component,
+                'model': item,
               },
             );
-          } else {
-            return EmptyContentBox(
-              title: 'no important task created yet',
-            );
-          }
-        }
+          },
+        );
+      },
+      separatorBuilder: (BuildContext context, int index) {
+        return Divider(
+          height: 0,
+          color: Color(0xff979797),
+        );
       },
     );
   }

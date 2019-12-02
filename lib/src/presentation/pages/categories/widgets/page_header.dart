@@ -1,16 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:tasks/src/core/provider.dart';
+part of '../categories_page.dart';
 
-import '../categories_controller.dart';
-
-class PageHeader extends StatelessWidget {
-  /// Create a PageHeader widget.
-  PageHeader({
+class _PageHeader extends StatelessWidget {
+  /// Create a _PageHeader widget.
+  _PageHeader({
     Key key,
-  }): super(key: key);
+  }) : super(key: key);
 
-  /// Build the PageHeader widget.
+  /// Build the _PageHeader widget.
   @override
   Widget build(BuildContext context) {
     final DateTime now = DateTime.now();

@@ -27,11 +27,11 @@ class Router {
             final Map<String, dynamic> args = settings.arguments;
             return Component<CategoryManagerContract>.value(
               value: args['component'],
-              child: CategoryPage(category: args['model']),
+              child: CategoryPage(data: args['model']),
             );
           },
         );
-      
+
       // Project Page.
       case '/project':
         return MaterialPageRoute(
@@ -39,7 +39,7 @@ class Router {
             final Map<String, dynamic> args = settings.arguments;
             return Component<ProjectManagerContract>.value(
               value: args['component'],
-              child: ProjectPage(model: args['model']),
+              child: ProjectPage(data: args['model']),
             );
           },
         );

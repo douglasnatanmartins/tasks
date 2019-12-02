@@ -1,21 +1,16 @@
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:tasks/src/core/provider.dart';
-import 'package:tasks/src/domain/entities/project_entity.dart';
+part of '../category_page.dart';
 
-import '../category_controller.dart';
-
-class ProjectCard extends StatelessWidget {
-  /// Create a ProjectCard widget.
-  ProjectCard({
+class _ProjectCard extends StatelessWidget {
+  /// Create a _ProjectCard widget.
+  _ProjectCard({
     Key key,
     @required this.model,
-  }): assert(model != null),
-      super(key: key);
+  })  : assert(model != null),
+        super(key: key);
 
   final ProjectEntity model;
 
-  /// Build the ProjectCard widget.
+  /// Build the _ProjectCard widget.
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

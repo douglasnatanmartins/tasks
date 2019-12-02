@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:collection';
-
 import 'package:tasks/src/core/contracts/controller.dart';
 import 'package:tasks/src/domain/entities/task_entity.dart';
 import 'package:tasks/src/domain/repositories/task_repository_contract.dart';

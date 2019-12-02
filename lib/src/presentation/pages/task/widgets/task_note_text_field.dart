@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
+part of '../task_page.dart';
 
-class TaskNoteTextField extends StatefulWidget {
-  /// Create a TaskNoteTextField widget.
+class _TaskNoteTextField extends StatefulWidget {
+  /// Create a _TaskNoteTextField widget.
   /// 
   /// The [onChanged] argument must not be null.
-  TaskNoteTextField({
+  _TaskNoteTextField({
     Key key,
     @required this.data,
     @required this.onChanged,
@@ -16,10 +16,10 @@ class TaskNoteTextField extends StatefulWidget {
 
   /// Creates the mutable state for this widget at a given location in the tree.
   @override
-  State<TaskNoteTextField> createState() => _TaskNoteTextFieldState();
+  State<_TaskNoteTextField> createState() => _TaskNoteTextFieldState();
 }
 
-class _TaskNoteTextFieldState extends State<TaskNoteTextField> {
+class _TaskNoteTextFieldState extends State<_TaskNoteTextField> {
   TextEditingController controller;
   FocusNode focusNode;
   
@@ -39,7 +39,7 @@ class _TaskNoteTextFieldState extends State<TaskNoteTextField> {
 
   /// Called whenever the widget configuration changes.
   @override
-  void didUpdateWidget(TaskNoteTextField old) {
+  void didUpdateWidget(_TaskNoteTextField old) {
     super.didUpdateWidget(old);
   }
 
@@ -49,7 +49,7 @@ class _TaskNoteTextFieldState extends State<TaskNoteTextField> {
     super.dispose();
   }
 
-  /// Build the TaskNoteTextField widget with state.
+  /// Build the _TaskNoteTextField widget with state.
   @override
   Widget build(BuildContext context) {
     return Container(

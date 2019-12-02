@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:tasks/src/core/provider.dart';
+import 'package:intl/intl.dart';
 
+import 'package:tasks/src/core/provider.dart';
 import 'package:tasks/src/domain/entities/category_entity.dart';
+import 'package:tasks/src/presentation/pages/category_detail/category_detail_page.dart';
 import 'package:tasks/src/presentation/shared/forms/category_new_form.dart';
+import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
 
 import 'categories_controller.dart';
-import 'widgets/page_body.dart';
-import 'widgets/page_header.dart';
+
+part 'widgets/page_body.dart';
+part 'widgets/page_header.dart';
+part 'widgets/category_list_view.dart';
+part 'widgets/category_card.dart';
 
 class CategoriesPage extends StatefulWidget {
   /// Create a CategoriesPage widget.
   CategoriesPage({
     Key key,
-  }): super(key: key);
+  }) : super(key: key);
 
   /// Creates the mutable state for this widget at a given location in the tree.
   @override
@@ -63,8 +69,8 @@ class _CategoriesPageState extends State<CategoriesPage> {
       body: SafeArea(
         child: Column(
           children: <Widget>[
-            PageHeader(),
-            PageBody(),
+            _PageHeader(),
+            _PageBody(),
           ],
         ),
       ),
@@ -86,8 +92,8 @@ class _CategoriesPageState extends State<CategoriesPage> {
               final result = await showDialog(
                 context: context,
                 builder: (BuildContext context) {
-                  return CategoryNewForm();
-                }
+                  return CategoryDetailPage(category: null);
+                },
               );
 
               if (result is CategoryEntity) {

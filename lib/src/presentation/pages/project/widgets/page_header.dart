@@ -1,16 +1,15 @@
-import 'package:flutter/material.dart';
-import 'package:tasks/src/data/models/project_model.dart';
+part of '../project_page.dart';
 
-class PageHeader extends StatelessWidget {
-  /// Create a PageHeader widget.
-  PageHeader({
+class _PageHeader extends StatelessWidget {
+  /// Create a _PageHeader widget.
+  _PageHeader({
     Key key,
-    @required this.model,
-  }): super(key: key);
+    @required this.data,
+  }) : super(key: key);
 
-  final ProjectModel model;
+  final ProjectEntity data;
 
-  /// Build the PageHeader widget.
+  /// Build the _PageHeader widget.
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -30,7 +29,7 @@ class PageHeader extends StatelessWidget {
           ),
           Expanded(
             child: Text(
-              this.model.title,
+              this.data.title,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 color: Colors.white,
@@ -50,8 +49,22 @@ class PageHeader extends StatelessWidget {
             ),
             child: const Icon(Icons.edit),
             textColor: Colors.white,
-            onPressed: () {
-              Navigator.of(context).pushNamed('/project/task');
+            onPressed: () async {
+              final result = await Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) {
+                    return ProjectDetailPage(
+                      category: null,
+                      project: this.data,
+                    );
+                  },
+                ),
+              );
+
+              if (result is ProjectEntity) {
+                final manager = Component.of<ProjectManagerContract>(context);
+                manager.updateProject(this.data, result);
+              }
             },
           ),
         ],

@@ -1,13 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
 import 'package:tasks/src/core/provider.dart';
+import 'package:tasks/src/domain/entities/step_entity.dart';
 import 'package:tasks/src/domain/entities/task_entity.dart';
+import 'package:tasks/src/presentation/controllers/step_manager_contract.dart';
 import 'package:tasks/src/presentation/controllers/task_manager_contract.dart';
+import 'package:tasks/src/presentation/shared/pickers/date_picker/date_picker.dart';
+import 'package:tasks/src/presentation/shared/widgets/circle_checkbox.dart';
+import 'package:tasks/src/presentation/shared/widgets/icon_checkbox.dart';
 
 import 'task_controller.dart';
-import 'widgets/bottom_bar.dart';
-import 'widgets/page_body.dart';
-import 'widgets/page_footer.dart';
-import 'widgets/page_header.dart';
+
+part 'widgets/bottom_bar.dart';
+part 'widgets/important_checkbox.dart';
+part 'widgets/page_body.dart';
+part 'widgets/page_footer.dart';
+part 'widgets/page_header.dart';
+part 'widgets/step_list_tile.dart';
+part 'widgets/step_list_view.dart';
+part 'widgets/task_delete_dialog.dart';
+part 'widgets/task_note_text_field.dart';
+part 'widgets/task_title_text_field.dart';
 
 class TaskPage extends StatefulWidget {
   /// Create a TaskPage widget.
@@ -87,12 +101,12 @@ class _TaskPageState extends State<TaskPage> {
           child: IntrinsicHeight(
             child: Column(
               children: <Widget>[
-                PageHeader(
+                _PageHeader(
                   data: this.data,
                   onChanged: this.changeEntity,
                 ),
-                PageBody(data: this.data),
-                PageFooter(
+                _PageBody(data: this.data),
+                _PageFooter(
                   data: this.data,
                   onChanged: this.changeEntity,
                 ),
@@ -102,7 +116,7 @@ class _TaskPageState extends State<TaskPage> {
         ),
       ),
       backgroundColor: Colors.grey[200],
-      bottomNavigationBar: BottomBar(data: this.data),
+      bottomNavigationBar: _BottomBar(data: this.data),
     );
   }
 }

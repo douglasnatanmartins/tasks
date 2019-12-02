@@ -1,22 +1,15 @@
-import 'package:flutter/material.dart';
-import 'package:tasks/src/core/provider.dart';
-import 'package:tasks/src/domain/entities/category_entity.dart';
+part of '../categories_page.dart';
 
-import '../categories_controller.dart';
-
-class CategoryCard extends StatelessWidget {
-  /// Create a CategoryCard widget.
-  /// 
-  /// The [category] argument must not be null.
-  CategoryCard({
+class _CategoryCard extends StatelessWidget {
+  /// Create a _CategoryCard widget.
+  _CategoryCard({
     Key key,
-    @required this.category,
-  }): assert(category != null),
-      super(key: key);
+    @required this.data,
+  }): super(key: key);
 
-  final CategoryEntity category;
+  final CategoryEntity data;
 
-  /// Build this widget.
+  /// Build the _CategoryCard widget.
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -42,7 +35,7 @@ class CategoryCard extends StatelessWidget {
           '/category',
           arguments: <String, dynamic>{
             'component': component,
-            'model': this.category,
+            'model': this.data,
           },
         );
       },
@@ -54,10 +47,10 @@ class CategoryCard extends StatelessWidget {
     children.add(const Spacer(flex: 5));
 
     // If has category description.
-    if (this.category.description != null) {
+    if (this.data.description != null) {
       children.add(
         Text(
-          category.description ?? '',
+          this.data.description ?? '',
           overflow: TextOverflow.ellipsis,
           maxLines: 2,
           style: TextStyle(
@@ -71,7 +64,7 @@ class CategoryCard extends StatelessWidget {
     // Add category title.
     children.add(
       Text(
-        category.title,
+        this.data.title,
         overflow: TextOverflow.ellipsis,
         style: TextStyle(
           color: Colors.blue[400],

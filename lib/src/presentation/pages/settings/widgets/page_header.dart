@@ -1,6 +1,12 @@
-import 'package:flutter/material.dart';
+part of '../settings_page.dart';
 
-class PageHeader extends StatelessWidget {
+class _PageHeader extends StatelessWidget {
+  /// Create a _PageHeader widget.
+  _PageHeader({
+    Key key,
+  }) : super(key: key);
+
+  /// Build the _PageHeader widget.
   @override
   Widget build(BuildContext context) {
     return Container(

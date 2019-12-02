@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
-import 'icon_item.dart';
+
+part 'icon_grid_view.dart';
+part 'icon_grid_item.dart';
 
 class IconPicker extends StatefulWidget {
   /// Create a IconPicker widget.
+  /// 
+  /// The [icons] and [onChanged] arguments must not be null.
   IconPicker({
     Key key,
     this.current,
     @required this.icons,
     @required this.onChanged,
   }): assert(icons != null),
-      assert(icons.length > 0),
       assert(onChanged != null),
       super(key: key);
 
@@ -47,15 +50,6 @@ class _IconPickerState extends State<IconPicker> {
   /// Called whenever the widget configuration changes.
   @override
   void didUpdateWidget(IconPicker old) {
-    if (this.icons != this.widget.icons) {
-      this.icons = this.widget.icons;
-      if (this.icons.contains(this.widget.current)) {
-        this.current = this.widget.current;
-      } else {
-        this.current = this.icons.elementAt(0);
-      }
-    }
-
     super.didUpdateWidget(old);
   }
 
@@ -68,26 +62,33 @@ class _IconPickerState extends State<IconPicker> {
   /// Build the IconPicker widget with state.
   @override
   Widget build(BuildContext context) {
-    return GridView.count(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-      crossAxisCount: 5,
-      crossAxisSpacing: 20.0,
-      mainAxisSpacing: 20.0,
-      children: this.icons.map((IconData item) {
-        return this.buildItem(item);
-      }).toList(),
-    );
-  }
-
-  Widget buildItem(IconData data) {
-    return IconItem(
-      icon: data,
-      selected: this.current == data,
+    return InkWell(
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
+      child: Container(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.white.withOpacity(0.5),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+        child: Icon(this.current, color: Colors.white),
+      ),
       onTap: () {
-        setState(() {
-          this.current = data;
-          this.widget.onChanged(this.current);
-        });
+        showModalBottomSheet(
+          context: context,
+          builder: (BuildContext context) {
+            return _IconGridView(
+              value: this.current,
+              items: this.icons,
+              onChanged: (IconData icon) {
+                setState(() {
+                  this.current = icon;
+                  this.widget.onChanged(this.current);
+                });
+              },
+            );
+          },
+        );
       },
     );
   }
