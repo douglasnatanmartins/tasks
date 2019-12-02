@@ -12,7 +12,7 @@ class CategoryRepository extends CategoryRepositoryContract {
     List<Map<String, dynamic>> data = await db.query('Category');
     List<CategoryEntity> result = <CategoryEntity>[];
     if (data.isNotEmpty) {
-      result = data.map((Map<String, dynamic> item) {
+      result = data.map<CategoryEntity>((Map<String, dynamic> item) {
         return CategoryModel.from(item);
       }).toList();
     }

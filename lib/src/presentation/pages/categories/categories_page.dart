@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 
 import 'package:tasks/src/core/provider.dart';
 import 'package:tasks/src/domain/entities/category_entity.dart';
+import 'package:tasks/src/presentation/pages/category_detail/category_detail_page.dart';
 import 'package:tasks/src/presentation/shared/forms/category_new_form.dart';
 import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
 
@@ -91,7 +92,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
               final result = await showDialog(
                 context: context,
                 builder: (BuildContext context) {
-                  return CategoryNewForm();
+                  return CategoryDetailPage(category: null);
                 },
               );
 

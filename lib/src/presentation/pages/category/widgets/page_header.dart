@@ -62,31 +62,48 @@ class _PageHeader extends StatelessWidget {
                   children: headerTitle,
                 ),
               ),
-              // Delete button.
+              // Edit category button.
               Consumer<CategoryManagerContract>(
                 builder: (context, component) {
-                  return FlatButton(
-                    padding: const EdgeInsets.all(12.0),
-                    shape: const CircleBorder(
-                      side: BorderSide(color: Colors.white, width: 4.0),
-                    ),
-                    color: Colors.red,
-                    textColor: Colors.white,
-                    child: const Icon(Icons.delete),
-                    // Show a dialog to confirm the user wants delete.
-                    onPressed: () async {
-                      final result = await showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return _CategoryDeleteDialog();
-                        },
-                      );
+                  return PopupMenuButton(
+                    icon: Icon(Icons.more_vert),
+                    itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+                      PopupMenuItem(
+                        value: 'edit',
+                        child: Text('Edit'),
+                      ),
+                      PopupMenuItem(
+                        value: 'delete',
+                        child: Text('Delete'),
+                      ),
+                    ],
+                    onSelected: (selected) async {
+                      if (selected == 'edit') {
+                        final result = await Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (BuildContext context) {
+                              return CategoryDetailPage(category: this.data);
+                            },
+                          ),
+                        );
 
-                      if (result != null && result) {
-                        await component.deleteCategory(this.data);
-                        Navigator.of(context).pop();
+                        if (result is CategoryEntity) {
+                          component.updateCategory(this.data, result);
+                        }
+                      } else if (selected == 'delete') {
+                        final result = await showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return _CategoryDeleteDialog();
+                          },
+                        );
+
+                        if (result != null && result) {
+                          await component.deleteCategory(this.data);
+                          Navigator.of(context).pop();
+                        }
                       }
-                    },
+                    }
                   );
                 },
               ),
