@@ -9,7 +9,7 @@ class _PageBody extends StatelessWidget {
   /// Build the _PageBody widget.
   @override
   Widget build(BuildContext context) {
-    final controller = Component.of<ProjectController>(context);
+    final controller = Provider.of<ProjectController>(context);
     return Expanded(
       child: Container(
         child: StreamBuilder(

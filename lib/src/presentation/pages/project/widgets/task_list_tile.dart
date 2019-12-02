@@ -95,11 +95,11 @@ class _TaskListTileState extends State<_TaskListTile> {
         },
       ),
       onTap: () {
-        final component = Component.of<ProjectController>(context);
+        final controller = Provider.of<ProjectController>(context);
         Navigator.of(this.context).pushNamed(
           '/task',
           arguments: <String, dynamic>{
-            'component': component,
+            'component': controller,
             'model': this.data,
           },
         );

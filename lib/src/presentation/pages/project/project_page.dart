@@ -70,8 +70,8 @@ class _ProjectPageState extends State<ProjectPage> {
   /// Build the ProjectPage widget with state.
   @override
   Widget build(BuildContext context) {
-    return Component<ProjectController>.value(
-      value: this.controller,
+    return Provider<ProjectController>.component(
+      component: this.controller,
       child: this.buildPage(),
     );
   }

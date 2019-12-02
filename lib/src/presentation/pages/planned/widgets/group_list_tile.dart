@@ -50,7 +50,7 @@ class _GroupListTileState extends State<GroupListTile> {
 
   @override
   Widget build(BuildContext context) {
-    final component = Component.of<PlannedController>(context);
+    final controller = Provider.of<PlannedController>(context);
     String title;
     if (this.date == DateTimeUtil.onlyDate(DateTime.now())) {
       title = 'Today';
@@ -65,12 +65,12 @@ class _GroupListTileState extends State<GroupListTile> {
       child: ExpansionTile(
         initiallyExpanded: true,
         title: Text(title),
-        children: this.buildChildren(component),
+        children: this.buildChildren(controller),
       ),
     );
   }
 
-  List<Widget> buildChildren(PlannedController component) {
+  List<Widget> buildChildren(PlannedController controller) {
     List<Widget> children = <Widget>[];
 
     this.items.forEach((TaskEntity item) {
@@ -80,7 +80,7 @@ class _GroupListTileState extends State<GroupListTile> {
           child: TaskListTile(
             data: item,
             onChanged: (TaskEntity updated) {
-              component.updateTask(item, updated);
+              controller.updateTask(item, updated);
             },
           ),
           onTap: () {
@@ -88,7 +88,7 @@ class _GroupListTileState extends State<GroupListTile> {
               context,
               '/task',
               arguments: <String, dynamic>{
-                'component': component,
+                'component': controller,
                 'model': item,
               },
             );

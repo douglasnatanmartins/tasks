@@ -13,51 +13,24 @@ part 'widgets/page_header.dart';
 part 'widgets/category_list_view.dart';
 part 'widgets/category_card.dart';
 
-class CategoriesPage extends StatefulWidget {
+class CategoriesPage extends StatelessWidget {
   /// Create a CategoriesPage widget.
   CategoriesPage({
     Key key,
-  }) : super(key: key);
+  }): super(key: key);
 
-  /// Creates the mutable state for this widget at a given location in the tree.
-  @override
-  State<CategoriesPage> createState() => _CategoriesPageState();
-}
-
-class _CategoriesPageState extends State<CategoriesPage> {
-  CategoriesController controller;
-
-  /// Called when this state first inserted into tree.
-  @override
-  void initState() {
-    super.initState();
-    this.controller = CategoriesController();
-  }
-
-  /// Called when a dependency of this state object changes.
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-  }
-
-  /// Called whenever the widget configuration changes.
-  @override
-  void didUpdateWidget(CategoriesPage old) {
-    super.didUpdateWidget(old);
-  }
-
-  /// Called when this state removed from the tree.
-  @override
-  void dispose() {
-    this.controller.dispose();
-    super.dispose();
-  }
-
-  /// Build the CategoriesPage widget with state.
+  /// Build the CategoriesPage widget.
   @override
   Widget build(BuildContext context) {
-    return Component<CategoriesController>.value(
-      value: this.controller,
+    return Provider<_Shared>(
+      creator: (context) {
+        return _Shared(
+          controller: CategoriesController(),
+        );
+      },
+      disposer: (context, shared) {
+        shared.controller.dispose();
+      },
       child: this.buildPage(),
     );
   }
@@ -73,8 +46,8 @@ class _CategoriesPageState extends State<CategoriesPage> {
           ],
         ),
       ),
-      floatingActionButton: Consumer<CategoriesController>(
-        builder: (context, component) {
+      floatingActionButton: Consumer<_Shared>(
+        builder: (context, shared) {
           return FloatingActionButton(
             heroTag: 'floating-button',
             shape: CircleBorder(
@@ -96,7 +69,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
               );
 
               if (result is CategoryEntity) {
-                component.addCategory(result);
+                shared.controller.addCategory(result);
               }
             },
           );
@@ -104,4 +77,12 @@ class _CategoriesPageState extends State<CategoriesPage> {
       ),
     );
   }
+}
+
+class _Shared {
+  _Shared({
+    @required this.controller,
+  });
+
+  final CategoriesController controller;
 }

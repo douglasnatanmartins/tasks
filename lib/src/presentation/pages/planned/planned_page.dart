@@ -40,8 +40,8 @@ class _PlannedPageState extends State<PlannedPage> {
   /// Build this widget.
   @override
   Widget build(BuildContext context) {
-    return Component<PlannedController>.value(
-      value: this.controller,
+    return Provider<PlannedController>.component(
+      component: this.controller,
       child: this.buildPage(),
     );
   }

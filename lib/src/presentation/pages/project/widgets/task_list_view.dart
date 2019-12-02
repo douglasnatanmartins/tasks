@@ -12,7 +12,7 @@ class _TaskListView extends StatelessWidget {
   /// Build the _TaskListView widget.
   @override
   Widget build(BuildContext context) {
-    final controller = Component.of<ProjectController>(context);
+    final controller = Provider.of<ProjectController>(context);
     return ListView.separated(
       padding: const EdgeInsets.all(0),
       itemCount: this.items.length,

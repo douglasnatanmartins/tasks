@@ -9,14 +9,14 @@ class _PageBody extends StatelessWidget {
   /// Build the _PageBody widget.
   @override
   Widget build(BuildContext context) {
-    final component = Component.of<CategoryController>(context);
+    final controller = Provider.of<CategoryController>(context);
     return Expanded(
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
         ),
         child: StreamBuilder(
-          stream: component.projects,
+          stream: controller.projects,
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(

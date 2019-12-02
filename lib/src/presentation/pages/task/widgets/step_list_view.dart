@@ -14,13 +14,13 @@ class _StepListView extends StatelessWidget {
   /// Build the _StepListView widget.
   @override
   Widget build(BuildContext context) {
-    final com = Component.of<TaskController>(context);
+    final controller = Provider.of<TaskController>(context);
     List<_StepListTile> tiles = <_StepListTile>[];
 
     // Add exists steps.
     if (this.items != null) {
       for (var item in this.items) {
-        tiles.add(this.buildItem(item, com));
+        tiles.add(this.buildItem(item, controller));
       }
     }
 
@@ -32,7 +32,7 @@ class _StepListView extends StatelessWidget {
           taskId: this.taskId,
           isDone: false,
         ),
-        com,
+        controller,
       )
     );
 

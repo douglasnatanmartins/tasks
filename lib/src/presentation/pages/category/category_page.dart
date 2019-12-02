@@ -66,8 +66,8 @@ class _CategoryPageState extends State<CategoryPage> {
   /// Build the CategoryPage widget with state.
   @override
   Widget build(BuildContext context) {
-    return Component<CategoryController>.value(
-      value: this.controller,
+    return Provider<CategoryController>.component(
+      component: this.controller,
       child: this.buildPage(),
     );
   }

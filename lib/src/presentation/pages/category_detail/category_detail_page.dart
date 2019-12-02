@@ -70,14 +70,14 @@ class _CategoryDetailPageState extends State<CategoryDetailPage> {
   /// Build the CategoryDetailPage widget with state.
   @override
   Widget build(BuildContext context) {
-    return ComponentInherited<_Shared>(
-      value: _Shared(
+    return ComponentProvider<_Shared>(
+      component: _Shared(
         data: this.data,
         titleController: this.titleController,
         descriptionController: this.descriptionController,
       ),
       child: this.buildPage(),
-      updateNotifier: (p, c) => false,
+      notifier: (p, c) => false,
     );
   }
 

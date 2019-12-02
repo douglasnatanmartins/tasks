@@ -30,11 +30,11 @@ class _CategoryCard extends StatelessWidget {
         ),
       ),
       onTap: () {
-        final component = Component.of<CategoriesController>(context);
+        final controller = Provider.of<_Shared>(context).controller;
         Navigator.of(context).pushNamed(
           '/category',
           arguments: <String, dynamic>{
-            'component': component,
+            'component': controller,
             'model': this.data,
           },
         );

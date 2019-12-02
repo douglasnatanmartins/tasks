@@ -36,10 +36,10 @@ class _PageHeader extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 15.0),
-              Consumer<CategoriesController>(
-                builder: (context, component) {
+              Consumer<_Shared>(
+                builder: (context, shared) {
                   return StreamBuilder(
-                    stream: component.categories,
+                    stream: shared.controller.categories,
                     builder: (BuildContext context, AsyncSnapshot snapshot) {
                       String description = '...';
                       if (snapshot.hasData) {

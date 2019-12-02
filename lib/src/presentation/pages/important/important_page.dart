@@ -54,8 +54,8 @@ class _ImportantPageState extends State<ImportantPage> {
   /// Build the ImportantPage widget with state.
   @override
   Widget build(BuildContext context) {
-    return Component<ImportantController>.value(
-      value: this.controller,
+    return Provider<ImportantController>.component(
+      component: this.controller,
       child: this.buildPage(),
     );
   }

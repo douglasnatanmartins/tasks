@@ -82,12 +82,12 @@ class _TaskPageState extends State<TaskPage> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        final component = Component.of<TaskManagerContract>(context);
-        await component.updateTask(this.widget.data, this.data);
+        final manager = Provider.of<TaskManagerContract>(context);
+        await manager.updateTask(this.widget.data, this.data);
         return true;
       },
-      child: Component<TaskController>.value(
-        value: this.controller,
+      child: Provider<TaskController>.component(
+        component: this.controller,
         child: this.buildPage(),
       ),
     );

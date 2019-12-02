@@ -14,11 +14,11 @@ class PageBody extends StatelessWidget {
   /// Build the PageBody widget.
   @override
   Widget build(BuildContext context) {
-    final component = Component.of<PlannedController>(context);
+    final controller = Provider.of<PlannedController>(context);
     return Expanded(
       child: Container(
         child: StreamBuilder(
-          stream: component.tasks,
+          stream: controller.tasks,
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(

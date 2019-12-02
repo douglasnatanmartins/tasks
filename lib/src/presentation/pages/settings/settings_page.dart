@@ -54,8 +54,8 @@ class _SettingsPageState extends State<SettingsPage> {
   /// Build the SettingsPage widget with state.
   @override
   Widget build(BuildContext context) {
-    return Component<SettingsController>.value(
-      value: this.controller,
+    return Provider<SettingsController>.component(
+      component: this.controller,
       child: Scaffold(
         backgroundColor: Colors.white,
         body: this.buildPage(),

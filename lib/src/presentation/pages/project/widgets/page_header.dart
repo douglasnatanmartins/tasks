@@ -62,7 +62,7 @@ class _PageHeader extends StatelessWidget {
               );
 
               if (result is ProjectEntity) {
-                final manager = Component.of<ProjectManagerContract>(context);
+                final manager = Provider.of<ProjectManagerContract>(context);
                 manager.updateProject(this.data, result);
               }
             },

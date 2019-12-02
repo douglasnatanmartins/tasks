@@ -12,7 +12,7 @@ class _TaskListView extends StatelessWidget {
   /// Build the _TaskListView widget.
   @override
   Widget build(BuildContext context) {
-    final component = Component.of<ImportantController>(context);
+    final controller = Provider.of<ImportantController>(context);
     return ListView.separated(
       padding: const EdgeInsets.all(0),
       itemCount: this.items.length,
@@ -23,14 +23,14 @@ class _TaskListView extends StatelessWidget {
             key: Key(item.id.toString()),
             data: item,
             onChanged: (TaskEntity model) {
-              component.updateTask(item, model);
+              controller.updateTask(item, model);
             },
           ),
           onTap: () {
             Navigator.of(context).pushNamed(
               '/task',
               arguments: <String, dynamic>{
-                'component': component,
+                'component': controller,
                 'model': item,
               },
             );

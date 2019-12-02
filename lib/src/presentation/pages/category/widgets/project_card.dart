@@ -16,11 +16,11 @@ class _ProjectCard extends StatelessWidget {
     return GestureDetector(
       child: this._buildTile(),
       onTap: () {
-        final component = Component.of<CategoryController>(context);
+        final controller = Provider.of<CategoryController>(context);
         Navigator.of(context).pushNamed(
           '/project',
           arguments: <String, dynamic>{
-            'component': component,
+            'component': controller,
             'model': this.model,
           },
         );
