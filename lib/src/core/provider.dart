@@ -138,7 +138,7 @@ class ComponentNotFound extends Error {
 
   @override
   String toString() {
-    return '';
+    return 'Error: Could not find the correct Provider<${this.component}> above this ${this.widget} Widget.';
   }
 }
 
