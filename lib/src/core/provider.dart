@@ -88,13 +88,13 @@ class Component<T> extends StatefulWidget {
 }
 
 class _ComponentState<T> extends State<Component<T>> {
-  T value;
+  ValueDelegate<T> delegate;
 
   /// Called when this state first inserted into tree.
   @override
   void initState() {
     super.initState();
-    this.value = this.widget.delegate.get(this.context);
+    this.delegate = this.widget.delegate;
   }
 
   /// Called when a dependency of this state object changes.
@@ -112,7 +112,7 @@ class _ComponentState<T> extends State<Component<T>> {
   /// Called when this state removed from the tree.
   @override
   void dispose() {
-    this.widget.delegate.dispose(this.context);
+    this.delegate.dispose(this.context);
     super.dispose();
   }
 
@@ -120,7 +120,7 @@ class _ComponentState<T> extends State<Component<T>> {
   @override
   Widget build(BuildContext context) {
     return ComponentInherited<T>(
-      value: this.value,
+      value: this.delegate.get(context),
       child: this.widget.child,
       updateNotifier: this.widget.updateNotifier,
     );
