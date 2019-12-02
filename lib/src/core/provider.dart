@@ -1,94 +1,103 @@
 import 'package:flutter/material.dart';
 
+part 'provider/consumer.dart';
+part 'provider/component_delegate.dart';
+
 /// A function that should notify listeners, if any.
 typedef UpdateNotifier<T> = bool Function(T previous, T current);
 
 /// Returns the type [T].
 Type _typeOf<T>() => T;
 
-class ComponentInherited<T> extends InheritedWidget {
-  /// Create a ComponentInherited widget.
+class ComponentProvider<T> extends InheritedWidget {
+  /// Create a ComponentProvider widget.
   /// 
   /// The [child] argument must not be null.
-  ComponentInherited({
+  const ComponentProvider({
     Key key,
     @required Widget child,
-    this.updateNotifier,
-    @required this.value,
+    @required this.component,
+    this.notifier,
   }): assert(child != null),
       super(key: key, child: child);
   
-  final T value;
-  final UpdateNotifier<T> updateNotifier;
+  final T component;
+  final UpdateNotifier<T> notifier;
 
   /// Notify widgets that inherit from this widget.
   @override
-  bool updateShouldNotify(ComponentInherited<T> old) {
-    if (this.updateNotifier != null) {
-      return this.updateNotifier(old.value, this.value);
+  bool updateShouldNotify(ComponentProvider<T> old) {
+    if (this.notifier != null) {
+      return this.notifier(old.component, this.component);
     }
-    return old.value != this.value;
+
+    return old.component != this.component;
   }
 }
 
-class Component<T> extends StatefulWidget {
-  /// Create a Component widget.
-  Component({
+class Provider<T> extends StatefulWidget {
+  /// Create a Provider widget.
+  Provider({
     Key key,
-    Disposer<T> disposer,
+    @required Widget child,
     @required Creator<T> creator,
-    @required Widget child,
-  }): this.standard(
+    Disposer<T> disposer,
+  }): this._(
     key: key,
-    updateNotifier: null,
-    delegate: BuilderValueDelegate<T>(creator: creator, disposer: disposer),
     child: child,
+    delegate: BuilderComponentDelegate<T>(
+      creator: creator,
+      disposer: disposer,
+    ),
+    notifier: null,
   );
 
-  Component.value({
+  Provider.component({
     Key key,
-    @required UpdateNotifier<T> updateNotifier,
-    @required T value,
     @required Widget child,
-  }): this.standard(
+    @required T component,
+    @required UpdateNotifier<T> notifier,
+  }): this._(
     key: key,
-    updateNotifier: updateNotifier,
-    delegate: SingleValueDelegate<T>(value),
     child: child,
+    delegate: SingleComponentDelegate<T>(component),
+    notifier: notifier,
   );
 
-  Component.standard({
+  Provider._({
     Key key,
-    this.updateNotifier,
-    @required this.delegate,
     @required this.child,
+    @required this.delegate,
+    @required this.notifier,
   }): assert(child != null),
+      assert(delegate != null),
       super(key: key);
 
-  final ValueDelegate<T> delegate;
-  final UpdateNotifier<T> updateNotifier;
   final Widget child;
+  final ComponentDelegate<T> delegate;
+  final UpdateNotifier<T> notifier;
 
   /// Creates the mutable state for this widget at a given location in the tree.
   @override
-  State<Component<T>> createState() => _ComponentState<T>();
+  State<Provider<T>> createState() => _ProviderState<T>();
 
   static T of<T>(BuildContext context, {bool listen = true}) {
-    final type = _typeOf<ComponentInherited<T>>();
-    final component = listen
-        ? context.inheritFromWidgetOfExactType(type) as ComponentInherited<T>
+    final type = _typeOf<ComponentProvider<T>>();
+    final provider = listen
+        ? context.inheritFromWidgetOfExactType(type) as ComponentProvider<T>
         : context.ancestorInheritedElementForWidgetOfExactType(type)
-            as ComponentInherited<T>;
-    if (component == null) {
-      throw ComponentNotFound(T, context.widget.runtimeType);
+            as ComponentProvider<T>;
+
+    if (provider == null) {
+      throw ProviderNotFound(T, context.widget.runtimeType);
     }
 
-    return component.value;
+    return provider.component;
   }
 }
 
-class _ComponentState<T> extends State<Component<T>> {
-  ValueDelegate<T> delegate;
+class _ProviderState<T> extends State<Provider<T>> {
+  ComponentDelegate delegate;
 
   /// Called when this state first inserted into tree.
   @override
@@ -105,7 +114,7 @@ class _ComponentState<T> extends State<Component<T>> {
 
   /// Called whenever the widget configuration changes.
   @override
-  void didUpdateWidget(Component old) {
+  void didUpdateWidget(Provider old) {
     super.didUpdateWidget(old);
   }
 
@@ -116,19 +125,19 @@ class _ComponentState<T> extends State<Component<T>> {
     super.dispose();
   }
 
-  /// Build the Component widget with state.
+  /// Build the Provider widget with state.
   @override
   Widget build(BuildContext context) {
-    return ComponentInherited<T>(
-      value: this.delegate.get(context),
+    return ComponentProvider<T>(
+      component: this.delegate.get(context),
       child: this.widget.child,
-      updateNotifier: this.widget.updateNotifier,
+      notifier: this.widget.notifier,
     );
   }
 }
 
-class ComponentNotFound extends Error {
-  ComponentNotFound(
+class ProviderNotFound extends Error {
+  ProviderNotFound(
     this.component,
     this.widget,
   );
@@ -139,82 +148,5 @@ class ComponentNotFound extends Error {
   @override
   String toString() {
     return 'Error: Could not find the correct Provider<${this.component}> above this ${this.widget} Widget.';
-  }
-}
-
-/// A function that creates an object of type [T].
-typedef Creator<T> = T Function(BuildContext context);
-/// A function that disposes an object of type [T].
-typedef Disposer<T> = void Function(BuildContext context, T component);
-
-/// Provides a value on request.
-abstract class ValueDelegate<T> {
-  T get(BuildContext context);
-  void dispose(BuildContext context);
-}
-
-/// Provides a value for value request each time,
-/// if value not available will obtained from [Creator<T>].
-class BuilderValueDelegate<T> with ValueDelegate<T> {
-  BuilderValueDelegate({
-    @required Creator<T> creator,
-    Disposer<T> disposer,
-  }): assert(creator != null),
-      this._creator = creator,
-      this._disposer = disposer;
-
-  final Creator<T> _creator;
-  final Disposer<T> _disposer;
-
-  T _value;
-  @override
-  T get(BuildContext context) {
-    if (this._value == null) {
-      this._value = this._creator(context);
-    }
-    return this._value;
-  }
-
-  @override
-  void dispose(BuildContext context) {
-    if (this._disposer != null) {
-      this._disposer(context, this._value);
-    }
-  }
-}
-
-/// Contains a value which will never be disposed.
-class SingleValueDelegate<T> extends ValueDelegate<T> {
-  SingleValueDelegate(T value): this._value = value;
-
-  final T _value;
-  @override
-  T get(BuildContext context) {
-    return this._value;
-  }
-
-  @override
-  void dispose(BuildContext context) {
-  }
-}
-
-/// Obtain [Component<T>] from its ancestors and pass its value to [builder].
-class Consumer<T> extends StatelessWidget {
-  /// Create a Consumer widget.
-  /// 
-  /// The [builder] argument must not be null.
-  /// The `builder` argument used to build widget.
-  Consumer({
-    Key key,
-    @required this.builder,
-  }): assert(builder != null),
-      super(key: key);
-  
-  final Widget Function(BuildContext context, T component) builder;
-  /// Build the Consumer widget.
-  @override
-  Widget build(BuildContext context) {
-    final component = Component.of<T>(context);
-    return this.builder(context, component);
   }
 }
