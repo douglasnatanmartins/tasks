@@ -1,7 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:tasks/src/domain/entities/task_entity.dart';
-
-import 'group_list_tile.dart';
+part of '../planned_task_list_layout.dart';
 
 class TaskListView extends StatelessWidget {
   /// Create a TaskListView widget.

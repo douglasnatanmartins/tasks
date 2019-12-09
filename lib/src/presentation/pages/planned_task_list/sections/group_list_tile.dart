@@ -1,11 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:tasks/src/core/provider.dart';
-import 'package:tasks/src/domain/entities/task_entity.dart';
-import 'package:tasks/src/presentation/shared/widgets/task_list_tile.dart';
-import 'package:tasks/src/utils/date_time_util.dart';
-
-import '../planned_controller.dart';
+part of '../planned_task_list_layout.dart';
 
 class GroupListTile extends StatefulWidget {
   GroupListTile({
@@ -50,7 +43,7 @@ class _GroupListTileState extends State<GroupListTile> {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Provider.of<PlannedController>(context);
+    final controller = Provider.of<PlannedTaskListController>(context);
     String title;
     if (this.date == DateTimeUtil.onlyDate(DateTime.now())) {
       title = 'Today';
@@ -70,7 +63,7 @@ class _GroupListTileState extends State<GroupListTile> {
     );
   }
 
-  List<Widget> buildChildren(PlannedController controller) {
+  List<Widget> buildChildren(PlannedTaskListController controller) {
     List<Widget> children = <Widget>[];
 
     this.items.forEach((TaskEntity item) {

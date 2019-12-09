@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+part of '../planned_task_list_layout.dart';
 
 class PageHeader extends StatelessWidget {
   @override

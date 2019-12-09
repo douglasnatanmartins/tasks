@@ -1,9 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:tasks/src/core/provider.dart';
-import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
-
-import '../planned_controller.dart';
-import 'task_list_view.dart';
+part of '../planned_task_list_layout.dart';
 
 class PageBody extends StatelessWidget {
   /// Create a PageBody widget.
@@ -14,7 +9,7 @@ class PageBody extends StatelessWidget {
   /// Build the PageBody widget.
   @override
   Widget build(BuildContext context) {
-    final controller = Provider.of<PlannedController>(context);
+    final controller = Provider.of<PlannedTaskListController>(context);
     return Expanded(
       child: Container(
         child: StreamBuilder(

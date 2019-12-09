@@ -7,8 +7,8 @@ import 'package:tasks/src/presentation/controllers/task_manager_contract.dart';
 import 'package:tasks/src/utils/date_time_util.dart';
 
 /// Home Page Business Logic Component.
-class PlannedController extends Controller with TaskManagerContract {
-  PlannedController() {
+class PlannedTaskListController extends Controller with TaskManagerContract {
+  PlannedTaskListController() {
     this._taskRepository = GetTaskRepository().getRepository();
     this._tasksController = StreamController<Map<DateTime, List<TaskEntity>>>.broadcast();
     this._fetchTasks().then((result) {
