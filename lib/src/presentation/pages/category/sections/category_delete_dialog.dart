@@ -1,4 +1,4 @@
-part of '../category_page.dart';
+part of '../category_layout.dart';
 
 class _CategoryDeleteDialog extends StatelessWidget {
   /// Create a _CategoryDeleteDialog widget.

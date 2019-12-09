@@ -1,4 +1,4 @@
-part of '../category_page.dart';
+part of '../category_layout.dart';
 
 class _ProjectListView extends StatelessWidget {
   /// Create a _ProjectListView widget.

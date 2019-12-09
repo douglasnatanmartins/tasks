@@ -11,12 +11,6 @@ import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
 
 import 'category_controller.dart';
 
-part 'widgets/page_body.dart';
-part 'widgets/page_header.dart';
-part 'widgets/project_list_view.dart';
-part 'widgets/project_card.dart';
-part 'widgets/category_delete_dialog.dart';
-
 class CategoryPage extends StatefulWidget {
   /// Create a CategoryPage widget.
   CategoryPage({
@@ -75,41 +69,7 @@ class _CategoryPageState extends State<CategoryPage> {
   Widget buildPage() {
     return Builder(
       builder: (BuildContext context) {
-        return Scaffold(
-          backgroundColor: Colors.grey[300],
-          body: SafeArea(
-            child: Column(
-              children: <Widget>[
-                _PageHeader(data: this.category),
-                _PageBody(),
-              ],
-            ),
-          ),
-          // Create new project button.
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-          floatingActionButton: FloatingActionButton(
-            heroTag: 'floating-button',
-            elevation: 0,
-            backgroundColor: Colors.green[600],
-            child: const Icon(Icons.add),
-            onPressed: () async {
-              final result = await Navigator.of(this.context).push(
-                MaterialPageRoute(
-                  builder: (BuildContext context) {
-                    return ProjectDetailPage(
-                      category: this.category,
-                      project: null,
-                    );
-                  },
-                ),
-              );
 
-              if (result is ProjectEntity) {
-                this.controller.addProject(result);
-              }
-            },
-          ),
-        );
       },
     );
   }
