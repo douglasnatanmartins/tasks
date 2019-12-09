@@ -1,4 +1,4 @@
-part of '../project_page.dart';
+part of '../project_layout.dart';
 
 class _PageBody extends StatelessWidget {
   /// Create a _PageBody widget.

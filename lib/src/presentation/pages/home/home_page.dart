@@ -3,7 +3,7 @@ import 'package:tasks/src/core/keys.dart';
 
 import '../category_list/category_list_page.dart';
 import '../important_task_list/important_task_list_page.dart';
-import '../planned/planned_page.dart';
+import '../planned_task_list/planned_task_list_page.dart';
 import '../settings/settings_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -19,7 +19,7 @@ class _HomePageState extends State<HomePage> {
   List<Widget> screens = [
     SettingsPage(),
     ImportantTaskListPage(),
-    PlannedPage(),
+    PlannedTaskListPage(),
     CategoryListPage(),
   ];
 

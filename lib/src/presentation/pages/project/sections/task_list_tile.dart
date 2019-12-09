@@ -1,4 +1,4 @@
-part of '../project_page.dart';
+part of '../project_layout.dart';
 
 class _TaskListTile extends StatefulWidget {
   /// Create a _TaskListTile widget.
