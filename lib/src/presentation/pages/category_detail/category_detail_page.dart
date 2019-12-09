@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:tasks/src/core/provider.dart';
 import 'package:tasks/src/domain/entities/category_entity.dart';
 
-part 'layout/page_body.dart';
-part 'layout/page_header.dart';
-part 'widgets/field.dart';
+part 'sections/page_body.dart';
+part 'sections/page_header.dart';
+part 'sections/field.dart';
 
 class CategoryDetailPage extends StatefulWidget {
   /// Create a CategoryDetailPage widget.
@@ -70,14 +70,14 @@ class _CategoryDetailPageState extends State<CategoryDetailPage> {
   /// Build the CategoryDetailPage widget with state.
   @override
   Widget build(BuildContext context) {
-    return ComponentInherited<_Shared>(
-      value: _Shared(
+    return ComponentProvider<_Shared>(
+      component: _Shared(
         data: this.data,
         titleController: this.titleController,
         descriptionController: this.descriptionController,
       ),
       child: this.buildPage(),
-      updateNotifier: (p, c) => false,
+      notifier: (p, c) => false,
     );
   }
 

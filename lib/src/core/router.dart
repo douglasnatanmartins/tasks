@@ -25,8 +25,8 @@ class Router {
         return MaterialPageRoute(
           builder: (BuildContext context) {
             final Map<String, dynamic> args = settings.arguments;
-            return Component<CategoryManagerContract>.value(
-              value: args['component'],
+            return Provider<CategoryManagerContract>.component(
+              component: args['component'],
               child: CategoryPage(data: args['model']),
             );
           },
@@ -37,8 +37,8 @@ class Router {
         return MaterialPageRoute(
           builder: (BuildContext context) {
             final Map<String, dynamic> args = settings.arguments;
-            return Component<ProjectManagerContract>.value(
-              value: args['component'],
+            return Provider<ProjectManagerContract>.component(
+              component: args['component'],
               child: ProjectPage(data: args['model']),
             );
           },
@@ -49,8 +49,8 @@ class Router {
         return MaterialPageRoute(
           builder: (BuildContext context) {
             Map<String, dynamic> arguments = settings.arguments;
-            return Component<TaskManagerContract>.value(
-              value: arguments['component'],
+            return Provider<TaskManagerContract>.component(
+              component: arguments['component'],
               child: TaskPage(data: arguments['model']),
             );
           },
@@ -72,7 +72,7 @@ class Router {
                 width: 340.0,
                 padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
                 decoration: BoxDecoration(
-                  color: Colors.orange,
+                  color: Colors.orange[700],
                   borderRadius: BorderRadius.circular(10.0),
                 ),
                 child: Column(
@@ -93,9 +93,7 @@ class Router {
                           color: Colors.white,
                         ),
                       ),
-                      onTap: () {
-                        Navigator.of(context).pop();
-                      },
+                      onTap: () => Navigator.of(context).pop(),
                     ),
                   ],
                 ),

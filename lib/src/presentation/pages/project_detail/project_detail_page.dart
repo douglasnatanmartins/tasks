@@ -7,12 +7,12 @@ import 'package:tasks/src/presentation/shared/pickers/color_picker/color_picker.
 import 'package:tasks/src/presentation/shared/pickers/icon_picker/icon_picker.dart';
 import 'package:tasks/src/utils/data_support.dart';
 
-part 'widgets/page_body.dart';
-part 'widgets/description_text_field.dart';
-part 'widgets/icon_field.dart';
-part 'widgets/title_text_field.dart';
-part 'widgets/page_header.dart';
-part 'widgets/action_buttons.dart';
+part 'sections/page_body.dart';
+part 'sections/description_text_field.dart';
+part 'sections/icon_field.dart';
+part 'sections/title_text_field.dart';
+part 'sections/page_header.dart';
+part 'sections/action_buttons.dart';
 
 class ProjectDetailPage extends StatefulWidget {
   /// Create a ProjectDetailPage widget.
