@@ -1,5 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:tasks/src/core/provider.dart';
+import 'package:tasks/src/domain/entities/step_entity.dart';
 import 'package:tasks/src/domain/entities/task_entity.dart';
+import 'package:tasks/src/presentation/controllers/step_manager_contract.dart';
+import 'package:tasks/src/presentation/controllers/task_manager_contract.dart';
+import 'package:tasks/src/presentation/pages/task/task_controller.dart';
+import 'package:tasks/src/presentation/shared/pickers/date_picker/date_picker.dart';
+import 'package:tasks/src/presentation/shared/widgets/circle_checkbox.dart';
+import 'package:tasks/src/presentation/shared/widgets/icon_checkbox.dart';
 
 part 'sections/bottom_bar.dart';
 part 'sections/important_checkbox.dart';
