@@ -1,4 +1,4 @@
-part of '../important_page.dart';
+part of '../important_task_list_layout.dart';
 
 class _TaskListView extends StatelessWidget {
   /// Create a _TaskListView widget.
@@ -12,7 +12,7 @@ class _TaskListView extends StatelessWidget {
   /// Build the _TaskListView widget.
   @override
   Widget build(BuildContext context) {
-    final controller = Provider.of<ImportantController>(context);
+    final controller = Provider.of<ImportantTaskListController>(context);
     return ListView.separated(
       padding: const EdgeInsets.all(0),
       itemCount: this.items.length,

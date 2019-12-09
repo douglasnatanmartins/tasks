@@ -1,4 +1,4 @@
-part of '../important_page.dart';
+part of '../important_task_list_layout.dart';
 
 class _PageBody extends StatelessWidget {
   /// Create a _PageBody widget.
@@ -9,7 +9,7 @@ class _PageBody extends StatelessWidget {
   /// Build the _PageBody widget.
   @override
   Widget build(BuildContext context) {
-    final controller = Provider.of<ImportantController>(context);
+    final controller = Provider.of<ImportantTaskListController>(context);
     return Expanded(
       child: StreamBuilder(
         stream: controller.tasks,

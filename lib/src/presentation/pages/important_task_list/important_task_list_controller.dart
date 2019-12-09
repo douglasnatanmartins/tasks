@@ -6,8 +6,8 @@ import 'package:tasks/src/domain/repositories/task_repository_contract.dart';
 import 'package:tasks/src/domain/usecases/get_task_repository.dart';
 import 'package:tasks/src/presentation/controllers/task_manager_contract.dart';
 
-class ImportantController extends Controller with TaskManagerContract {
-  ImportantController() {
+class ImportantTaskListController extends Controller with TaskManagerContract {
+  ImportantTaskListController() {
     this._taskRepository = GetTaskRepository().getRepository();
     this._tasksController = StreamController<List<TaskEntity>>.broadcast();
 
