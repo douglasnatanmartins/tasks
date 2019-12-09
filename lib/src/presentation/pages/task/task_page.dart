@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import 'package:tasks/src/core/provider.dart';
 import 'package:tasks/src/domain/entities/task_entity.dart';
