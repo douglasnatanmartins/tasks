@@ -1,4 +1,4 @@
-part of '../settings_page.dart';
+part of '../settings_layout.dart';
 
 class _PageHeader extends StatelessWidget {
   /// Create a _PageHeader widget.
