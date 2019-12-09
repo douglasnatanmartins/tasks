@@ -1,4 +1,4 @@
-part of '../categories_page.dart';
+part of '../category_list_layout.dart';
 
 class _PageHeader extends StatelessWidget {
   /// Create a _PageHeader widget.
@@ -36,10 +36,10 @@ class _PageHeader extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 15.0),
-              Consumer<_Shared>(
-                builder: (context, shared) {
+              Consumer<CategoryListController>(
+                builder: (context, controller) {
                   return StreamBuilder(
-                    stream: shared.controller.categories,
+                    stream: controller.categories,
                     builder: (BuildContext context, AsyncSnapshot snapshot) {
                       String description = '...';
                       if (snapshot.hasData) {

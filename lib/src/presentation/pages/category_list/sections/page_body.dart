@@ -1,4 +1,4 @@
-part of '../categories_page.dart';
+part of '../category_list_layout.dart';
 
 class _PageBody extends StatelessWidget {
   /// Create a _PageBody widget.
@@ -9,7 +9,7 @@ class _PageBody extends StatelessWidget {
   /// Build the _PageBody widget.
   @override
   Widget build(BuildContext context) {
-    final controller = Provider.of<_Shared>(context).controller;
+    final controller = Provider.of<CategoryListController>(context);
     return Expanded(
       child: StreamBuilder(
         stream: controller.categories,

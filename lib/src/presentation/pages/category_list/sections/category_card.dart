@@ -1,4 +1,4 @@
-part of '../categories_page.dart';
+part of '../category_list_layout.dart';
 
 class _CategoryCard extends StatelessWidget {
   /// Create a _CategoryCard widget.
@@ -30,7 +30,7 @@ class _CategoryCard extends StatelessWidget {
         ),
       ),
       onTap: () {
-        final controller = Provider.of<_Shared>(context).controller;
+        final controller = Provider.of<CategoryListController>(context);
         Navigator.of(context).pushNamed(
           '/category',
           arguments: <String, dynamic>{

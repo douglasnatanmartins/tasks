@@ -1,41 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
 import 'package:tasks/src/core/provider.dart';
 import 'package:tasks/src/domain/entities/category_entity.dart';
 import 'package:tasks/src/presentation/pages/category_detail/category_detail_page.dart';
 import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
 
-import 'categories_controller.dart';
+import 'category_list_controller.dart';
 
-part 'widgets/page_body.dart';
-part 'widgets/page_header.dart';
-part 'widgets/category_list_view.dart';
-part 'widgets/category_card.dart';
+part 'sections/page_body.dart';
+part 'sections/page_header.dart';
+part 'sections/category_list_view.dart';
+part 'sections/category_card.dart';
 
-class CategoriesPage extends StatelessWidget {
-  /// Create a CategoriesPage widget.
-  CategoriesPage({
+class CategoryListLayout extends StatelessWidget {
+  /// Create a CategoryListLayout widget.
+  CategoryListLayout({
     Key key,
   }): super(key: key);
 
-  /// Build the CategoriesPage widget.
+  /// Build the CategoryListLayout widget.
   @override
   Widget build(BuildContext context) {
-    return Provider<_Shared>(
-      creator: (context) {
-        return _Shared(
-          controller: CategoriesController(),
-        );
-      },
-      disposer: (context, shared) {
-        shared.controller.dispose();
-      },
-      child: this.buildPage(),
-    );
-  }
-
-  Widget buildPage() {
     return Scaffold(
       backgroundColor: Colors.blue[400],
       body: SafeArea(
@@ -46,8 +31,8 @@ class CategoriesPage extends StatelessWidget {
           ],
         ),
       ),
-      floatingActionButton: Consumer<_Shared>(
-        builder: (context, shared) {
+      floatingActionButton: Consumer<CategoryListController>(
+        builder: (context, controller) {
           return FloatingActionButton(
             heroTag: 'floating-button',
             shape: CircleBorder(
@@ -69,7 +54,7 @@ class CategoriesPage extends StatelessWidget {
               );
 
               if (result is CategoryEntity) {
-                shared.controller.addCategory(result);
+                controller.addCategory(result);
               }
             },
           );
@@ -77,12 +62,4 @@ class CategoriesPage extends StatelessWidget {
       ),
     );
   }
-}
-
-class _Shared {
-  _Shared({
-    @required this.controller,
-  });
-
-  final CategoriesController controller;
 }

@@ -1,4 +1,4 @@
-part of '../categories_page.dart';
+part of '../category_list_layout.dart';
 
 class _CategoryListView extends StatelessWidget {
   /// Create a _CategoryListView widget.

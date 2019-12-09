@@ -6,8 +6,8 @@ import 'package:tasks/src/domain/repositories/category_repository_contract.dart'
 import 'package:tasks/src/domain/usecases/get_category_repository.dart';
 import 'package:tasks/src/presentation/controllers/category_manager_contract.dart';
 
-class CategoriesController extends Controller with CategoryManagerContract {
-  CategoriesController() {
+class CategoryListController extends Controller with CategoryManagerContract {
+  CategoryListController() {
     this._categoryRepository = GetCategoryRepository().getRepository();
     this._categoriesController = StreamController<List<CategoryEntity>>.broadcast();
 
