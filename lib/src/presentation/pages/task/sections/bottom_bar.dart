@@ -1,4 +1,4 @@
-part of '../task_page.dart';
+part of '../task_layout.dart';
 
 class _BottomBar extends StatelessWidget {
   /// Create a _BottomBar widget.

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:tasks/src/core/provider.dart';
 import 'package:tasks/src/domain/entities/category_entity.dart';
 
-part 'layout/page_body.dart';
-part 'layout/page_header.dart';
-part 'widgets/field.dart';
+part 'sections/page_body.dart';
+part 'sections/page_header.dart';
+part 'sections/field.dart';
 
 class CategoryDetailPage extends StatefulWidget {
   /// Create a CategoryDetailPage widget.

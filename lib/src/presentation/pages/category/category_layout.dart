@@ -3,7 +3,10 @@ import 'package:intl/intl.dart';
 import 'package:tasks/src/core/provider.dart';
 import 'package:tasks/src/domain/entities/category_entity.dart';
 import 'package:tasks/src/domain/entities/project_entity.dart';
+import 'package:tasks/src/presentation/controllers/category_manager_contract.dart';
+import 'package:tasks/src/presentation/pages/category_detail/category_detail_page.dart';
 import 'package:tasks/src/presentation/pages/project_detail/project_detail_page.dart';
+import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
 
 import 'category_controller.dart';
 
