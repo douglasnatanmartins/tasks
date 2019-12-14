@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
 
+import '../../../core/provider.dart';
+import 'settings_controller.dart';
+
 part 'sections/page_body.dart';
 part 'sections/page_header.dart';
 
@@ -8,10 +11,7 @@ class SettingsLayout extends StatelessWidget {
   /// Create a SettingsLayout widget.
   SettingsLayout({
     Key key,
-    @required this.appInfo,
   }): super(key: key);
-
-  final PackageInfo appInfo;
 
   /// Build the SettingsLayout widget.
   @override
@@ -22,7 +22,7 @@ class SettingsLayout extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             _PageHeader(),
-            _PageBody(appInfo: appInfo),
+            _PageBody(),
           ],
         ),
       ),

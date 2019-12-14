@@ -21,42 +21,86 @@ part 'sections/task_delete_dialog.dart';
 part 'sections/task_note_text_field.dart';
 part 'sections/task_title_text_field.dart';
 
-class TaskLayout extends StatelessWidget {
+class TaskLayout extends StatefulWidget {
   /// Create a TaskLayout widget.
   TaskLayout({
     Key key,
-    @required this.data,
-    @required this.onChanged,
+    @required this.task,
   }): super(key: key);
 
-  final TaskEntity data;
-  final ValueChanged<TaskEntity> onChanged;
+  final TaskEntity task;
 
-  /// Build the TaskLayout widget.
+  /// Creates the mutable state for this widget at a given location in the tree.
+  @override
+  State<TaskLayout> createState() => _TaskLayoutState();
+}
+
+class _TaskLayoutState extends State<TaskLayout> {
+  TaskEntity data;
+
+  /// Called when this state first inserted into tree.
+  @override
+  void initState() {
+    super.initState();
+    data = widget.task;
+  }
+
+  /// Called when a dependency of this state object changes.
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
+
+  /// Called whenever the widget configuration changes.
+  @override
+  void didUpdateWidget(TaskLayout old) {
+    super.didUpdateWidget(old);
+  }
+
+  /// Called when this state removed from the tree.
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  void onChanged(TaskEntity data) {
+    this.data = data;
+  }
+
+  /// Build the TaskLayout widget with state.
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: IntrinsicHeight(
-            child: Column(
-              children: <Widget>[
-                _PageHeader(
-                  data: data,
-                  onChanged: onChanged,
-                ),
-                _PageBody(data: data),
-                _PageFooter(
-                  data: data,
-                  onChanged: onChanged,
-                ),
-              ],
+    return WillPopScope(
+      onWillPop: () async {
+        final manager = Provider.of<TaskManagerContract>(context);
+        if (data != widget.task) {
+          await manager.updateTask(data, widget.task);
+        }
+        return true;
+      },
+      child: Scaffold(
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: IntrinsicHeight(
+              child: Column(
+                children: <Widget>[
+                  _PageHeader(
+                    data: data,
+                    onChanged: onChanged,
+                  ),
+                  _PageBody(data: data),
+                  _PageFooter(
+                    data: data,
+                    onChanged: onChanged,
+                  ),
+                ],
+              ),
             ),
           ),
         ),
+        backgroundColor: Colors.grey[200],
+        bottomNavigationBar: _BottomBar(data: data),
       ),
-      backgroundColor: Colors.grey[200],
-      bottomNavigationBar: _BottomBar(data: data),
     );
   }
 }

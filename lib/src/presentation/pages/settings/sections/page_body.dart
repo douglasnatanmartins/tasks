@@ -4,14 +4,12 @@ class _PageBody extends StatelessWidget {
   /// Create a _PageBody widget.
   _PageBody({
     Key key,
-    @required this.appInfo,
   }) : super(key: key);
-
-  final PackageInfo appInfo;
 
   /// Build the _PageBody widget.
   @override
   Widget build(BuildContext context) {
+    var controller = Provider.of<SettingsController>(context);
     return Expanded(
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -41,7 +39,16 @@ class _PageBody extends StatelessWidget {
                 ),
                 ListTile(
                   title: const Text('Version'),
-                  trailing: Text(this.appInfo.version),
+                  trailing: StreamBuilder<PackageInfo>(
+                    stream: controller.information,
+                    builder: (context, snapshot) {
+                      String version = '...';
+                      if (snapshot.hasData) {
+                        version = snapshot.data.version;
+                      }
+                      return Text(version);
+                    },
+                  ),
                 ),
                 ListTile(
                   title: const Text('Third-party software'),

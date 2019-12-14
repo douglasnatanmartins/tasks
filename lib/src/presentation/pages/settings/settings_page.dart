@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:tasks/src/app.dart';
 import 'package:tasks/src/core/provider.dart';
 
 import 'settings_controller.dart';
@@ -15,11 +14,10 @@ class SettingsPage extends StatelessWidget {
   /// Build the SettingsPage widget.
   @override
   Widget build(BuildContext context) {
-    var appInfo = App.of(context);
     return Provider<SettingsController>(
       creator: (context) => SettingsController(),
       disposer: (context, component) => component.dispose(),
-      child: SettingsLayout(appInfo: appInfo),
+      child: SettingsLayout(),
     );
   }
 }
