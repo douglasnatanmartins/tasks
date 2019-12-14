@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:tasks/src/presentation/controllers/category_manager_contract.dart';
-import 'package:tasks/src/presentation/controllers/project_manager_contract.dart';
-import 'package:tasks/src/presentation/controllers/task_manager_contract.dart';
 
 import '../presentation/pages/home/home_page.dart';
 import '../presentation/pages/category/category_page.dart';
 import '../presentation/pages/project/project_page.dart';
 import '../presentation/pages/task/task_page.dart';
-import 'provider.dart';
 
 class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -25,9 +21,11 @@ class Router {
         return MaterialPageRoute(
           builder: (BuildContext context) {
             final Map<String, dynamic> args = settings.arguments;
-            return Provider<CategoryManagerContract>.component(
-              component: args['component'],
-              child: CategoryPage(data: args['model']),
+            return CategoryPage(
+              arguments: CategoryPageArguments(
+                category: args['model'],
+                manager: args['component'],
+              ),
             );
           },
         );
@@ -37,9 +35,11 @@ class Router {
         return MaterialPageRoute(
           builder: (BuildContext context) {
             final Map<String, dynamic> args = settings.arguments;
-            return Provider<ProjectManagerContract>.component(
-              component: args['component'],
-              child: ProjectPage(data: args['model']),
+            return ProjectPage(
+              arguments: ProjectPageArguments(
+                manager: args['component'],
+                project: args['model'],
+              ),
             );
           },
         );
@@ -48,10 +48,12 @@ class Router {
       case '/task':
         return MaterialPageRoute(
           builder: (BuildContext context) {
-            Map<String, dynamic> arguments = settings.arguments;
-            return Provider<TaskManagerContract>.component(
-              component: arguments['component'],
-              child: TaskPage(data: arguments['model']),
+            Map<String, dynamic> args = settings.arguments;
+            return TaskPage(
+              arguments: TaskPageArguments(
+                manager: args['component'],
+                task: args['model'],
+              ),
             );
           },
         );

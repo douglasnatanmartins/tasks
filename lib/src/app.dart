@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:package_info/package_info.dart';
 import 'core/router.dart';
 
 class App extends StatelessWidget {
@@ -10,16 +9,11 @@ class App extends StatelessWidget {
   /// The `information` contains application metadata.
   const App({
     Key key,
-    @required this.information,
-  }): assert(information != null),
+    @required this.title,
+  }): assert(title != null),
       super(key: key);
-
-  final PackageInfo information;
-
-  /// Get the object contains application information.
-  static PackageInfo of(BuildContext context) {
-    return (context.ancestorWidgetOfExactType(App) as App).information;
-  }
+  
+  final String title;
 
   /// Build root widget of the application.
   @override
@@ -29,7 +23,7 @@ class App extends StatelessWidget {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: this.information.appName,
+      title: title,
       initialRoute: '/',
       onGenerateRoute: Router.generateRoute,
     );
