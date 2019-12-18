@@ -1,12 +1,18 @@
 import 'package:tasks/src/domain/entities/category_entity.dart';
 
 abstract class CategoryManagerContract {
-  /// Add new category.
-  Future<bool> addCategory(CategoryEntity model);
-
-  /// Update the category.
-  Future<bool> updateCategory(CategoryEntity previous, CategoryEntity current);
+  /// Create new category.
+  /// 
+  /// The [data] argument must not be null.
+  Future<bool> createCategory(CategoryEntity data);
 
   /// Delete the category.
-  Future<bool> deleteCategory(CategoryEntity model);
+  /// 
+  /// The [data] argument must not be null.
+  Future<bool> deleteCategory(CategoryEntity data);
+
+  /// Update the category.
+  /// 
+  /// The [current] and [previous] arguments must not be null.
+  Future<bool> updateCategory(CategoryEntity current, CategoryEntity previous);
 }
