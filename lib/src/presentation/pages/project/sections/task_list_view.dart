@@ -1,7 +1,7 @@
 part of '../project_layout.dart';
 
 class _TaskListView extends StatelessWidget {
-  /// Create a _TaskListView widget.
+  /// Create a TaskListView widget.
   _TaskListView({
     Key key,
     @required this.items,
@@ -9,24 +9,25 @@ class _TaskListView extends StatelessWidget {
 
   final List<TaskEntity> items;
 
-  /// Build the _TaskListView widget.
+  /// Build the TaskListView widget.
   @override
   Widget build(BuildContext context) {
-    final controller = Provider.of<ProjectController>(context);
+    var controller = Provider.of<ProjectController>(context);
+
     return ListView.separated(
       padding: const EdgeInsets.all(0),
-      itemCount: this.items.length,
-      separatorBuilder: (BuildContext content, int index) {
+      itemCount: items.length,
+      separatorBuilder: (content, index) {
         return Divider(
           color: Colors.white.withOpacity(0.85),
         );
       },
-      itemBuilder: (BuildContext context, int index) {
-        final item = this.items.elementAt(index);
+      itemBuilder: (context, index) {
+        var item = items.elementAt(index);
         return _TaskListTile(
           data: item,
-          onChanged: (TaskEntity entity) {
-            controller.updateTask(item, entity);
+          onChanged: (entity) {
+            controller.updateTask(entity, item);
           },
         );
       },

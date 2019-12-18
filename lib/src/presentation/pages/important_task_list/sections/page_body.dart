@@ -1,19 +1,20 @@
 part of '../important_task_list_layout.dart';
 
 class _PageBody extends StatelessWidget {
-  /// Create a _PageBody widget.
+  /// Create a PageBody widget.
   _PageBody({
     Key key,
   }) : super(key: key);
 
-  /// Build the _PageBody widget.
+  /// Build the PageBody widget.
   @override
   Widget build(BuildContext context) {
-    final controller = Provider.of<ImportantTaskListController>(context);
+    var controller = Provider.of<ImportantTaskListController>(context);
+
     return Expanded(
-      child: StreamBuilder(
+      child: StreamBuilder<List<TaskEntity>>(
         stream: controller.tasks,
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
+        builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
               child: CircularProgressIndicator(),

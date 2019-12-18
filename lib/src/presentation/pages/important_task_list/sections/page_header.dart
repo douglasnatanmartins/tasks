@@ -1,16 +1,16 @@
 part of '../important_task_list_layout.dart';
 
 class _PageHeader extends StatelessWidget {
-  /// Create a _PageHeader widget.
+  /// Create a PageHeader widget.
   _PageHeader({
     Key key,
   }) : super(key: key);
 
-  /// Build the _PageHeader widget.
+  /// Build the PageHeader widget.
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
@@ -21,7 +21,7 @@ class _PageHeader extends StatelessWidget {
               Text(
                 'Important',
                 style: Theme.of(context).textTheme.title.copyWith(
-                  fontSize: 22.0,
+                  fontSize: 22,
                 ),
               ),
               const SizedBox(height: 3.5),

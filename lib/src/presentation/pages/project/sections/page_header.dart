@@ -13,14 +13,14 @@ class _PageHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 15.0),
+      padding: const EdgeInsets.symmetric(vertical: 15),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Hero(
             tag: 'previous-screen-button',
             child: FlatButton(
-              padding: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.all(10),
               color: Colors.white,
               shape: const CircleBorder(),
               child: const Icon(Icons.arrow_back),
@@ -29,41 +29,41 @@ class _PageHeader extends StatelessWidget {
           ),
           Expanded(
             child: Text(
-              this.data.title,
+              data.title,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 18.0,
+                fontSize: 18,
                 fontWeight: FontWeight.w600,
               ),
             ),
           ),
           // Edit project button.
           FlatButton(
-            padding: EdgeInsets.all(12.0),
+            padding: EdgeInsets.all(12),
             shape: const CircleBorder(
               side: BorderSide(
                 color: Colors.white,
-                width: 4.0,
+                width: 4,
               ),
             ),
             child: const Icon(Icons.edit),
             textColor: Colors.white,
             onPressed: () async {
-              final result = await Navigator.of(context).push(
+              var result = await Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (BuildContext context) {
                     return ProjectDetailPage(
                       category: null,
-                      project: this.data,
+                      project: data,
                     );
                   },
                 ),
               );
 
               if (result is ProjectEntity) {
-                final manager = Provider.of<ProjectManagerContract>(context);
-                manager.updateProject(this.data, result);
+                var manager = Provider.of<ProjectManagerContract>(context);
+                manager.updateProject(result, data);
               }
             },
           ),

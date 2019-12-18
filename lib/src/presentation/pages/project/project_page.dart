@@ -38,7 +38,7 @@ class ProjectPage extends StatelessWidget {
       notifier: (current, previous) => false,
       child: Provider<ProjectController>(
         creator: (context) => ProjectController(arguments.project),
-        disposer: (context, component) => component.dispose(),
+        disposer: (context, controller) => controller?.dispose(),
         child: ProjectLayout(data: arguments.project),
       ),
     );

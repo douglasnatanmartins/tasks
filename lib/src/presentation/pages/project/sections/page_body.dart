@@ -9,12 +9,13 @@ class _PageBody extends StatelessWidget {
   /// Build the _PageBody widget.
   @override
   Widget build(BuildContext context) {
-    final controller = Provider.of<ProjectController>(context);
+    var controller = Provider.of<ProjectController>(context);
+
     return Expanded(
       child: Container(
         child: StreamBuilder(
           stream: controller.tasks,
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
+          builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
                 child: CircularProgressIndicator(),

@@ -28,6 +28,7 @@ class ProjectLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var controller = Provider.of<ProjectController>(context);
+
     return Scaffold(
       backgroundColor: data.color,
       body: SafeArea(
@@ -44,13 +45,13 @@ class ProjectLayout extends StatelessWidget {
         shape: const CircleBorder(
           side: BorderSide(
             color: Colors.white,
-            width: 3.0,
+            width: 3,
           ),
         ),
         child: const Icon(Icons.add),
         backgroundColor: Colors.green,
         onPressed: () async {
-          final result = await showDialog(
+          var result = await showDialog(
             context: context,
             builder: (BuildContext context) {
               return TaskNewForm(project: data.id);
@@ -58,7 +59,7 @@ class ProjectLayout extends StatelessWidget {
           );
 
           if (result is TaskEntity) {
-            controller.addTask(result);
+            controller.createTask(result);
           }
         },
       ),

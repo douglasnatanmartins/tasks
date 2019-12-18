@@ -16,7 +16,7 @@ class ImportantTaskListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Provider<ImportantTaskListController>(
       creator: (context) => ImportantTaskListController(),
-      disposer: (context, component) => component.dispose(),
+      disposer: (context, controller) => controller?.dispose(),
       child: ImportantTaskListLayout(),
     );
   }

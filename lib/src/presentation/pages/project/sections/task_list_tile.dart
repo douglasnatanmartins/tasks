@@ -28,7 +28,7 @@ class _TaskListTileState extends State<_TaskListTile> {
   @override
   void initState() {
     super.initState();
-    this.data = this.widget.data;
+    data = widget.data;
   }
 
   /// Called when a dependency of this state object changes.
@@ -40,8 +40,8 @@ class _TaskListTileState extends State<_TaskListTile> {
   /// Called whenever the widget configuration changes.
   @override
   void didUpdateWidget(_TaskListTile old) {
-    if (old.data != this.widget.data) {
-      this.data = this.widget.data;
+    if (old.data != widget.data) {
+      data = widget.data;
     }
 
     super.didUpdateWidget(old);
@@ -56,24 +56,24 @@ class _TaskListTileState extends State<_TaskListTile> {
   /// Build the TaskListTile widget with state.
   @override
   Widget build(BuildContext context) {
-    if (this.data.isDone) {
-      this.decoration = TextDecoration.lineThrough;
+    if (data.isDone) {
+      decoration = TextDecoration.lineThrough;
     } else {
-      this.decoration = TextDecoration.none;
+      decoration = TextDecoration.none;
     }
 
     return ListTile(
       leading: CircleCheckbox(
-        value: this.data.isDone,
+        value: data.isDone,
         onChanged: (bool checked) {
           setState(() {
-            this.data = this.data.copyWith(isDone: checked);
-            this.widget.onChanged(this.data);
+            data = data.copyWith(isDone: checked);
+            widget.onChanged(data);
           });
         }
       ),
       title: Text(
-        this.data.title,
+        data.title,
         overflow: TextOverflow.ellipsis,
         style: TextStyle(
           color: Colors.white,
@@ -83,24 +83,23 @@ class _TaskListTileState extends State<_TaskListTile> {
       trailing: IconButton(
         icon: Icon(
           Icons.star,
-          color: this.data.isImportant ? Colors.yellow.shade600 : null,
+          color: data.isImportant ? Colors.yellow.shade600 : null,
         ),
         onPressed: () {
           setState(() {
-            this.data = this.data.copyWith(
-              isImportant: !this.data.isImportant
-            );
-            this.widget.onChanged(this.data);
+            data = data.copyWith(isImportant: !data.isImportant);
+            widget.onChanged(data);
           });
         },
       ),
       onTap: () {
-        final controller = Provider.of<ProjectController>(context);
-        Navigator.of(this.context).pushNamed(
+        var controller = Provider.of<ProjectController>(context);
+
+        Navigator.of(context).pushNamed(
           '/task',
           arguments: <String, dynamic>{
             'component': controller,
-            'model': this.data,
+            'model': data,
           },
         );
       },
