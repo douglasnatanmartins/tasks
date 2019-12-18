@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:sqflite/sqflite.dart';
 import 'package:tasks/src/data/datasources/local_source.dart';
 import 'package:tasks/src/data/models/project_model.dart';
 import 'package:tasks/src/domain/entities/project_entity.dart';
@@ -9,42 +8,41 @@ import 'package:tasks/src/utils/data_support.dart';
 class ProjectRepository implements ProjectRepositoryContract {
   @override
   Future<List<ProjectEntity>> getAll() async {
-    Database db = await LocalSource().database;
-    List<Map<String, dynamic>> data = await db.query('Project');
+    var db = await LocalSource().database;
+    var data = await db.query('Project');
+    List<ProjectEntity> result = <ProjectEntity>[];
     if (data.isNotEmpty) {
-      List<ProjectEntity> result = <ProjectEntity>[];
-      result = data.map((Map<String, dynamic> item) {
-        return ProjectModel.from(item);
-      }).toList();
-      return result;
+      for (var project in data) {
+        result.add(ProjectModel.from(project));
+      }
     }
 
-    return null;
+    return result;
   }
 
   @override
   Future<List<ProjectEntity>> getAllProjectByCategoryId(int categoryId) async {
-    Database db = await LocalSource().database;
-    List<Map<String, dynamic>> data = await db.query(
+    var db = await LocalSource().database;
+    var data = await db.query(
       'Project',
       where: 'category_id = ?',
       whereArgs: [categoryId],
     );
 
+    List<ProjectEntity> result = <ProjectEntity>[];
     if (data.isNotEmpty) {
-      List<ProjectEntity> result = data.map((Map<String, dynamic> item) {
-        return ProjectModel.from(item);
-      }).toList();
-      return result;
+      for (var project in data) {
+        result.add(ProjectModel.from(project));
+      }
     }
 
-    return null;
+    return result;
   }
 
   @override
   Future<ProjectEntity> getProjectById(int id) async {
-    Database db = await LocalSource().database;
-    List<Map<String, dynamic>> data = await db.query('Project', where: 'id = ?', whereArgs: [id]);
+    var db = await LocalSource().database;
+    var data = await db.query('Project', where: 'id = ?', whereArgs: [id]);
 
     if (data.length > 0) {
       return ProjectModel.from(data.elementAt(0));
@@ -54,35 +52,46 @@ class ProjectRepository implements ProjectRepositoryContract {
   }
 
   @override
-  Future<bool> createProject(ProjectEntity entity) async {
-    Database db = await LocalSource().database;
-    int result = await db.insert('Project', mapping(entity));
+  Future<bool> createProject(ProjectEntity data) async {
+    var db = await LocalSource().database;
+    int result = await db.insert('Project', mapping(data));
     return result != 0 ? true : false;
   }
 
   @override
-  Future<bool> deleteProject(ProjectEntity entity) async {
-    Database db = await LocalSource().database;
-    int result = await db.delete('Project', where: 'id = ?', whereArgs: [entity.id]);
+  Future<bool> deleteProject(ProjectEntity data) async {
+    var db = await LocalSource().database;
+    int result = await db.delete(
+      'Project',
+      where: 'id = ?',
+      whereArgs: [data.id],
+    );
+
     return result != 0 ? true : false;
   }
 
   @override
-  Future<bool> updateProject(ProjectEntity entity) async {
-    Database db = await LocalSource().database;
-    int result = await db.update('Project', mapping(entity), where: 'id = ?', whereArgs: [entity.id]);
+  Future<bool> updateProject(ProjectEntity data) async {
+    var db = await LocalSource().database;
+    int result = await db.update(
+      'Project',
+      mapping(data),
+      where: 'id = ?',
+      whereArgs: [data.id],
+    );
+
     return result != 0 ? true : false;
   }
 
-  Map<String, dynamic> mapping(ProjectEntity entity) {
+  Map<String, dynamic> mapping(ProjectEntity data) {
     return <String, dynamic>{
-      'id': entity.id,
-      'category_id': entity.categoryId,
-      'title': entity.title,
-      'description': entity.description,
-      'color': entity.color.value.toString(),
-      'icon': DataSupport.getIconKey(entity.icon),
-      'created_date': entity.createdDate.toString(),
+      'id': data.id,
+      'category_id': data.categoryId,
+      'title': data.title,
+      'description': data.description,
+      'color': data.color.value.toString(),
+      'icon': DataSupport.getIconKey(data.icon),
+      'created_date': data.createdDate.toString(),
     };
   }
 }

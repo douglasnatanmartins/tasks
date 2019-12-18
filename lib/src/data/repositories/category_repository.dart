@@ -9,12 +9,12 @@ class CategoryRepository extends CategoryRepositoryContract {
   @override
   Future<List<CategoryEntity>> getAll() async {
     Database db = await LocalSource().database;
-    List<Map<String, dynamic>> data = await db.query('Category');
+    var data = await db.query('Category');
     List<CategoryEntity> result = <CategoryEntity>[];
     if (data.isNotEmpty) {
-      result = data.map<CategoryEntity>((Map<String, dynamic> item) {
-        return CategoryModel.from(item);
-      }).toList();
+      for (var category in data) {
+        result.add(CategoryModel.from(category));
+      }
     }
 
     return result;
@@ -22,9 +22,8 @@ class CategoryRepository extends CategoryRepositoryContract {
 
   @override
   Future<CategoryEntity> getCategoryById(int id) async {
-    Database db = await LocalSource().database;
-
-    final data = await db.query(
+    var db = await LocalSource().database;
+    var data = await db.query(
       'Category',
       where: 'id = ?',
       whereArgs: [id]
@@ -38,47 +37,44 @@ class CategoryRepository extends CategoryRepositoryContract {
   }
 
   @override
-  Future<bool> createCategory(CategoryEntity entity) async {
-    Database db = await LocalSource().database;
-
-    int result = await db.insert('Category', mapping(entity));
+  Future<bool> createCategory(CategoryEntity data) async {
+    var db = await LocalSource().database;
+    int result = await db.insert('Category', mapping(data));
 
     return result != 0 ? true : false;
   }
 
   @override
-  Future<bool> deleteCategory(CategoryEntity entity) async {
-    Database db = await LocalSource().database;
-
+  Future<bool> deleteCategory(CategoryEntity data) async {
+    var db = await LocalSource().database;
     int result = await db.delete(
       'Category',
       where: 'id = ?',
-      whereArgs: [entity.id]
+      whereArgs: [data.id],
     );
 
     return result != 0 ? true : false;
   }
 
   @override
-  Future<bool> updateCategory(CategoryEntity entity) async {
-    Database db = await LocalSource().database;
-
+  Future<bool> updateCategory(CategoryEntity data) async {
+    var db = await LocalSource().database;
     int result = await db.update(
       'Category',
-      mapping(entity),
+      mapping(data),
       where: 'id = ?',
-      whereArgs: [entity.id]
+      whereArgs: [data.id],
     );
 
     return result != 0 ? true : false;
   }
 
-  Map<String, dynamic> mapping(CategoryEntity entity) {
+  Map<String, dynamic> mapping(CategoryEntity data) {
     return <String, dynamic>{
-      'id': entity.id,
-      'title': entity.title,
-      'description': entity.description,
-      'created_date': entity.createdDate.toString(),
+      'id': data.id,
+      'title': data.title,
+      'description': data.description,
+      'created_date': data.createdDate.toString(),
     };
   }
 }

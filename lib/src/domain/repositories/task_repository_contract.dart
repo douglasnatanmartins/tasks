@@ -6,7 +6,7 @@ abstract class TaskRepositoryContract {
   Future<List<TaskEntity>> getAllImportantTask();
   Future<List<TaskEntity>> getAllTaskByProjectId(int projectId);
   Future<TaskEntity> getTaskById(int id);
-  Future<bool> createTask(TaskEntity entity);
-  Future<bool> updateTask(TaskEntity entity);
-  Future<bool> deleteTask(TaskEntity entity);
+  Future<bool> createTask(TaskEntity data);
+  Future<bool> updateTask(TaskEntity data);
+  Future<bool> deleteTask(TaskEntity data);
 }
