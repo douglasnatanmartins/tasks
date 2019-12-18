@@ -60,7 +60,7 @@ class CategoryLayout extends StatelessWidget {
               );
 
               if (result is ProjectEntity) {
-                controller.addProject(result);
+                controller.createProject(result);
               }
             },
           );

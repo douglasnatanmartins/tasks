@@ -1,18 +1,19 @@
 part of '../category_layout.dart';
 
 class _PageBody extends StatelessWidget {
-  /// Create a _PageBody widget.
+  /// Create a PageBody widget.
   _PageBody({
     Key key,
   }) : super(key: key);
 
-  /// Build the _PageBody widget.
+  /// Build the PageBody widget.
   @override
   Widget build(BuildContext context) {
     final controller = Provider.of<CategoryController>(context);
+
     return Expanded(
       child: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Colors.white,
         ),
         child: StreamBuilder(
@@ -24,7 +25,6 @@ class _PageBody extends StatelessWidget {
               );
             } else {
               if (snapshot.hasData && snapshot.data.isNotEmpty) {
-                // Has the stream data.
                 return _ProjectListView(items: snapshot.data);
               } else {
                 return EmptyContentBox(

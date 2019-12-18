@@ -15,7 +15,7 @@ class _PageHeader extends StatelessWidget {
     List<Widget> headerTitle = <Widget>[];
     headerTitle.add(
       Text(
-        this.data.title,
+        data.title,
         overflow: TextOverflow.ellipsis,
         style: Theme.of(context).textTheme.title.copyWith(
           fontSize: 22.0,
@@ -23,10 +23,10 @@ class _PageHeader extends StatelessWidget {
       ),
     );
 
-    if (this.data.description != null && this.data.description.isNotEmpty) {
+    if (data.description != null && data.description.isNotEmpty) {
       headerTitle.add(
         Text(
-          this.data.description,
+          data.description,
           overflow: TextOverflow.ellipsis,
           style: Theme.of(context).textTheme.subtitle.copyWith(
             fontWeight: FontWeight.w300,
@@ -36,7 +36,7 @@ class _PageHeader extends StatelessWidget {
     }
 
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 15.0),
+      padding: const EdgeInsets.symmetric(vertical: 15),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,7 +47,7 @@ class _PageHeader extends StatelessWidget {
               Hero(
                 tag: 'previous-screen-button',
                 child: FlatButton(
-                  padding: const EdgeInsets.all(10.0),
+                  padding: const EdgeInsets.all(10),
                   shape: const CircleBorder(),
                   color: Colors.white,
                   child: const Icon(Icons.arrow_back),
@@ -64,34 +64,38 @@ class _PageHeader extends StatelessWidget {
               ),
               // Edit category button.
               Consumer<CategoryManagerContract>(
-                builder: (context, component) {
-                  return PopupMenuButton(
+                builder: (context, manager) {
+                  return PopupMenuButton<String>(
                     icon: Icon(Icons.more_vert),
-                    itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-                      PopupMenuItem(
-                        value: 'edit',
-                        child: Text('Edit'),
-                      ),
-                      PopupMenuItem(
-                        value: 'delete',
-                        child: Text('Delete'),
-                      ),
-                    ],
+                    itemBuilder: (BuildContext context) {
+                      return const <PopupMenuEntry<String>>[
+                        PopupMenuItem(
+                          value: 'edit',
+                          child: Text('Edit'),
+                        ),
+                        PopupMenuItem(
+                          value: 'delete',
+                          child: Text('Delete'),
+                        ),
+                      ];
+                    },
                     onSelected: (selected) async {
                       if (selected == 'edit') {
-                        final result = await Navigator.of(context).push(
+                        var updated = await Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (BuildContext context) {
-                              return CategoryDetailPage(category: this.data);
+                              return CategoryDetailPage(category: data);
                             },
                           ),
                         );
 
-                        if (result is CategoryEntity) {
-                          component.updateCategory(this.data, result);
+                        if (updated is CategoryEntity) {
+                          manager.updateCategory(updated, data);
                         }
-                      } else if (selected == 'delete') {
-                        final result = await showDialog(
+                      }
+
+                      if (selected == 'delete') {
+                        var result = await showDialog(
                           context: context,
                           builder: (BuildContext context) {
                             return _CategoryDeleteDialog();
@@ -99,7 +103,7 @@ class _PageHeader extends StatelessWidget {
                         );
 
                         if (result != null && result) {
-                          await component.deleteCategory(this.data);
+                          manager.deleteCategory(data);
                           Navigator.of(context).pop();
                         }
                       }

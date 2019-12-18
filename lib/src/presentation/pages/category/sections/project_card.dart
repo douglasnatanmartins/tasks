@@ -1,27 +1,29 @@
 part of '../category_layout.dart';
 
 class _ProjectCard extends StatelessWidget {
-  /// Create a _ProjectCard widget.
+  /// Create a ProjectCard widget.
+  /// 
+  /// The [data] argument must not be null.
   _ProjectCard({
     Key key,
-    @required this.model,
-  })  : assert(model != null),
+    @required this.data,
+  })  : assert(data != null),
         super(key: key);
 
-  final ProjectEntity model;
+  final ProjectEntity data;
 
-  /// Build the _ProjectCard widget.
+  /// Build the ProjectCard widget.
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      child: this._buildTile(),
+      child: _buildTile(),
       onTap: () {
-        final controller = Provider.of<CategoryController>(context);
+        var controller = Provider.of<CategoryController>(context);
         Navigator.of(context).pushNamed(
           '/project',
           arguments: <String, dynamic>{
             'component': controller,
-            'model': this.model,
+            'model': data,
           },
         );
       },
@@ -33,7 +35,7 @@ class _ProjectCard extends StatelessWidget {
 
     children.add(
       Text(
-        this.model.title,
+        data.title,
         overflow: TextOverflow.ellipsis,
         style: TextStyle(
           color: Colors.blue[600],
@@ -43,11 +45,11 @@ class _ProjectCard extends StatelessWidget {
       ),
     );
 
-    if (this.model.description != null && this.model.description.isNotEmpty) {
+    if (data.description != null && data.description.isNotEmpty) {
       children.add(const SizedBox(height: 6.0));
       children.add(
         Text(
-          this.model.description,
+          data.description,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
             color: Colors.black.withOpacity(0.8),
@@ -59,7 +61,7 @@ class _ProjectCard extends StatelessWidget {
     children.add(const SizedBox(height: 5.0));
     children.add(
       Text(
-        'Created on ${DateFormat.yMMMd().format(this.model.createdDate)}',
+        'Created on ${DateFormat.yMMMd().format(data.createdDate)}',
         style: TextStyle(
           color: Colors.black.withOpacity(0.45),
         ),
@@ -80,9 +82,9 @@ class _ProjectCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.only(right: 12.0),
                 child: Icon(
-                  this.model.icon,
+                  data.icon,
                   size: 30.0,
-                  color: this.model.color,
+                  color: data.color,
                 ),
               ),
               Expanded(
@@ -96,11 +98,11 @@ class _ProjectCard extends StatelessWidget {
           ),
           const SizedBox(height: 10.0),
           Consumer<CategoryController>(
-            builder: (context, component) {
+            builder: (context, controller) {
               return FutureBuilder<double>(
-                initialData: 0.0,
-                future: component.getProgressProject(this.model.id),
-                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                initialData: 0,
+                future: controller.getProgressProject(data.id),
+                builder: (context, snapshot) {
                   return Row(
                     children: <Widget>[
                       Expanded(

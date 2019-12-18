@@ -1,7 +1,9 @@
 part of '../category_layout.dart';
 
 class _ProjectListView extends StatelessWidget {
-  /// Create a _ProjectListView widget.
+  /// Create a ProjectListView widget.
+  /// 
+  /// The [items] argument must not be null.
   _ProjectListView({
     Key key,
     @required this.items,
@@ -9,16 +11,14 @@ class _ProjectListView extends StatelessWidget {
 
   final List<ProjectEntity> items;
 
-  /// Build the _ProjectListView widget.
+  /// Build the ProjectListView widget.
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      padding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 5.0),
-      itemCount: this.items.length,
-      itemBuilder: (BuildContext context, int index) {
-        return _ProjectCard(
-          model: this.items.elementAt(index),
-        );
+      padding: const EdgeInsets.symmetric(vertical: 5),
+      itemCount: items.length,
+      itemBuilder: (context, index) {
+        return _ProjectCard(data: items.elementAt(index));
       },
     );
   }

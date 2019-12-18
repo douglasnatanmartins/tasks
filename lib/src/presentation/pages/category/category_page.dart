@@ -22,6 +22,8 @@ class CategoryPageArguments {
 
 class CategoryPage extends StatelessWidget {
   /// Create a CategoryPage widget.
+  /// 
+  /// The [arguments] argument must not be null.
   CategoryPage({
     @required this.arguments,
   }): assert(arguments != null),
@@ -37,9 +39,9 @@ class CategoryPage extends StatelessWidget {
       notifier: (current, previous) => false,
       child: Provider<CategoryController>(
         creator: (context) => CategoryController(arguments.category),
-        disposer: (context, component) => component.dispose(),
+        disposer: (context, controller) => controller?.dispose(),
         child: CategoryLayout(category: arguments.category),
-      )
+      ),
     );
   }
 }
