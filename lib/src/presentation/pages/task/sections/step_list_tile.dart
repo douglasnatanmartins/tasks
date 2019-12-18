@@ -22,27 +22,27 @@ class _StepListTile extends StatefulWidget {
 
 class _StepListTileState extends State<_StepListTile> {
   StepEntity data;
-  TextEditingController controller;
-  TextEditingValue value;
+  TextEditingController messageController;
+  TextEditingValue messageValue;
   FocusNode focusNode;
 
   /// Called when this state first inserted into tree.
   @override
   void initState() {
     super.initState();
-    this.data = this.widget.data;
-    this.value = TextEditingValue(text: this.data.message ?? '');
-    this.controller = TextEditingController.fromValue(this.value);
-    this.focusNode = FocusNode();
+    data = widget.data;
+    messageValue = TextEditingValue(text: data.message ?? '');
+    messageController = TextEditingController.fromValue(messageValue);
+    focusNode = FocusNode();
 
     // Add listener for focus node of message text field.
-    this.focusNode.addListener(() {
-      if (!this.focusNode.hasFocus) {
-        String value = this.controller.value.text.trim();
-        this.data = this.data.copyWith(
+    focusNode.addListener(() {
+      if (!focusNode.hasFocus) {
+        String value = messageController.value.text.trim();
+        data = data.copyWith(
           message: value,
         );
-        this.widget.onChanged(this.data);
+        widget.onChanged(data);
       }
     });
   }
@@ -56,12 +56,12 @@ class _StepListTileState extends State<_StepListTile> {
   /// Called whenever the widget configuration changes.
   @override
   void didUpdateWidget(_StepListTile old) {
-    if (old.data != this.widget.data) {
-      this.data = this.widget.data;
+    if (old.data != widget.data) {
+      data = widget.data;
     }
 
-    if (this.data.id == null) {
-      this.controller.clear();
+    if (data.id == null) {
+      messageController.clear();
     }
 
     super.didUpdateWidget(old);
@@ -70,15 +70,15 @@ class _StepListTileState extends State<_StepListTile> {
   /// Called when this state removed from the tree.
   @override
   void dispose() {
-    this.controller.dispose();
-    this.focusNode.dispose();
+    messageController.dispose();
+    focusNode.dispose();
     super.dispose();
   }
 
   void markCompleted(bool checked) {
     setState(() {
-      this.data = this.data.copyWith(isDone: checked);
-      this.widget.onChanged(this.data);
+      data = data.copyWith(isDone: checked);
+      widget.onChanged(data);
     });
   }
 
@@ -87,13 +87,13 @@ class _StepListTileState extends State<_StepListTile> {
   Widget build(BuildContext context) {
     return ListTile(
       leading: Checkbox(
-        value: this.data.isDone,
-        onChanged: this.data.id != null ? this.markCompleted : null,
+        value: data.isDone,
+        onChanged: data.id != null ? markCompleted : null,
       ),
       title: TextField(
         autocorrect: false,
-        controller: this.controller,
-        focusNode: this.focusNode,
+        controller: messageController,
+        focusNode: focusNode,
         cursorColor: Colors.blue.withOpacity(0.85),
         decoration: InputDecoration(
           hintText: 'Enter step',
@@ -111,7 +111,7 @@ class _StepListTileState extends State<_StepListTile> {
           color: Colors.black.withOpacity(0.85),
         ),
       ),
-      trailing: this.data.id != null ? this.buildDeleteButton() : null,
+      trailing: data.id != null ? buildDeleteButton() : null,
     );
   }
 
@@ -120,8 +120,8 @@ class _StepListTileState extends State<_StepListTile> {
       icon: Icon(Icons.clear),
       color: Colors.red,
       onPressed: () {
-        this.data = this.data.copyWith(message: '');
-        this.widget.onChanged(this.data);
+        data = data.copyWith(message: '');
+        widget.onChanged(data);
       },
     );
   }

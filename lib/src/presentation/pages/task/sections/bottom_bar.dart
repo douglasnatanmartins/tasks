@@ -19,19 +19,19 @@ class _BottomBar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Text(
-              'Created on ${DateFormat.yMMMd().format(this.data.createdDate)}',
+              'Created on ${DateFormat.yMMMd().format(data.createdDate)}',
               style: Theme.of(context).textTheme.subtitle.copyWith(
                 fontWeight: FontWeight.w300,
               ),
             ),
             // Delete task button.
             Consumer<TaskManagerContract>(
-              builder: (context, component) {
+              builder: (context, manager) {
                 return IconButton(
                   color: Colors.red[400],
                   icon: const Icon(Icons.delete),
                   onPressed: () async {
-                    final result = await showDialog(
+                    var result = await showDialog(
                       context: context,
                       builder: (BuildContext context) {
                         return _TaskDeleteDialog();
@@ -39,7 +39,7 @@ class _BottomBar extends StatelessWidget {
                     );
 
                     if (result != null && result) {
-                      if (await component.deleteTask(this.data)) {
+                      if (await manager.deleteTask(data)) {
                         Navigator.of(context).pop();
                       }
                     }

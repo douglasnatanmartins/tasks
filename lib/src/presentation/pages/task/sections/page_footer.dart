@@ -1,7 +1,7 @@
 part of '../task_layout.dart';
 
 class _PageFooter extends StatelessWidget {
-  /// Create a _PageFooter widget.
+  /// Create a PageFooter widget.
   _PageFooter({
     Key key,
     @required this.data,
@@ -11,7 +11,7 @@ class _PageFooter extends StatelessWidget {
   final TaskEntity data;
   final ValueChanged<TaskEntity> onChanged;
 
-  /// Build the _PageFooter widget.
+  /// Build the PageFooter widget.
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -19,17 +19,17 @@ class _PageFooter extends StatelessWidget {
         DatePicker(
           title: 'Add due date',
           icon: Icons.date_range,
-          initialDate: this.data.dueDate,
-          onChanged: (DateTime date) {
-            this.onChanged(this.data.copyWith(
+          initialDate: data.dueDate,
+          onChanged: (date) {
+            onChanged(data.copyWith(
               dueDate: date,
             ));
           },
         ),
         _TaskNoteTextField(
-          data: this.data.note,
-          onChanged: (String note) {
-            this.onChanged(this.data.copyWith(
+          data: data.note,
+          onChanged: (note) {
+            onChanged(data.copyWith(
               note: note,
             ));
           },

@@ -12,11 +12,12 @@ class _PageBody extends StatelessWidget {
   /// Build the _PageBody widget.
   @override
   Widget build(BuildContext context) {
-    final controller = Provider.of<TaskController>(context);
+    var controller = Provider.of<TaskController>(context);
+
     return Expanded(
       child: StreamBuilder(
         stream: controller.steps,
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
+        builder: (context, snapshot) {
           return _StepListView(
             taskId: data.id,
             items: snapshot.data,

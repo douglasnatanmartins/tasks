@@ -47,16 +47,16 @@ class _StepListView extends StatelessWidget {
     return _StepListTile(
       key: Key(item.id.toString()),
       data: item,
-      onChanged: (StepEntity step) {
-        if (step.id == null) {
-          if (step.message.isNotEmpty) {
-            controller.addStep(step);
+      onChanged: (value) {
+        if (value.id == null) {
+          if (value.message.isNotEmpty) {
+            controller.createStep(value);
           }
         } else {
-          if (step.message.isEmpty) {
+          if (value.message.isEmpty) {
             controller.deleteStep(item);
           } else {
-            controller.updateStep(item, step);
+            controller.updateStep(value, item);
           }
         }
       },

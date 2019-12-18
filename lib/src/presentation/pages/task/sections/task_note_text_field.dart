@@ -27,8 +27,8 @@ class _TaskNoteTextFieldState extends State<_TaskNoteTextField> {
   @override
   void initState() {
     super.initState();
-    this.controller = TextEditingController(text: this.widget.data);
-    this.focusNode = FocusNode();
+    controller = TextEditingController(text: widget.data);
+    focusNode = FocusNode();
   }
 
   /// Called when a dependency of this state object changes.
@@ -55,21 +55,21 @@ class _TaskNoteTextFieldState extends State<_TaskNoteTextField> {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(5.0),
+        borderRadius: BorderRadius.circular(5),
       ),
-      margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 12.0),
-      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: TextField(
         decoration: const InputDecoration.collapsed(
           hintText: 'Note',
           border: InputBorder.none,
         ),
         autocorrect: false,
-        focusNode: this.focusNode,
-        controller: this.controller,
+        focusNode: focusNode,
+        controller: controller,
         keyboardType: TextInputType.multiline,
         maxLines: 3,
-        onChanged: this.widget.onChanged,
+        onChanged: widget.onChanged,
       )
     );
   }

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:tasks/src/core/contracts/controller.dart';
 import 'package:tasks/src/domain/entities/step_entity.dart';
 import 'package:tasks/src/domain/entities/task_entity.dart';
-import 'package:tasks/src/domain/repositories/step_repository_contract.dart';
 import 'package:tasks/src/domain/usecases/get_step_repository.dart';
 import 'package:tasks/src/presentation/controllers/step_manager_contract.dart';
 
@@ -13,73 +12,70 @@ class TaskController extends Controller with StepManagerContract {
   /// 
   /// The [data] argument must not be null.
   TaskController(this.task) {
-    this._stepRepository = GetStepRepository().getRepository();
-    this._stepsController = StreamController<List<StepEntity>>.broadcast();
-
-    // Initial
-    this._fetchSteps().then((result) {
-      this.pushSteps();
+    _fetchSteps().then((result) {
+      pushSteps();
     });
   }
 
-  StepRepositoryContract _stepRepository;
-
-  // Stream of step list.
-  StreamController<List<StepEntity>> _stepsController;
-  Stream<List<StepEntity>> get steps => this._stepsController.stream;
+  final _stepRepository = GetStepRepository().getRepository();
+  final _stepListController = StreamController<List<StepEntity>>.broadcast();
+  Stream<List<StepEntity>> get steps => _stepListController.stream;
 
   TaskEntity task;
   List<StepEntity> _steps = <StepEntity>[];
 
   /// Add a step to task object.
   @override
-  Future<bool> addStep(StepEntity entity) async {
-    bool result = await this._stepRepository.createStep(entity);
+  Future<bool> createStep(StepEntity data) async {
+    bool result = await _stepRepository.createStep(data);
     if (result) {
-      await this._fetchSteps();
-      this.pushSteps();
+      await _fetchSteps();
+      pushSteps();
     }
+
     return result;
   }
 
   /// Delete the step object from task object.
   @override
-  Future<bool> deleteStep(StepEntity entity) async {
-    bool result = await this._stepRepository.deleteStep(entity);
+  Future<bool> deleteStep(StepEntity data) async {
+    bool result = await _stepRepository.deleteStep(data);
     if (result) {
-      bool completed = this._steps.remove(entity);
+      bool completed = _steps.remove(data);
       if (completed) {
-        this.pushSteps();
+        pushSteps();
       }
     }
+
     return result;
   }
 
   /// Update the step object on task object.
   @override
-  Future<bool> updateStep(StepEntity previous, StepEntity current) async {
-    bool result = await this._stepRepository.updateStep(current);
+  Future<bool> updateStep(StepEntity current, StepEntity previous) async {
+    bool result = await _stepRepository.updateStep(current);
     if (result) {
-      int index = this._steps.indexOf(previous);
-      this._steps[index] = current;
-      this.pushSteps();
+      int index = _steps.indexOf(previous);
+      _steps[index] = current;
+      pushSteps();
     }
+
     return result;
   }
 
   /// Refresh step list in the task.
   Future<void> pushSteps() async {
-    this._stepsController.add(this._steps);
+    _stepListController.add(_steps);
   }
 
   /// Fetch all steps of task.
   Future<void> _fetchSteps() async {
-    this._steps = await this._stepRepository.getAllStepByTaskId(this.task.id);
+    _steps = await _stepRepository.getAllStepByTaskId(task.id);
   }
 
   /// Dispose this business logic component.
   @override
   void dispose() {
-    _stepsController.close();
+    _stepListController.close();
   }
 }

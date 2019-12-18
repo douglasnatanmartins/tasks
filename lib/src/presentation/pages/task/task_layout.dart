@@ -72,7 +72,7 @@ class _TaskLayoutState extends State<TaskLayout> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        final manager = Provider.of<TaskManagerContract>(context);
+        var manager = Provider.of<TaskManagerContract>(context);
         if (data != widget.task) {
           await manager.updateTask(data, widget.task);
         }

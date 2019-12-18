@@ -41,7 +41,7 @@ class TaskPage extends StatelessWidget {
       notifier: (current, previous) => false,
       child: Provider<TaskController>(
         creator: (context) => TaskController(arguments.task),
-        disposer: (context, component) => component?.dispose(),
+        disposer: (context, controller) => controller?.dispose(),
         child: TaskLayout(task: arguments.task),
       ),
     );
