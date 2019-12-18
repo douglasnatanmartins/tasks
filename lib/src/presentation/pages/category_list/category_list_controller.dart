@@ -2,68 +2,66 @@ import 'dart:async';
 
 import 'package:tasks/src/core/contracts/controller.dart';
 import 'package:tasks/src/domain/entities/category_entity.dart';
-import 'package:tasks/src/domain/repositories/category_repository_contract.dart';
 import 'package:tasks/src/domain/usecases/get_category_repository.dart';
 import 'package:tasks/src/presentation/controllers/category_manager_contract.dart';
 
 class CategoryListController extends Controller with CategoryManagerContract {
   CategoryListController() {
-    this._categoryRepository = GetCategoryRepository().getRepository();
-    this._categoriesController = StreamController<List<CategoryEntity>>.broadcast();
-
-    // Initial
-    this._fetchCategories().then((result) {
-      this.pushCategories();
+    _fetchCategories().then((result) {
+      pushCategories();
     });
   }
 
-  CategoryRepositoryContract _categoryRepository;
-  StreamController<List<CategoryEntity>> _categoriesController;
-  Stream<List<CategoryEntity>> get categories => this._categoriesController.stream;
+  final _categoryRepository = GetCategoryRepository().getRepository();
+  final _categoryListController = StreamController<List<CategoryEntity>>.broadcast();
+  Stream<List<CategoryEntity>> get categories => _categoryListController.stream;
 
-  List<CategoryEntity> _categories;
+  List<CategoryEntity> _categories = <CategoryEntity>[];
 
   @override
-  Future<bool> addCategory(CategoryEntity entity) async {
-    final result = await this._categoryRepository.createCategory(entity);
+  Future<bool> createCategory(CategoryEntity data) async {
+    var result = await _categoryRepository.createCategory(data);
     if (result) {
-      await this._fetchCategories();
-      this.pushCategories();
+      await _fetchCategories();
+      pushCategories();
     }
+
     return result;
   }
 
   @override
-  Future<bool> updateCategory(CategoryEntity previous, CategoryEntity current) async {
-    final result = await this._categoryRepository.updateCategory(current);
+  Future<bool> deleteCategory(CategoryEntity data) async {
+    var result = await _categoryRepository.deleteCategory(data);
     if (result) {
-      final index = this._categories.indexOf(previous);
-      this._categories[index] = current;
-      this.pushCategories();
+      _categories.remove(data);
+      pushCategories();
     }
+
     return result;
   }
 
   @override
-  Future<bool> deleteCategory(CategoryEntity entity) async {
-    final result = await this._categoryRepository.deleteCategory(entity);
+  Future<bool> updateCategory(CategoryEntity current, CategoryEntity previous) async {
+    var result = await _categoryRepository.updateCategory(current);
     if (result) {
-      this._categories.remove(entity);
-      this.pushCategories();
+      int index = _categories.indexOf(previous);
+      _categories[index] = current;
+      pushCategories();
     }
+
     return result;
   }
 
   Future<void> pushCategories() async {
-    this._categoriesController.add(this._categories);
+    _categoryListController.add(_categories);
   }
 
   Future<void> _fetchCategories() async {
-    this._categories = await this._categoryRepository.getAll();
+    _categories = await _categoryRepository.getAll();
   }
 
   @override
   void dispose() {
-    _categoriesController.close();
+    _categoryListController.close();
   }
 }
