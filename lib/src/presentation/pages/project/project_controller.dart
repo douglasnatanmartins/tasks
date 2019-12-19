@@ -7,7 +7,7 @@ import 'package:tasks/src/domain/usecases/get_task_repository.dart';
 import 'package:tasks/src/presentation/controllers/task_manager_contract.dart';
 
 /// Project Page Business Logic Component.
-class ProjectController extends Controller with TaskManagerContract {
+class ProjectController implements Controller, TaskManagerContract {
   ProjectController(this.project) {
     _fetchTasks().then((_) => pushTasks());
   }

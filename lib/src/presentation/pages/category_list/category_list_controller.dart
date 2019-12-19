@@ -5,7 +5,7 @@ import 'package:tasks/src/domain/entities/category_entity.dart';
 import 'package:tasks/src/domain/usecases/get_category_repository.dart';
 import 'package:tasks/src/presentation/controllers/category_manager_contract.dart';
 
-class CategoryListController extends Controller with CategoryManagerContract {
+class CategoryListController implements Controller, CategoryManagerContract {
   CategoryListController() {
     _fetchCategories().then((result) {
       pushCategories();

@@ -1,13 +1,12 @@
 import 'dart:async';
 import 'package:tasks/src/core/contracts/controller.dart';
 import 'package:tasks/src/domain/entities/task_entity.dart';
-import 'package:tasks/src/domain/repositories/task_repository_contract.dart';
 import 'package:tasks/src/domain/usecases/get_task_repository.dart';
 import 'package:tasks/src/presentation/controllers/task_manager_contract.dart';
 import 'package:tasks/src/utils/date_time_util.dart';
 
 /// Home Page Business Logic Component.
-class PlannedTaskListController extends Controller with TaskManagerContract {
+class PlannedTaskListController implements Controller, TaskManagerContract {
   PlannedTaskListController() {
     _fetchTasks().then((_) => pushTasks());
   }

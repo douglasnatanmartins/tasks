@@ -7,7 +7,7 @@ import 'package:tasks/src/domain/usecases/get_step_repository.dart';
 import 'package:tasks/src/presentation/controllers/step_manager_contract.dart';
 
 /// Task Page Business Logic Component
-class TaskController extends Controller with StepManagerContract {
+class TaskController implements Controller, StepManagerContract {
   /// Create a Task Page Business Logic Component.
   /// 
   /// The [data] argument must not be null.
