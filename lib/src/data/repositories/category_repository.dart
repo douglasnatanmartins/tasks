@@ -1,14 +1,14 @@
 import 'dart:async';
-import 'package:sqflite/sqflite.dart';
+
 import 'package:tasks/src/data/models/category_model.dart';
 import 'package:tasks/src/domain/entities/category_entity.dart';
 import 'package:tasks/src/domain/repositories/category_repository_contract.dart';
 import '../datasources/local_source.dart';
 
-class CategoryRepository extends CategoryRepositoryContract {
+class CategoryRepository implements CategoryRepositoryContract {
   @override
   Future<List<CategoryEntity>> getAll() async {
-    Database db = await LocalSource().database;
+    var db = await LocalSource().database;
     var data = await db.query('Category');
     List<CategoryEntity> result = <CategoryEntity>[];
     if (data.isNotEmpty) {

@@ -8,8 +8,8 @@ class CategoryEntity implements Entity<CategoryEntity> {
   CategoryEntity({
     this.id,
     @required this.title,
-    @required this.description,
     @required this.createdDate,
+    this.description,
   }): assert(title != null),
       assert(createdDate != null);
 
@@ -24,33 +24,33 @@ class CategoryEntity implements Entity<CategoryEntity> {
     String description,
   }) {
     return CategoryEntity(
-      id: this.id,
-      title: title ?? this.title,
-      description: description ?? this.description,
-      createdDate: this.createdDate,
+      id: id,
+      title: title ?? title,
+      description: description ?? description,
+      createdDate: createdDate,
     );
   }
 
   @override
   String toString() {
-    return '[Category ID ${this.id}]: ${this.title}, ${this.description}, ${this.createdDate}.';
+    return '[Category ID $id]: $title, $description, $createdDate.';
   }
 
   @override
   bool operator == (object) {
     return identical(this, object)
         || object is CategoryEntity
-        && object.id == this.id
-        && object.title == this.title
-        && object.description == this.description
-        && object.createdDate == this.createdDate;
+        && object.id == id
+        && object.title == title
+        && object.description == description
+        && object.createdDate == createdDate;
   }
 
   @override
   int get hashCode {
-    return this.id.hashCode
-         ^ this.title.hashCode
-         ^ this.description.hashCode
-         ^ this.createdDate.hashCode;
+    return id.hashCode
+         ^ title.hashCode
+         ^ description.hashCode
+         ^ createdDate.hashCode;
   }
 }

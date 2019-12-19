@@ -8,13 +8,13 @@ class ProjectEntity implements Entity<ProjectEntity> {
   /// The [categoryId], [title], [color], [icon] and [createdDate] arguments
   /// must not be null.
   ProjectEntity({
-    @required this.id,
+    this.id,
     @required this.categoryId,
     @required this.title,
-    @required this.description,
     @required this.color,
     @required this.icon,
     @required this.createdDate,
+    this.description,
   }): assert(categoryId != null),
       assert(title != null),
       assert(color != null),
@@ -38,47 +38,46 @@ class ProjectEntity implements Entity<ProjectEntity> {
     IconData icon,
   }) {
     return ProjectEntity(
-      id: this.id,
-      categoryId: categoryId ?? this.categoryId,
-      title: title ?? this.title,
-      description: description ?? this.description,
-      color: color ?? this.color,
-      icon: icon ?? this.icon,
-      createdDate: this.createdDate,
+      id: id,
+      categoryId: categoryId ?? categoryId,
+      title: title ?? title,
+      description: description ?? description,
+      color: color ?? color,
+      icon: icon ?? icon,
+      createdDate: createdDate,
     );
   }
 
   @override
   String toString() {
-    String str = '[Project Id: ${this.id}] - ';
-    str += 'title: ${this.title}, ';
-    str += 'description: ${this.description}, ';
-    str += 'color: ${this.color}, ';
-    str += 'icon: ${this.icon}, ';
-    str += 'created date: ${this.createdDate}.';
-    return str;
+    return '[Project Id: $id] - '
+    'title: $title, '
+    'description: $description, '
+    'color: $color, '
+    'icon: $icon, '
+    'created date: $createdDate.';
   }
 
   @override
   bool operator == (object) {
     return identical(object, this)
         || object is ProjectEntity
-        && object.id == this.id
-        && object.title == this.title
-        && object.description == this.description
-        && object.color == this.color
-        && object.icon == this.icon
-        && object.createdDate == this.createdDate;
+        && object.id == id
+        && object.title == title
+        && object.description == description
+        && object.color == color
+        && object.icon == icon
+        && object.createdDate == createdDate;
   }
 
   @override
   int get hashCode {
-    return this.id.hashCode
-         ^ this.categoryId.hashCode
-         ^ this.title.hashCode
-         ^ this.description.hashCode
-         ^ this.color.hashCode
-         ^ this.icon.hashCode
-         ^ this.createdDate.hashCode;
+    return id.hashCode
+         ^ categoryId.hashCode
+         ^ title.hashCode
+         ^ description.hashCode
+         ^ color.hashCode
+         ^ icon.hashCode
+         ^ createdDate.hashCode;
   }
 }

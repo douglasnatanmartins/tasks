@@ -4,18 +4,22 @@ import 'package:tasks/src/core/contracts/entity.dart';
 class TaskEntity implements Entity<TaskEntity> {
   /// Create a task entity.
   /// 
-  /// The [projectId] and [title] arguments must not be null.
+  /// The [projectId] and [title], [isDone], [isImportant], [createdDate]
+  /// arguments must not be null.
   TaskEntity({
-    @required this.id,
+    this.id,
     @required this.projectId,
     @required this.title,
-    @required this.note,
     @required this.isDone,
     @required this.isImportant,
-    @required this.dueDate,
     @required this.createdDate,
+    this.dueDate,
+    this.note,
   }): assert(projectId != null),
-      assert(title != null);
+      assert(title != null),
+      assert(isDone != null),
+      assert(isImportant != null),
+      assert(createdDate != null);
 
   final int id;
   final int projectId;
@@ -36,45 +40,49 @@ class TaskEntity implements Entity<TaskEntity> {
     DateTime dueDate,
   }) {
     return TaskEntity(
-      id: this.id,
-      projectId: projectId ?? this.projectId,
-      title: title ?? this.title,
-      note: note ?? this.note,
-      isDone: isDone ?? this.isDone,
-      isImportant: isImportant ?? this.isImportant,
-      dueDate: dueDate ?? this.dueDate,
-      createdDate: this.createdDate,
+      id: id,
+      projectId: projectId ?? projectId,
+      title: title ?? title,
+      note: note ?? note,
+      isDone: isDone ?? isDone,
+      isImportant: isImportant ?? isImportant,
+      dueDate: dueDate ?? dueDate,
+      createdDate: createdDate,
     );
   }
 
   @override
   String toString() {
-    return '[Task ${this.id}]: title: ${this.title}, isDone: ${this.isDone}, isImportant: ${this.isImportant}';
+    return '[Task $id]: '
+    'title: $title, '
+    'isDone: $isDone, '
+    'isImportant: $isImportant, '
+    'dueDate: $dueDate';
   }
 
   @override
   bool operator == (object) {
     return identical(object, this)
         || object is TaskEntity
-        && object.id == this.id
-        && object.projectId == this.projectId
-        && object.title == this.title
-        && object.note == this.note
-        && object.isDone == this.isDone
-        && object.isImportant == this.isImportant
-        && object.dueDate == this.dueDate
-        && object.createdDate == this.createdDate;
+        && object.id == id
+        && object.projectId == projectId
+        && object.title == title
+        && object.note == note
+        && object.isDone == isDone
+        && object.isImportant == isImportant
+        && object.dueDate == dueDate
+        && object.createdDate == createdDate;
   }
 
   @override
   int get hashCode {
-    return this.id.hashCode
-         ^ this.projectId.hashCode
-         ^ this.title.hashCode
-         ^ this.note.hashCode
-         ^ this.isDone.hashCode
-         ^ this.isImportant.hashCode
-         ^ this.dueDate.hashCode
-         ^ this.createdDate.hashCode;
+    return id.hashCode
+         ^ projectId.hashCode
+         ^ title.hashCode
+         ^ note.hashCode
+         ^ isDone.hashCode
+         ^ isImportant.hashCode
+         ^ dueDate.hashCode
+         ^ createdDate.hashCode;
   }
 }

@@ -6,11 +6,11 @@ class TaskModel extends TaskEntity {
     int id,
     @required int projectId,
     @required String title,
-    String note,
     @required bool isDone,
     @required bool isImportant,
-    DateTime dueDate,
     @required DateTime createdDate,
+    String note,
+    DateTime dueDate,
   }): super(
     id: id,
     projectId: projectId,

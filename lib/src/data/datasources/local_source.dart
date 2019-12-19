@@ -28,8 +28,8 @@ class LocalSource {
 
   /// Initial database.
   Future<Database> _initialDatabase() async {
-    String databasesPath = await getDatabasesPath();
-    String path = join(databasesPath, 'off.db');
+    var databasesPath = await getDatabasesPath();
+    var path = join(databasesPath, 'off.db');
     var database = await openDatabase(
       path,
       version: this.version,

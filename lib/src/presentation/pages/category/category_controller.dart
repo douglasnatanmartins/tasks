@@ -82,7 +82,7 @@ class CategoryController implements Controller, ProjectManagerContract {
     _projects = await _projectRepository.getAllProjectByCategoryId(category.id);
   }
 
-  /// Dispose this business logic component.
+  /// Dispose business logic component.
   @override
   void dispose() {
     _projectListController.close();

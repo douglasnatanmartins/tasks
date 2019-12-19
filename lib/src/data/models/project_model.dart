@@ -10,10 +10,10 @@ class ProjectModel extends ProjectEntity {
     int id,
     @required int categoryId,
     @required String title,
-    String description,
     @required Color color,
     @required IconData icon,
     @required DateTime createdDate,
+    String description,
   }): super(
     id: id,
     categoryId: categoryId,
