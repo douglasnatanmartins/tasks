@@ -5,7 +5,9 @@ import 'package:tasks/src/domain/entities/category_entity.dart';
 import 'package:tasks/src/domain/usecases/get_category_repository.dart';
 import 'package:tasks/src/presentation/controllers/category_manager_contract.dart';
 
+/// The Business Logic Component for the Category List Page.
 class CategoryListController implements Controller, CategoryManagerContract {
+  /// Constructor of Business Logic Component for the Category List Page.
   CategoryListController() {
     _fetchCategories().then((result) {
       pushCategories();

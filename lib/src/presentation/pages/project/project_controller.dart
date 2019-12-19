@@ -6,8 +6,11 @@ import 'package:tasks/src/domain/entities/task_entity.dart';
 import 'package:tasks/src/domain/usecases/get_task_repository.dart';
 import 'package:tasks/src/presentation/controllers/task_manager_contract.dart';
 
-/// Project Page Business Logic Component.
+/// The Business Logic Component for the Project Page.
 class ProjectController implements Controller, TaskManagerContract {
+  /// Constructor of Business Logic Component for the Project Page.
+  /// 
+  /// The [project] argument must not be null.
   ProjectController(this.project) {
     _fetchTasks().then((_) => pushTasks());
   }

@@ -5,7 +5,9 @@ import 'package:tasks/src/domain/entities/task_entity.dart';
 import 'package:tasks/src/domain/usecases/get_task_repository.dart';
 import 'package:tasks/src/presentation/controllers/task_manager_contract.dart';
 
+/// The Business Logic Component for the Important Task List Page.
 class ImportantTaskListController implements Controller, TaskManagerContract {
+  /// Constructor of Business Logic Component for the Important Task List Page.
   ImportantTaskListController() {
     _fetchTasks().then((_) => pushTasks());
   }

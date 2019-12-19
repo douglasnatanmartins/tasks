@@ -6,11 +6,11 @@ import 'package:tasks/src/domain/entities/task_entity.dart';
 import 'package:tasks/src/domain/usecases/get_step_repository.dart';
 import 'package:tasks/src/presentation/controllers/step_manager_contract.dart';
 
-/// Task Page Business Logic Component
+/// The Business Logic Component for the Task Page.
 class TaskController implements Controller, StepManagerContract {
-  /// Create a Task Page Business Logic Component.
+  /// Constructor of Business Logic Component for the Task Page.
   /// 
-  /// The [data] argument must not be null.
+  /// The [task] argument must not be null.
   TaskController(this.task) {
     _fetchSteps().then((result) {
       pushSteps();

@@ -7,9 +7,9 @@ import 'package:tasks/src/domain/usecases/get_project_repository.dart';
 import 'package:tasks/src/domain/usecases/get_task_repository.dart';
 import 'package:tasks/src/presentation/controllers/project_manager_contract.dart';
 
-/// Category Page Business Logic Component.
+/// The Business Logic Component for the Category Page.
 class CategoryController implements Controller, ProjectManagerContract {
-  /// Business Logic Component for the Category Page.
+  /// Constructor of Business Logic Component for the Category Page.
   /// 
   /// The [category] argument must not be null.
   CategoryController(this.category) {

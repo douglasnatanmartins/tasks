@@ -30,7 +30,7 @@ class _CircleCheckboxState extends State<CircleCheckbox> {
   @override
   void initState() {
     super.initState();
-    this.value = this.widget.value;
+    value = widget.value;
   }
 
   /// Called when a dependency of this state object changes.
@@ -42,8 +42,8 @@ class _CircleCheckboxState extends State<CircleCheckbox> {
   /// Called whenever the widget configuration changes.
   @override
   void didUpdateWidget(CircleCheckbox old) {
-    if (this.value != this.widget.value) {
-      this.value = this.widget.value;
+    if (value != widget.value) {
+      value = widget.value;
     }
 
     super.didUpdateWidget(old);
@@ -58,37 +58,37 @@ class _CircleCheckboxState extends State<CircleCheckbox> {
   /// Build the CircleCheckbox widget with state.
   @override
   Widget build(BuildContext context) {
-    if (!this.value) {
-      this.background = Colors.white.withOpacity(0.25);
-      this.border = Border.all(width: 1.25, color: Colors.black.withOpacity(0.5));
-      this.icon = null;
+    if (!value) {
+      background = Colors.white.withOpacity(0.25);
+      border = Border.all(width: 1.25, color: Colors.black.withOpacity(0.5));
+      icon = null;
     } else {
-      this.background = Colors.blue.shade200;
-      this.border = null;
-      this.icon = Icon(Icons.check, color: Colors.white, size: 20.0);
+      background = Colors.blue.shade200;
+      border = null;
+      icon = Icon(Icons.check, color: Colors.white, size: 20);
     }
 
     return InkWell(
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 123),
-        margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-        height: 27.0,
-        width: 27.0,
-        decoration: BoxDecoration(
-          color: this.background,
-          shape: BoxShape.circle,
-          border: this.border,
-        ),
-        child: this.icon,
-      ),
       onTap: () {
         setState(() {
           this.value = !this.value;
           this.widget.onChanged(this.value);
         });
       },
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 123),
+        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        height: 27,
+        width: 27,
+        decoration: BoxDecoration(
+          color: background,
+          shape: BoxShape.circle,
+          border: border,
+        ),
+        child: this.icon,
+      ),
     );
   }
 }
