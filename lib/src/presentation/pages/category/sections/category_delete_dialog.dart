@@ -1,11 +1,6 @@
 part of '../category_layout.dart';
 
-class _CategoryDeleteDialog extends StatelessWidget {
-  /// Create a CategoryDeleteDialog widget.
-  _CategoryDeleteDialog({
-    Key key,
-  }) : super(key: key);
-
+class CategoryDeleteDialog extends StatelessWidget {
   /// Build the CategoryDeleteDialog widget.
   @override
   Widget build(BuildContext context) {
@@ -18,29 +13,29 @@ class _CategoryDeleteDialog extends StatelessWidget {
       actions: <Widget>[
         // Cancel button.
         FlatButton(
+          color: Colors.grey[400],
           padding: const EdgeInsets.symmetric(horizontal: 20),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(7),
           ),
-          color: Colors.grey[400],
           textColor: Colors.white,
-          child: const Text('Cancel'),
           onPressed: () {
             Navigator.of(context).pop(false);
           },
+          child: const Text('Cancel'),
         ),
         // Yes Button.
         FlatButton(
+          color: Theme.of(context).errorColor,
           padding: const EdgeInsets.symmetric(horizontal: 30),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(7),
           ),
-          color: Theme.of(context).errorColor,
           textColor: Colors.white,
-          child: const Text('Yes'),
           onPressed: () {
             Navigator.of(context).pop(true);
           },
+          child: const Text('Yes'),
         ),
       ],
     );

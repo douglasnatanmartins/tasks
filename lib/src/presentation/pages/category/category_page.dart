@@ -34,14 +34,15 @@ class CategoryPage extends StatelessWidget {
   /// Build the CategoryPage widget.
   @override
   Widget build(BuildContext context) {
-    return Provider<CategoryManagerContract>.component(
-      component: arguments.manager,
-      notifier: (current, previous) => false,
-      child: Provider<CategoryController>(
-        creator: (context) => CategoryController(arguments.category),
-        disposer: (context, controller) => controller?.dispose(),
-        child: CategoryLayout(category: arguments.category),
-      ),
+    return Provider<CategoryController>(
+      creator: (context) {
+        return CategoryController(
+          category: arguments.category,
+          manager: arguments.manager,
+        );
+      },
+      disposer: (context, controller) => controller?.dispose(),
+      child: CategoryLayout(),
     );
   }
 }

@@ -42,7 +42,7 @@ class _PageHeader extends StatelessWidget {
                         SnackBar(content: Text('Title not empty')),
                       );
                     } else {
-                      final description = shared.descriptionController.text.trim();
+                      var description = shared.descriptionController.text.trim();
                       CategoryEntity category = shared.data.copyWith(
                         title: title,
                         description: description.isNotEmpty ? description : null,

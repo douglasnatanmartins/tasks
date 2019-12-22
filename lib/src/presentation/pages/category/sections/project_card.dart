@@ -1,14 +1,14 @@
 part of '../category_layout.dart';
 
-class _ProjectCard extends StatelessWidget {
+class ProjectCard extends StatelessWidget {
   /// Create a ProjectCard widget.
   /// 
   /// The [data] argument must not be null.
-  _ProjectCard({
+  ProjectCard({
     Key key,
     @required this.data,
-  })  : assert(data != null),
-        super(key: key);
+  }): assert(data != null),
+      super(key: key);
 
   final ProjectEntity data;
 

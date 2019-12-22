@@ -1,37 +1,28 @@
 part of '../category_layout.dart';
 
-class _PageBody extends StatelessWidget {
-  /// Create a PageBody widget.
-  _PageBody({
-    Key key,
-  }) : super(key: key);
-
+class PageBody extends StatelessWidget {
   /// Build the PageBody widget.
   @override
   Widget build(BuildContext context) {
-    final controller = Provider.of<CategoryController>(context);
+    var controller = Provider.of<CategoryController>(context);
 
     return Expanded(
       child: Container(
         decoration: const BoxDecoration(
           color: Colors.white,
         ),
-        child: StreamBuilder(
-          stream: controller.projects,
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
+        child: StreamBuilder<List<ProjectEntity>>(
+          initialData: controller.projects,
+          stream: controller.projectListStream,
+          builder: (context, snapshot) {
+            var projects = snapshot.data;
+            if (projects != null && projects.isNotEmpty) {
+              return ProjectListView(items: snapshot.data);
             } else {
-              if (snapshot.hasData && snapshot.data.isNotEmpty) {
-                return _ProjectListView(items: snapshot.data);
-              } else {
-                return EmptyContentBox(
-                  title: 'no project created yet',
-                  description: 'click green button to get started',
-                );
-              }
+              return EmptyContentBox(
+                title: 'no project created yet',
+                description: 'click green button to get started',
+              );
             }
           },
         ),

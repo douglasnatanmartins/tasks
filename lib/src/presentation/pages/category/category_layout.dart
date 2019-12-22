@@ -3,7 +3,6 @@ import 'package:intl/intl.dart';
 import 'package:tasks/src/core/provider.dart';
 import 'package:tasks/src/domain/entities/category_entity.dart';
 import 'package:tasks/src/domain/entities/project_entity.dart';
-import 'package:tasks/src/presentation/controllers/category_manager_contract.dart';
 import 'package:tasks/src/presentation/pages/category_detail/category_detail_page.dart';
 import 'package:tasks/src/presentation/pages/project_detail/project_detail_page.dart';
 import 'package:tasks/src/presentation/shared/widgets/empty_content_box.dart';
@@ -15,56 +14,54 @@ part 'sections/page_header.dart';
 part 'sections/project_list_view.dart';
 part 'sections/project_card.dart';
 part 'sections/category_delete_dialog.dart';
+part 'sections/header_title.dart';
+part 'sections/setting_popup_button.dart';
 
 class CategoryLayout extends StatelessWidget {
   /// Create a CategoryLayout widget.
   CategoryLayout({
     Key key,
-    @required this.category,
   }): super(key: key);
-
-  final CategoryEntity category;
 
   /// Build the CategoryLayout widget.
   @override
   Widget build(BuildContext context) {
+    var controller = Provider.of<CategoryController>(context);
+
     return Scaffold(
       backgroundColor: Colors.grey[300],
       body: SafeArea(
         child: Column(
           children: <Widget>[
-            _PageHeader(data: category),
-            _PageBody(),
+            PageHeader(),
+            PageBody(),
           ],
         ),
       ),
       // Create new project button.
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Consumer<CategoryController>(
-        builder: (context, controller) {
-          return FloatingActionButton(
-            heroTag: 'floating-button',
-            elevation: 0,
-            backgroundColor: Colors.green[600],
-            child: const Icon(Icons.add),
-            onPressed: () async {
-              final result = await Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (BuildContext context) {
-                    return ProjectDetailPage(
-                      category: category,
-                      project: null,
-                    );
-                  },
-                ),
-              );
-
-              if (result is ProjectEntity) {
-                controller.createProject(result);
-              }
-            },
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.green[600],
+        elevation: 0,
+        heroTag: 'floating-button',
+        onPressed: () async {
+          var result = await Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (BuildContext context) {
+                print(controller.category);
+                return ProjectDetailPage(
+                  category: controller.category,
+                  project: null,
+                );
+              },
+            ),
           );
+
+          if (result is ProjectEntity) {
+            controller.createProject(result);
+          }
         },
+        child: const Icon(Icons.add),
       ),
     );
   }
