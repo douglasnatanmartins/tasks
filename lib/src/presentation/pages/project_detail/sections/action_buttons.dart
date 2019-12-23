@@ -1,45 +1,56 @@
-part of '../project_detail_page.dart';
+part of '../project_detail_layout.dart';
 
-class _ActionButtons extends StatelessWidget {
+class ActionButtons extends StatelessWidget {
   /// Create a ActionButtons widget.
-  _ActionButtons({
+  ActionButtons({
     Key key,
-    @required this.onSaved,
-  })  : assert(onSaved != null),
-        super(key: key);
-
-  final VoidCallback onSaved;
+  }): super(key: key);
 
   /// Build the ActionButtons widget.
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          FlatButton(
-            shape: RoundedRectangleBorder(
-              side: BorderSide(width: 3, color: Colors.white),
-              borderRadius: BorderRadius.circular(7.0),
+    var controller = Provider.of<ProjectDetailController>(context);
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        GestureDetector(
+          onTap: () {
+            Navigator.of(context).pop();
+          },
+          child: Text(
+            'Cancel',
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              color: Colors.white.withOpacity(0.8),
+              fontSize: 18,
             ),
-            color: Colors.grey.shade400,
-            textColor: Colors.white,
-            child: const Text('Cancel'),
-            onPressed: () => Navigator.of(context).pop(false),
           ),
-          const SizedBox(width: 10.0),
-          FlatButton(
-            shape: RoundedRectangleBorder(
-              side: BorderSide(width: 3, color: Colors.white),
-              borderRadius: BorderRadius.circular(7.0),
+        ),
+        GestureDetector(
+          onTap: () {
+            if (controller.project.title.isEmpty) {
+              Scaffold.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Title must not empty'),
+                ),
+              );
+            } else {
+              Navigator.of(context).pop(controller.project);
+            }
+          },
+          child: Text(
+            controller.project.id != null ? 'Save' : 'Create',
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
             ),
-            color: Colors.green.shade400,
-            textColor: Colors.white,
-            child: const Text('Save'),
-            onPressed: this.onSaved,
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

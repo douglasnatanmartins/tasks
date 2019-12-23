@@ -38,13 +38,15 @@ class ProjectEntity implements Entity<ProjectEntity> {
     IconData icon,
   }) {
     return ProjectEntity(
-      id: id,
-      categoryId: categoryId ?? categoryId,
-      title: title ?? title,
-      description: description ?? description,
-      color: color ?? color,
-      icon: icon ?? icon,
-      createdDate: createdDate,
+      id: this.id,
+      categoryId: categoryId ?? this.categoryId,
+      title: title ?? this.title,
+      description: description != null && description.isNotEmpty
+                    ? description
+                    : null,
+      color: color ?? this.color,
+      icon: icon ?? this.icon,
+      createdDate: this.createdDate,
     );
   }
 

@@ -53,10 +53,7 @@ class _PageHeader extends StatelessWidget {
               var result = await Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (BuildContext context) {
-                    return ProjectDetailPage(
-                      category: null,
-                      project: data,
-                    );
+                    return ProjectDetailPage(project: data);
                   },
                 ),
               );

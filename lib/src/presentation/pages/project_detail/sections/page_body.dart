@@ -1,26 +1,17 @@
-part of '../project_detail_page.dart';
+part of '../project_detail_layout.dart';
 
-class _PageBody extends StatelessWidget {
-  /// Create a _PageBody widget.
-  _PageBody({
-    Key key,
-    @required this.project,
-    @required this.onChanged,
-  }): super(key: key);
-
-  final ProjectEntity project;
-  final ValueChanged<ProjectEntity> onChanged;
-
-  /// Build the _PageBody widget.
+class PageBody extends StatelessWidget {
+  /// Build the PageBody widget.
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: ColorPicker(
-        colors: DataSupport.colors.values.toList(),
-        onChanged: (Color color) {
-          this.onChanged(this.project.copyWith(color: color));
-        },
-      ),
+    var controller = Provider.of<ProjectDetailController>(context);
+
+    return ColorPicker(
+      current: controller.project.color,
+      colors: DataSupport.colors.values.toList(),
+      onChanged: (color) {
+        controller.setProjectColor(color);
+      },
     );
   }
 }

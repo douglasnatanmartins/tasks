@@ -48,11 +48,7 @@ class CategoryLayout extends StatelessWidget {
           var result = await Navigator.of(context).push(
             MaterialPageRoute(
               builder: (BuildContext context) {
-                print(controller.category);
-                return ProjectDetailPage(
-                  category: controller.category,
-                  project: null,
-                );
+                return ProjectDetailPage(categoryId: controller.category.id);
               },
             ),
           );
