@@ -67,7 +67,7 @@ class _ColorPickerState extends State<ColorPicker> {
         color: Colors.white.withOpacity(0.5),
       ),
       child: GridView.count(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        padding: const EdgeInsets.all(20),
         crossAxisCount: 5,
         crossAxisSpacing: 20,
         mainAxisSpacing: 20,

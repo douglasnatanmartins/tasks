@@ -33,14 +33,17 @@ class ProjectPage extends StatelessWidget {
   /// Build the ProjectPage widget.
   @override
   Widget build(BuildContext context) {
-    return Provider<ProjectManagerContract>.component(
-      component: arguments.manager,
-      notifier: (current, previous) => false,
-      child: Provider<ProjectController>(
-        creator: (context) => ProjectController(arguments.project),
-        disposer: (context, controller) => controller?.dispose(),
-        child: ProjectLayout(data: arguments.project),
-      ),
+    return Provider<ProjectController>(
+      creator: (context) {
+        return ProjectController(
+          project: arguments.project,
+          manager: arguments.manager,
+        );
+      },
+      disposer: (context, controller) {
+        controller?.dispose();
+      },
+      child: ProjectLayout(),
     );
   }
 }

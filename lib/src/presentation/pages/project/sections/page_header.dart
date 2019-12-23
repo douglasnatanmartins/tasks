@@ -1,17 +1,12 @@
 part of '../project_layout.dart';
 
-class _PageHeader extends StatelessWidget {
-  /// Create a _PageHeader widget.
-  _PageHeader({
-    Key key,
-    @required this.data,
-  }) : super(key: key);
-
-  final ProjectEntity data;
-
-  /// Build the _PageHeader widget.
+class PageHeader extends StatelessWidget {
+  /// Build the PageHeader widget.
   @override
   Widget build(BuildContext context) {
+    var controller = Provider.of<ProjectController>(context);
+    var project = controller.project;
+
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 15),
       child: Row(
@@ -29,7 +24,7 @@ class _PageHeader extends StatelessWidget {
           ),
           Expanded(
             child: Text(
-              data.title,
+              project.title,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 color: Colors.white,
@@ -53,14 +48,13 @@ class _PageHeader extends StatelessWidget {
               var result = await Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (BuildContext context) {
-                    return ProjectDetailPage(project: data);
+                    return ProjectDetailPage(project: project);
                   },
                 ),
               );
 
               if (result is ProjectEntity) {
-                var manager = Provider.of<ProjectManagerContract>(context);
-                manager.updateProject(result, data);
+                controller.updateProject(result);
               }
             },
           ),
