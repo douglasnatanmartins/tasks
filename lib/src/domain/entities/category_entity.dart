@@ -24,10 +24,10 @@ class CategoryEntity implements Entity<CategoryEntity> {
     String description,
   }) {
     return CategoryEntity(
-      id: id,
-      title: title ?? title,
-      description: description ?? description,
-      createdDate: createdDate,
+      id: this.id,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      createdDate: this.createdDate,
     );
   }
 

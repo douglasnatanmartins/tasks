@@ -40,14 +40,14 @@ class TaskEntity implements Entity<TaskEntity> {
     DateTime dueDate,
   }) {
     return TaskEntity(
-      id: id,
-      projectId: projectId ?? projectId,
-      title: title ?? title,
-      note: note ?? note,
-      isDone: isDone ?? isDone,
-      isImportant: isImportant ?? isImportant,
-      dueDate: dueDate ?? dueDate,
-      createdDate: createdDate,
+      id: this.id,
+      projectId: projectId ?? this.projectId,
+      title: title ?? this.title,
+      note: note ?? this.note,
+      isDone: isDone ?? this.isDone,
+      isImportant: isImportant ?? this.isImportant,
+      dueDate: dueDate ?? this.dueDate,
+      createdDate: this.createdDate,
     );
   }
 

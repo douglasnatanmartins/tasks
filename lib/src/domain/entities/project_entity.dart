@@ -37,13 +37,19 @@ class ProjectEntity implements Entity<ProjectEntity> {
     Color color,
     IconData icon,
   }) {
+    if (description == null) {
+      description = this.description;
+    } else {
+      if (description.isEmpty) {
+        description = null;
+      }
+    }
+
     return ProjectEntity(
       id: this.id,
       categoryId: categoryId ?? this.categoryId,
       title: title ?? this.title,
-      description: description != null && description.isNotEmpty
-                    ? description
-                    : null,
+      description: description,
       color: color ?? this.color,
       icon: icon ?? this.icon,
       createdDate: this.createdDate,

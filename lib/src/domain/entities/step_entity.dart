@@ -24,10 +24,10 @@ class StepEntity implements Entity<StepEntity> {
     bool isDone,
   }) {
     return StepEntity(
-      id: id,
-      taskId: taskId,
-      message: message ?? message,
-      isDone: isDone ?? isDone,
+      id: this.id,
+      taskId: this.taskId,
+      message: message ?? this.message,
+      isDone: isDone ?? this.isDone,
     );
   }
 
