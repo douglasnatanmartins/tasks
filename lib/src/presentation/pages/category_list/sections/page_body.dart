@@ -1,15 +1,16 @@
 part of '../category_list_layout.dart';
 
 class _PageBody extends StatelessWidget {
-  /// Create a _PageBody widget.
+  /// Create a PageBody widget.
   _PageBody({
     Key key,
   }) : super(key: key);
 
-  /// Build the _PageBody widget.
+  /// Build the PageBody widget.
   @override
   Widget build(BuildContext context) {
-    final controller = Provider.of<CategoryListController>(context);
+    var controller = Provider.of<CategoryListController>(context);
+
     return Expanded(
       child: StreamBuilder(
         stream: controller.categories,

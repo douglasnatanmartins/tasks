@@ -5,8 +5,8 @@ class CategoryModel extends CategoryEntity {
   CategoryModel({
     int id,
     @required String title,
-    String description,
     @required DateTime createdDate,
+    String description,
   }): super(
     id: id,
     title: title,

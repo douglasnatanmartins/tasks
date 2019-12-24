@@ -46,7 +46,7 @@ class CategoryListLayout extends StatelessWidget {
             foregroundColor: Colors.white,
             backgroundColor: Colors.green,
             onPressed: () async {
-              final result = await showDialog(
+              var result = await showDialog(
                 context: context,
                 builder: (BuildContext context) {
                   return CategoryDetailPage(category: null);
@@ -54,7 +54,7 @@ class CategoryListLayout extends StatelessWidget {
               );
 
               if (result is CategoryEntity) {
-                controller.addCategory(result);
+                controller.createCategory(result);
               }
             },
           );

@@ -25,25 +25,25 @@ class EmptyContentBox extends StatelessWidget {
     children.add(const SizedBox(height: 15.0));
     children.add(
       Text(
-        this.title,
+        title,
         overflow: TextOverflow.ellipsis,
         style: TextStyle(
-          color: (this.textColor ?? Colors.black87),
-          fontSize: 18.0,
+          color: (textColor ?? Colors.black87),
+          fontSize: 18,
           fontWeight: FontWeight.w500,
         ),
       ),
     );
 
     // Has description.
-    if (this.description != null) {
-      children.add(const SizedBox(height: 5.0));
+    if (description != null) {
+      children.add(const SizedBox(height: 5));
       children.add(
         Text(
-          this.description,
+          description,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
-            color: (this.textColor ?? Colors.black87).withOpacity(0.65),
+            color: (textColor ?? Colors.black87).withOpacity(0.65),
             fontSize: 14,
           ),
         ),

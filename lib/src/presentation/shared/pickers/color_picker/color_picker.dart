@@ -4,6 +4,8 @@ part 'color_grid_item.dart';
 
 class ColorPicker extends StatefulWidget {
   /// Create a ColorPicker widget.
+  /// 
+  /// The [colors] and [onChanged] arguments must not be null.
   ColorPicker({
     Key key,
     this.current,
@@ -12,9 +14,9 @@ class ColorPicker extends StatefulWidget {
   }): assert(colors != null),
       assert(onChanged != null),
       super(key: key);
-
-  final List<Color> colors;
+  
   final Color current;
+  final List<Color> colors;
   final ValueChanged<Color> onChanged;
 
   /// Creates the mutable state for this widget at a given location in the tree.
@@ -30,12 +32,12 @@ class _ColorPickerState extends State<ColorPicker> {
   @override
   void initState() {
     super.initState();
-    this.colors = this.widget.colors;
+    colors = widget.colors;
 
-    if (this.colors.indexOf(this.widget.current) >= 0) {
-      this.current = this.widget.current;
+    if (colors.contains(widget.current)) {
+      current = widget.current;
     } else {
-      this.current = this.colors.elementAt(0);
+      current = colors.elementAt(0);
     }
   }
 
@@ -65,18 +67,18 @@ class _ColorPickerState extends State<ColorPicker> {
         color: Colors.white.withOpacity(0.5),
       ),
       child: GridView.count(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+        padding: const EdgeInsets.all(20),
         crossAxisCount: 5,
         crossAxisSpacing: 20,
         mainAxisSpacing: 20,
-        children: this.widget.colors.map((Color color) {
+        children: widget.colors.map((Color color) {
           return _ColorGridItem(
             color: color,
-            isChecked: this.current == color,
+            isChecked: current == color,
             onTap: () {
               setState(() {
-                this.current = color;
-                this.widget.onChanged(color);
+                current = color;
+                widget.onChanged(color);
               });
             },
           );

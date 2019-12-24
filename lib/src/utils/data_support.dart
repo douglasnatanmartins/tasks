@@ -89,13 +89,15 @@ class DataSupport {
   };
 
   static const Map<String, Color> colors = {
-    'blue': Colors.blue,
-    'green': Colors.green,
-    'purple': Colors.purple,
-    'red': Colors.red,
-    'pink': Colors.pink,
-    'orange': Colors.orange,
-    'lime': Colors.lime,
+    'grey': Color.fromRGBO(118, 118, 118, 1),
+    'brown': Color.fromRGBO(165, 103, 63, 1),
+    'blue': Color.fromRGBO(33, 133, 208, 1),
+    'green': Color.fromRGBO(33, 186, 69, 1),
+    'orange': Color.fromRGBO(242, 113, 28, 1),
+    'pink': Color.fromRGBO(224, 57, 151, 1),
+    'purple': Color.fromRGBO(163, 51, 200, 1),
+    'violet': Color.fromRGBO(88, 41, 187, 1),
+    'red': Color.fromRGBO(219, 40, 40, 1),
   };
 
   static bool hasIcon(IconData icon) {

@@ -6,10 +6,10 @@ class StepEntity implements Entity<StepEntity> {
   /// 
   /// The [taskId] and [isDone] arguments must not be null.
   StepEntity({
-    @required this.id,
+    this.id,
     @required this.taskId,
-    @required this.message,
     @required this.isDone,
+    this.message,
   }): assert(taskId != null),
       assert(isDone != null);
 
@@ -33,24 +33,27 @@ class StepEntity implements Entity<StepEntity> {
 
   @override
   String toString() {
-    return '[Step Id: ${this.id}] - task id: ${this.taskId}, message: ${this.message}, isDone: ${this.isDone}.';
+    return '[Step Id: $id]: '
+    'task_id: $taskId, '
+    'message: $message, '
+    'isDone: $isDone.';
   }
 
   @override
   bool operator == (object) {
     return identical(object, this)
         || object is StepEntity
-        && object.id == this.id
-        && object.taskId == this.taskId
-        && object.message == this.message
-        && object.isDone == this.isDone;
+        && object.id == id
+        && object.taskId == taskId
+        && object.message == message
+        && object.isDone == isDone;
   }
 
   @override
   int get hashCode {
-    return this.id.hashCode
-         ^ this.taskId.hashCode
-         ^ this.message.hashCode
-         ^ this.isDone.hashCode;
+    return id.hashCode
+         ^ taskId.hashCode
+         ^ message.hashCode
+         ^ isDone.hashCode;
   }
 }

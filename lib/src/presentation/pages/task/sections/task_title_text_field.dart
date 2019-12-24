@@ -1,8 +1,8 @@
 part of '../task_layout.dart';
 
-class _TaskTitleTextField extends StatefulWidget {
-  /// Create a _TaskTitleTextField widget.
-  _TaskTitleTextField({
+class TaskTitleTextField extends StatefulWidget {
+  /// Create a TaskTitleTextField widget.
+  TaskTitleTextField({
     Key key,
     @required this.data,
     @required this.onChanged,
@@ -13,10 +13,10 @@ class _TaskTitleTextField extends StatefulWidget {
 
   /// Creates the mutable state for this widget at a given location in the tree.
   @override
-  State<_TaskTitleTextField> createState() => _TaskTitleTextFieldState();
+  State<TaskTitleTextField> createState() => _TaskTitleTextFieldState();
 }
 
-class _TaskTitleTextFieldState extends State<_TaskTitleTextField> {
+class _TaskTitleTextFieldState extends State<TaskTitleTextField> {
   String data;
   FocusNode focusNode;
   TextEditingController controller;
@@ -25,17 +25,17 @@ class _TaskTitleTextFieldState extends State<_TaskTitleTextField> {
   @override
   void initState() {
     super.initState();
-    this.data = this.widget.data;
-    this.focusNode = FocusNode();
-    this.controller = TextEditingController(text: this.data);
+    data = widget.data;
+    focusNode = FocusNode();
+    controller = TextEditingController(text: data);
 
-    this.focusNode.addListener(() {
-      if (!this.focusNode.hasFocus) {
-        String value = this.controller.text.trim();
+    focusNode.addListener(() {
+      if (!focusNode.hasFocus) {
+        String value = controller.text.trim();
         if (value.isEmpty) {
-          this.controller.text = this.widget.data;
-          this.data = this.widget.data;
-          this.widget.onChanged(this.widget.data);
+          controller.text = widget.data;
+          data = widget.data;
+          widget.onChanged(widget.data);
         }
       }
     });
@@ -49,15 +49,15 @@ class _TaskTitleTextFieldState extends State<_TaskTitleTextField> {
 
   /// Called whenever the widget configuration changes.
   @override
-  void didUpdateWidget(_TaskTitleTextField old) {
+  void didUpdateWidget(TaskTitleTextField old) {
     super.didUpdateWidget(old);
   }
 
   /// Called when this state removed from the tree.
   @override
   void dispose() {
-    this.focusNode.dispose();
-    this.controller.dispose();
+    focusNode.dispose();
+    controller.dispose();
     super.dispose();
   }
 
@@ -66,8 +66,8 @@ class _TaskTitleTextFieldState extends State<_TaskTitleTextField> {
   Widget build(BuildContext context) {
     return Container(
       child: TextField(
-        focusNode: this.focusNode,
-        controller: this.controller,
+        focusNode: focusNode,
+        controller: controller,
         decoration: InputDecoration.collapsed(
           hintText: 'Title',
           hintStyle: TextStyle(
@@ -76,15 +76,15 @@ class _TaskTitleTextFieldState extends State<_TaskTitleTextField> {
         ),
         style: TextStyle(
           color: Colors.blue.shade400,
-          fontSize: 20.0,
+          fontSize: 20,
           fontWeight: FontWeight.w600,
         ),
         cursorColor: Colors.blue,
-        onChanged: (String value) {
+        onChanged: (value) {
           if (value.trim().isEmpty) {
-            this.widget.onChanged(this.widget.data);
+            widget.onChanged(widget.data);
           } else {
-            this.widget.onChanged(value.trim());
+            widget.onChanged(value.trim());
           }
         },
       ),

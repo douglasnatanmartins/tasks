@@ -5,14 +5,13 @@ import 'core/router.dart';
 class App extends StatelessWidget {
   /// The root widget application.
   /// 
-  /// The [information] arguments must not be null.
-  /// The `information` contains application metadata.
+  /// The [title] argument must not be null.
   const App({
     Key key,
     @required this.title,
   }): assert(title != null),
       super(key: key);
-  
+
   final String title;
 
   /// Build root widget of the application.

@@ -1,34 +1,32 @@
-part of '../project_detail_page.dart';
+part of '../project_detail_layout.dart';
 
-class _DescriptionTextField extends StatelessWidget {
-  /// Create a _DescriptionTextField widget.
-  /// 
-  /// The [controller] arugment must not be null.
-  _DescriptionTextField({
-    Key key,
-    @required this.controller,
-  }): assert(controller != null),
-      super(key: key);
-
-  final TextEditingController controller;
-
-  /// Build the _DescriptionTextField widget.
+class DescriptionTextField extends StatelessWidget {
+  /// Build the DescriptionTextField widget.
   @override
   Widget build(BuildContext context) {
+    var controller = Provider.of<ProjectDetailController>(context);
+    var description = controller.project.description ?? '';
+
     return TextField(
-      controller: this.controller,
+      controller: TextEditingController(text: description),
       decoration: InputDecoration(
+        border: InputBorder.none,
+        counterStyle: TextStyle(
+          color: Colors.white,
+        ),
         hintText: 'Description',
-        hintStyle: TextStyle(color: Colors.white.withOpacity(0.4)),
-        counterStyle: TextStyle(color: Colors.white),
-        enabledBorder: InputBorder.none,
-        focusedBorder: InputBorder.none,
+        hintStyle: TextStyle(
+          color: Colors.white.withOpacity(0.5),
+        ),
       ),
       maxLength: 255,
       style: TextStyle(
         color: Colors.white.withOpacity(0.9),
-        fontSize: 17.0,
+        fontSize: 17,
       ),
+      onChanged: (value) {
+        controller.setProjectDescription(value);
+      }
     );
   }
 }

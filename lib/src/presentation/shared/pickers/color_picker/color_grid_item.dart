@@ -6,13 +6,16 @@ class _ColorGridItem extends StatelessWidget {
   /// The [selected], [color], and [onTap] arguments must not be null.
   _ColorGridItem({
     Key key,
-    @required this.isChecked,
     @required this.color,
+    @required this.isChecked,
     @required this.onTap,
-  }): super(key: key);
+  }): assert(color != null),
+      assert(isChecked != null),
+      assert(onTap != null),
+      super(key: key);
 
-  final bool isChecked;
   final Color color;
+  final bool isChecked;
   final VoidCallback onTap;
 
   /// Build the _ColorGridItem widget.
@@ -22,7 +25,7 @@ class _ColorGridItem extends StatelessWidget {
       child: InkWell(
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
-        onTap: this.onTap,
+        onTap: onTap,
         child: AnimatedContainer(
           width: 32,
           height: 32,
@@ -32,13 +35,13 @@ class _ColorGridItem extends StatelessWidget {
             color: Colors.transparent,
             shape: BoxShape.circle,
             border: this.isChecked
-                      ? Border.all(color: this.color, width: 3.0)
+                      ? Border.all(color: this.color, width: 3)
                       : null,
           ),
           child: Container(
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: this.color,
+              color: color,
             ),
           ),
         ),

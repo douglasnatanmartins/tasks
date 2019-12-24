@@ -6,11 +6,11 @@ class IconCheckbox extends StatefulWidget {
   /// The [value], [icon] and [onChanged] arguments must not be null.
   IconCheckbox({
     Key key,
-    this.selectedColor,
-    this.unselectedColor,
     @required this.value,
     @required this.icon,
     @required this.onChanged,
+    this.selectedColor,
+    this.unselectedColor,
   }): assert(value != null),
       assert(icon != null),
       assert(onChanged != null),
@@ -37,10 +37,10 @@ class _IconCheckboxState extends State<IconCheckbox> {
   @override
   void initState() {
     super.initState();
-    this.value = this.widget.value;
-    this.selectedColor = this.widget.selectedColor ?? Colors.yellow[700];
-    this.unselectedColor = this.widget.unselectedColor ?? Colors.grey[400];
-    this.onChangedColor(this.value);
+    value = widget.value;
+    selectedColor = widget.selectedColor ?? Colors.yellow[700];
+    unselectedColor = widget.unselectedColor ?? Colors.grey[400];
+    onChangedColor(value);
   }
 
   /// Called when a dependency of this state object changes.
@@ -52,9 +52,9 @@ class _IconCheckboxState extends State<IconCheckbox> {
   /// Called whenever the widget configuration changes.
   @override
   void didUpdateWidget(IconCheckbox old) {
-    if (old.value != this.widget.value) {
-      this.value = this.widget.value;
-      this.onChangedColor(this.value);
+    if (old.value != widget.value) {
+      value = widget.value;
+      onChangedColor(value);
     }
 
     super.didUpdateWidget(old);
@@ -67,20 +67,20 @@ class _IconCheckboxState extends State<IconCheckbox> {
   }
 
   void onChangedColor(bool checked) {
-    this.color = checked ? this.selectedColor : this.unselectedColor;
+    color = checked ? selectedColor : unselectedColor;
   }
 
   /// Build the IconCheckbox widget with state.
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      icon: Icon(this.widget.icon),
-      color: this.color,
+      icon: Icon(widget.icon),
+      color: color,
       onPressed: () {
         setState(() {
-          this.value = !this.value;
-          this.onChangedColor(this.value);
-          this.widget.onChanged(this.value);
+          value = !value;
+          onChangedColor(value);
+          widget.onChanged(value);
         });
       },
     );

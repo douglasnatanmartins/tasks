@@ -12,18 +12,19 @@ class _TaskListView extends StatelessWidget {
   /// Build the _TaskListView widget.
   @override
   Widget build(BuildContext context) {
-    final controller = Provider.of<ImportantTaskListController>(context);
+    var controller = Provider.of<ImportantTaskListController>(context);
+
     return ListView.separated(
       padding: const EdgeInsets.all(0),
-      itemCount: this.items.length,
-      itemBuilder: (BuildContext context, int index) {
-        TaskEntity item = this.items.elementAt(index);
+      itemCount: items.length,
+      itemBuilder: (context, index) {
+        var item = items.elementAt(index);
         return GestureDetector(
           child: TaskListTile(
             key: Key(item.id.toString()),
             data: item,
             onChanged: (TaskEntity model) {
-              controller.updateTask(item, model);
+              controller.updateTask(model, item);
             },
           ),
           onTap: () {
@@ -37,7 +38,7 @@ class _TaskListView extends StatelessWidget {
           },
         );
       },
-      separatorBuilder: (BuildContext context, int index) {
+      separatorBuilder: (context, index) {
         return Divider(
           height: 0,
           color: Color(0xff979797),

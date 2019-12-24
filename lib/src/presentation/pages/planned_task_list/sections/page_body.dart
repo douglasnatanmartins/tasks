@@ -9,21 +9,20 @@ class PageBody extends StatelessWidget {
   /// Build the PageBody widget.
   @override
   Widget build(BuildContext context) {
-    final controller = Provider.of<PlannedTaskListController>(context);
+    var controller = Provider.of<PlannedTaskListController>(context);
+
     return Expanded(
       child: Container(
-        child: StreamBuilder(
+        child: StreamBuilder<Map<DateTime, List<TaskEntity>>>(
           stream: controller.tasks,
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
+          builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
                 child: CircularProgressIndicator(),
               );
             } else {
               if (snapshot.hasData && snapshot.data.isNotEmpty) {
-                return TaskListView(
-                  items: snapshot.data,
-                );
+                return TaskListView(items: snapshot.data);
               } else {
                 return EmptyContentBox(
                   title: 'no planned task created yet',

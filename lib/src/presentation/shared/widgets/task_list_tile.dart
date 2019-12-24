@@ -37,7 +37,7 @@ class _TaskListTileState extends State<TaskListTile> {
   @override
   void initState() {
     super.initState();
-    this.data = this.widget.data;
+    data = widget.data;
   }
 
   /// Called when a dependency of this state object changes.
@@ -49,8 +49,8 @@ class _TaskListTileState extends State<TaskListTile> {
   /// Called whenever the widget configuration changes.
   @override
   void didUpdateWidget(TaskListTile old) {
-    if (old.data != this.widget.data) {
-      this.data = this.widget.data;
+    if (old.data != widget.data) {
+      data = widget.data;
     }
 
     super.didUpdateWidget(old);
@@ -69,33 +69,33 @@ class _TaskListTileState extends State<TaskListTile> {
 
     children.add(
       Text(
-        this.data.title,
+        data.title,
         overflow: TextOverflow.ellipsis,
         style: const TextStyle(
-          fontSize: 17.0,
+          fontSize: 17,
           fontWeight: FontWeight.w600,
         ),
       ),
     );
 
-    if (this.data.dueDate != null) {
-      int days = DateTimeUtil.difference(this.data.dueDate).inDays;
-      this.metaColor = days >= 0 ? Colors.blue : Colors.red;
-      children.add(const SizedBox(height: 5.0));
+    if (data.dueDate != null) {
+      int days = DateTimeUtil.difference(data.dueDate).inDays;
+      metaColor = days >= 0 ? Colors.blue : Colors.red;
+      children.add(const SizedBox(height: 5));
       children.add(
         Row(
           children: <Widget>[
             Icon(
               Icons.calendar_today,
-              size: 16.0,
-              color: this.metaColor,
+              size: 16,
+              color: metaColor,
             ),
             const SizedBox(width: 4.5),
             Text(
-              DateFormat('EEEE, y/M/d').format(this.data.dueDate),
+              DateFormat('EEEE, y/M/d').format(data.dueDate),
               style: TextStyle(
-                fontSize: 14.0,
-                color: this.metaColor,
+                fontSize: 14,
+                color: metaColor,
               ),
             ),
           ],
@@ -105,16 +105,17 @@ class _TaskListTileState extends State<TaskListTile> {
 
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(
-        horizontal: 5.0,
-        vertical: 5.0,
+        horizontal: 5,
+        vertical: 5,
       ),
       leading: CircleCheckbox(
-        value: this.data.isDone,
+        value: data.isDone,
         onChanged: (bool checked) {
-          this.data = this.data.copyWith(
+          data = data.copyWith(
             isDone: checked,
           );
-          this.widget.onChanged(this.data);
+
+          widget.onChanged(data);
         },
       ),
       title: Column(
@@ -122,13 +123,13 @@ class _TaskListTileState extends State<TaskListTile> {
         children: children,
       ),
       trailing: IconCheckbox(
-        value: this.data.isImportant,
+        value: data.isImportant,
         icon: Icons.star,
         onChanged: (bool checked) {
-          this.data = this.data.copyWith(
+          data = data.copyWith(
             isImportant: checked,
           );
-          this.widget.onChanged(this.data);
+          widget.onChanged(data);
         },
       ),
     );

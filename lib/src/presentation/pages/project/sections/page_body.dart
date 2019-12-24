@@ -1,20 +1,16 @@
 part of '../project_layout.dart';
 
-class _PageBody extends StatelessWidget {
-  /// Create a _PageBody widget.
-  _PageBody({
-    Key key,
-  }): super(key: key);
-
-  /// Build the _PageBody widget.
+class PageBody extends StatelessWidget {
+  /// Build the PageBody widget.
   @override
   Widget build(BuildContext context) {
-    final controller = Provider.of<ProjectController>(context);
+    var controller = Provider.of<ProjectController>(context);
+
     return Expanded(
       child: Container(
         child: StreamBuilder(
-          stream: controller.tasks,
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
+          stream: controller.taskListStream,
+          builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
                 child: CircularProgressIndicator(),

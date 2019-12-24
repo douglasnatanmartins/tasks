@@ -1,21 +1,14 @@
 part of '../task_layout.dart';
 
-class _PageHeader extends StatelessWidget {
-  /// Create a _PageHeader widget.
-  _PageHeader({
-    Key key,
-    @required this.data,
-    @required this.onChanged,
-  }): super(key: key);
-
-  final TaskEntity data;
-  final ValueChanged<TaskEntity> onChanged;
-
+class PageHeader extends StatelessWidget {
   /// Build the _PageHeader widget.
   @override
   Widget build(BuildContext context) {
+    var controller = Provider.of<TaskController>(context);
+    var task = controller.task;
+
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10.0),
+      margin: const EdgeInsets.symmetric(vertical: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -23,7 +16,7 @@ class _PageHeader extends StatelessWidget {
           Hero(
             tag: 'previous-screen-button',
             child: FlatButton(
-              padding: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.all(10),
               shape: const CircleBorder(),
               child: const Icon(Icons.arrow_back),
               color: Colors.grey[400],
@@ -34,34 +27,29 @@ class _PageHeader extends StatelessWidget {
             ),
           ),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+            padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Row(
               children: <Widget>[
                 Expanded(
-                  child: _TaskTitleTextField(
-                    data: this.data.title,
-                    onChanged: (String title) {
-                      this.onChanged(this.data.copyWith(
-                        title: title,
-                      ));
+                  child: TaskTitleTextField(
+                    data: task.title,
+                    onChanged: (title) {
+                      controller.setTaskTitle(title);
                     },
                   ),
                 ),
-                const SizedBox(width: 10.0),
+                const SizedBox(width: 10),
                 CircleCheckbox(
-                  value: this.data.isDone,
-                  onChanged: (bool checked) {
-                    this.onChanged(this.data.copyWith(
-                      isDone: checked,
-                    ));
+                  value: task.isDone,
+                  onChanged: (checked) {
+                    controller.setTaskIsDone(checked);
                   },
                 ),
-                _ImportantCheckbox(
-                  value: this.data.isImportant,
-                  onChanged: (bool checked) {
-                    this.onChanged(this.data.copyWith(
-                      isImportant: checked,
-                    ));
+                IconCheckbox(
+                  value: task.isImportant,
+                  icon: Icons.star,
+                  onChanged: (checked) {
+                    controller.setTaskIsImportant(checked);
                   },
                 ),
               ],

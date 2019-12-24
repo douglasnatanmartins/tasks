@@ -16,7 +16,7 @@ class CategoryListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Provider<CategoryListController>(
       creator: (context) => CategoryListController(),
-      disposer: (context, component) => component.dispose(),
+      disposer: (context, controller) => controller?.dispose(),
       child: CategoryListLayout(),
     );
   }

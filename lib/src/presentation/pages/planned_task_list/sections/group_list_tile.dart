@@ -23,14 +23,14 @@ class _GroupListTileState extends State<GroupListTile> {
   @override
   void initState() {
     super.initState();
-    this.date = this.widget.date;
-    this.items = this.widget.items;
+    date = widget.date;
+    items = widget.items;
   }
 
   @override
   void didUpdateWidget(GroupListTile oldWidget) {
-    if (oldWidget.items != this.widget.items) {
-      this.items = this.widget.items;
+    if (oldWidget.items != widget.items) {
+      items = widget.items;
     }
 
     super.didUpdateWidget(oldWidget);
@@ -43,22 +43,23 @@ class _GroupListTileState extends State<GroupListTile> {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Provider.of<PlannedTaskListController>(context);
+    var controller = Provider.of<PlannedTaskListController>(context);
+    
     String title;
-    if (this.date == DateTimeUtil.onlyDate(DateTime.now())) {
+    if (date == DateTimeUtil.onlyDate(DateTime.now())) {
       title = 'Today';
     } else {
       title = DateFormat.yMMMd().format(date);
     }
 
     return Theme(
-      data: Theme.of(this.context).copyWith(
+      data: Theme.of(context).copyWith(
         dividerColor: Colors.transparent,
       ),
       child: ExpansionTile(
         initiallyExpanded: true,
         title: Text(title),
-        children: this.buildChildren(controller),
+        children: buildChildren(controller),
       ),
     );
   }
@@ -66,14 +67,14 @@ class _GroupListTileState extends State<GroupListTile> {
   List<Widget> buildChildren(PlannedTaskListController controller) {
     List<Widget> children = <Widget>[];
 
-    this.items.forEach((TaskEntity item) {
-      int index = this.items.indexOf(item);
+    for (var item in items) {
+      int index = items.indexOf(item);
       children.add(
         GestureDetector(
           child: TaskListTile(
             data: item,
             onChanged: (TaskEntity updated) {
-              controller.updateTask(item, updated);
+              controller.updateTask(updated, item);
             },
           ),
           onTap: () {
@@ -89,14 +90,14 @@ class _GroupListTileState extends State<GroupListTile> {
         ),
       );
 
-      if (index != this.items.length - 1) {
+      if (index < items.length) {
         children.add(
           Divider(
             color: Color(0xff989898),
           ),
         );
       }
-    });
+    }
 
     return children;
   }

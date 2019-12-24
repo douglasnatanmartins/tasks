@@ -16,7 +16,7 @@ class PlannedTaskListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Provider<PlannedTaskListController>(
       creator: (context) => PlannedTaskListController(),
-      disposer: (context, component) => component.dispose(),
+      disposer: (context, controller) => controller?.dispose(),
       child: PlannedTaskListLayout(),
     );
   }

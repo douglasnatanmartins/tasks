@@ -1,28 +1,19 @@
 part of '../task_layout.dart';
 
-class _PageBody extends StatelessWidget {
-  /// Create a _PageBody widget.
-  _PageBody({
-    Key key,
-    @required this.data,
-  }): super(key: key);
-
-  final TaskEntity data;
-
+class PageBody extends StatelessWidget {
   /// Build the _PageBody widget.
   @override
   Widget build(BuildContext context) {
-    final controller = Provider.of<TaskController>(context);
-    return Expanded(
-      child: StreamBuilder(
-        stream: controller.steps,
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          return _StepListView(
-            taskId: data.id,
-            items: snapshot.data,
-          );
-        },
-      ),
+    var controller = Provider.of<TaskController>(context);
+
+    return StreamBuilder<List<StepEntity>>(
+      initialData: controller.steps,
+      stream: controller.stepListStream,
+      builder: (context, snapshot) {
+        return _StepListView(
+          items: snapshot.data,
+        );
+      },
     );
   }
 }
