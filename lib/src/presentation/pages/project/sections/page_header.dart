@@ -53,6 +53,11 @@ class PageHeader extends StatelessWidget {
                 ),
               );
 
+              if (result == false) {
+                controller.deleteProject();
+                Navigator.of(context).pop();
+              }
+
               if (result is ProjectEntity) {
                 controller.updateProject(result);
               }

@@ -45,8 +45,22 @@ class ActionButtons extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
               color: Colors.white,
-              fontSize: 18,
+              fontSize: 20,
               fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        if (controller.project.id != null)
+        GestureDetector(
+          onTap: () {
+            Navigator.of(context).pop(false);
+          },
+          child: Text(
+            'Delete',
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18,
             ),
           ),
         ),
