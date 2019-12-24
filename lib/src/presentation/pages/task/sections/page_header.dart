@@ -1,19 +1,12 @@
 part of '../task_layout.dart';
 
-class _PageHeader extends StatelessWidget {
-  /// Create a _PageHeader widget.
-  _PageHeader({
-    Key key,
-    @required this.data,
-    @required this.onChanged,
-  }): super(key: key);
-
-  final TaskEntity data;
-  final ValueChanged<TaskEntity> onChanged;
-
+class PageHeader extends StatelessWidget {
   /// Build the _PageHeader widget.
   @override
   Widget build(BuildContext context) {
+    var controller = Provider.of<TaskController>(context);
+    var task = controller.task;
+
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10),
       child: Column(
@@ -38,30 +31,25 @@ class _PageHeader extends StatelessWidget {
             child: Row(
               children: <Widget>[
                 Expanded(
-                  child: _TaskTitleTextField(
-                    data: data.title,
-                    onChanged: (String title) {
-                      onChanged(data.copyWith(
-                        title: title,
-                      ));
+                  child: TaskTitleTextField(
+                    data: task.title,
+                    onChanged: (title) {
+                      controller.setTaskTitle(title);
                     },
                   ),
                 ),
                 const SizedBox(width: 10),
                 CircleCheckbox(
-                  value: data.isDone,
-                  onChanged: (bool checked) {
-                    onChanged(data.copyWith(
-                      isDone: checked,
-                    ));
+                  value: task.isDone,
+                  onChanged: (checked) {
+                    controller.setTaskIsDone(checked);
                   },
                 ),
-                _ImportantCheckbox(
-                  value: data.isImportant,
-                  onChanged: (bool checked) {
-                    onChanged(data.copyWith(
-                      isImportant: checked,
-                    ));
+                IconCheckbox(
+                  value: task.isImportant,
+                  icon: Icons.star,
+                  onChanged: (checked) {
+                    controller.setTaskIsImportant(checked);
                   },
                 ),
               ],

@@ -1,50 +1,40 @@
 part of '../task_layout.dart';
 
-class _BottomBar extends StatelessWidget {
-  /// Create a _BottomBar widget.
-  _BottomBar({
-    Key key,
-    @required this.data,
-  }): super(key: key);
-
-  final TaskEntity data;
-
-  /// Build the _BottomBar widget.
+class BottomBar extends StatelessWidget {
+  /// Build the BottomBar widget.
   @override
   Widget build(BuildContext context) {
+    var controller = Provider.of<TaskController>(context);
+    var task = controller.task;
+
     return BottomAppBar(
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Text(
-              'Created on ${DateFormat.yMMMd().format(data.createdDate)}',
+              'Created on ${DateFormat.yMMMd().format(task.createdDate)}',
               style: Theme.of(context).textTheme.subtitle.copyWith(
                 fontWeight: FontWeight.w300,
               ),
             ),
             // Delete task button.
-            Consumer<TaskManagerContract>(
-              builder: (context, manager) {
-                return IconButton(
-                  color: Colors.red[400],
-                  icon: const Icon(Icons.delete),
-                  onPressed: () async {
-                    var result = await showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return _TaskDeleteDialog();
-                      },
-                    );
-
-                    if (result != null && result) {
-                      if (await manager.deleteTask(data)) {
-                        Navigator.of(context).pop();
-                      }
-                    }
+            IconButton(
+              color: Colors.red[400],
+              icon: const Icon(Icons.delete),
+              onPressed: () async {
+                var result = await showDialog(
+                  context: context,
+                  builder: (context) {
+                    return TaskDeleteDialog();
                   },
                 );
+
+                if (result != null && result) {
+                  controller.deleteTask();
+                  Navigator.of(context).pop();
+                }
               },
             ),
           ],

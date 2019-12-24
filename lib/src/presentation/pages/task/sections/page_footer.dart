@@ -1,38 +1,42 @@
 part of '../task_layout.dart';
 
-class _PageFooter extends StatelessWidget {
-  /// Create a PageFooter widget.
-  _PageFooter({
-    Key key,
-    @required this.data,
-    @required this.onChanged,
-  }): super(key: key);
-
-  final TaskEntity data;
-  final ValueChanged<TaskEntity> onChanged;
-
+class PageFooter extends StatelessWidget {
   /// Build the PageFooter widget.
   @override
   Widget build(BuildContext context) {
+    var controller = Provider.of<TaskController>(context);
+    var task = controller.task;
+
     return Column(
       children: <Widget>[
         DatePicker(
           title: 'Add due date',
           icon: Icons.date_range,
-          initialDate: data.dueDate,
+          initialDate: task.dueDate,
           onChanged: (date) {
-            onChanged(data.copyWith(
-              dueDate: date,
-            ));
+            controller.setTaskDueDate(date);
           },
         ),
-        _TaskNoteTextField(
-          data: data.note,
-          onChanged: (note) {
-            onChanged(data.copyWith(
-              note: note,
-            ));
-          },
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(5),
+          ),
+          margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+          padding: const EdgeInsets.all(10),
+          child: TextField(
+            autocorrect: false,
+            controller: TextEditingController(text: controller.task.note),
+            decoration: const InputDecoration.collapsed(
+              hintText: 'Note',
+              border: InputBorder.none,
+            ),
+            keyboardType: TextInputType.multiline,
+            maxLines: 3,
+            onChanged: (note) {
+              controller.setTaskNote(note);
+            },
+          )
         ),
       ],
     );

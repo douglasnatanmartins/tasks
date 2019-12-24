@@ -1,28 +1,76 @@
 import 'dart:async';
+import 'package:meta/meta.dart';
 
 import 'package:tasks/src/core/contracts/controller.dart';
 import 'package:tasks/src/domain/entities/step_entity.dart';
 import 'package:tasks/src/domain/entities/task_entity.dart';
 import 'package:tasks/src/domain/usecases/get_step_repository.dart';
 import 'package:tasks/src/presentation/controllers/step_manager_contract.dart';
+import 'package:tasks/src/presentation/controllers/task_manager_contract.dart';
 
 /// The Business Logic Component for the Task Page.
 class TaskController implements Controller, StepManagerContract {
   /// Constructor of Business Logic Component for the Task Page.
   /// 
   /// The [task] argument must not be null.
-  TaskController(this.task) {
+  TaskController({
+    @required TaskEntity task,
+    @required TaskManagerContract manager,
+  }): assert(task != null),
+      assert(manager != null),
+      _taskInitial = task,
+      _task = task,
+      _taskManager = manager {
     _fetchSteps().then((result) {
-      pushSteps();
+      _pushStepList();
     });
   }
 
+  final TaskManagerContract _taskManager;
   final _stepRepository = GetStepRepository().getRepository();
-  final _stepListController = StreamController<List<StepEntity>>.broadcast();
-  Stream<List<StepEntity>> get steps => _stepListController.stream;
 
-  TaskEntity task;
+  final _stepListSubject = StreamController<List<StepEntity>>.broadcast();
+  Stream<List<StepEntity>> get stepListStream => _stepListSubject.stream;
+
+  final TaskEntity _taskInitial;
+  TaskEntity _task;
+  TaskEntity get task => _task;
+
   List<StepEntity> _steps = <StepEntity>[];
+  List<StepEntity> get steps => _steps;
+
+  void setTaskTitle(String title) {
+    _task = _task.copyWith(title: title);
+  }
+
+  void setTaskNote(String note) {
+    _task = _task.copyWith(note: note);
+  }
+
+  void setTaskDueDate(DateTime date) {
+    _task = _task.copyWith(dueDate: date);
+  }
+
+  void setTaskIsDone(bool checked) {
+    _task = _task.copyWith(isDone: checked);
+  }
+
+  void setTaskIsImportant(bool checked) {
+    _task = _task.copyWith(isImportant: checked);
+  }
+
+  Future<bool> deleteTask() {
+    return _taskManager.deleteTask(_task);
+  }
+
+  Future<bool> updateTask() async {
+    bool result = false;
+    if (_taskInitial != _task) {
+      result = await _taskManager.updateTask(_task, _taskInitial);
+    }
+
+    return result;
+  }
 
   /// Add a step to task object.
   @override
@@ -30,7 +78,7 @@ class TaskController implements Controller, StepManagerContract {
     bool result = await _stepRepository.createStep(data);
     if (result) {
       await _fetchSteps();
-      pushSteps();
+      _pushStepList();
     }
 
     return result;
@@ -43,7 +91,7 @@ class TaskController implements Controller, StepManagerContract {
     if (result) {
       bool completed = _steps.remove(data);
       if (completed) {
-        pushSteps();
+        _pushStepList();
       }
     }
 
@@ -57,15 +105,10 @@ class TaskController implements Controller, StepManagerContract {
     if (result) {
       int index = _steps.indexOf(previous);
       _steps[index] = current;
-      pushSteps();
+      _pushStepList();
     }
 
     return result;
-  }
-
-  /// Refresh step list in the task.
-  Future<void> pushSteps() async {
-    _stepListController.add(_steps);
   }
 
   /// Fetch all steps of task.
@@ -73,9 +116,13 @@ class TaskController implements Controller, StepManagerContract {
     _steps = await _stepRepository.getAllStepByTaskId(task.id);
   }
 
+  void _pushStepList() {
+    _stepListSubject.add(_steps);
+  }
+
   /// Dispose this business logic component.
   @override
   void dispose() {
-    _stepListController.close();
+    _stepListSubject.close();
   }
 }

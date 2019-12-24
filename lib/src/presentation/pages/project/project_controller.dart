@@ -80,7 +80,8 @@ class ProjectController implements Controller, TaskManagerContract {
     bool result = await _taskRepository.updateTask(current);
 
     if (result) {
-      await _fetchTasks();
+      int index = _tasks.indexOf(previous);
+      _tasks[index] = current;
       _pushTaskList();
     }
 

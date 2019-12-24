@@ -1,12 +1,7 @@
 part of '../task_layout.dart';
 
-class _TaskDeleteDialog extends StatelessWidget {
-  /// Create a _TaskDeleteDialog widget.
-  _TaskDeleteDialog({
-    Key key,
-  }): super(key: key);
-
-  /// Build the _TaskDeleteDialog widget.
+class TaskDeleteDialog extends StatelessWidget {
+  /// Build the TaskDeleteDialog widget.
   @override
   Widget build(BuildContext context) {
     return AlertDialog(

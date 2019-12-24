@@ -36,14 +36,17 @@ class TaskPage extends StatelessWidget {
   /// Build the TaskPage widget.
   @override
   Widget build(BuildContext context) {
-    return Provider<TaskManagerContract>.component(
-      component: arguments.manager,
-      notifier: (current, previous) => false,
-      child: Provider<TaskController>(
-        creator: (context) => TaskController(arguments.task),
-        disposer: (context, controller) => controller?.dispose(),
-        child: TaskLayout(task: arguments.task),
-      ),
+    return Provider<TaskController>(
+      creator: (context) {
+        return TaskController(
+          task: arguments.task,
+          manager: arguments.manager,
+        );
+      },
+      disposer: (context, controller) {
+        controller?.dispose();
+      },
+      child: TaskLayout(),
     );
   }
 }

@@ -4,32 +4,30 @@ class _StepListView extends StatelessWidget {
   /// Create a _StepListView widget.
   _StepListView({
     Key key,
-    @required this.taskId,
     @required this.items,
   }): super(key: key);
 
   final List<StepEntity> items;
-  final int taskId;
 
   /// Build the _StepListView widget.
   @override
   Widget build(BuildContext context) {
-    final controller = Provider.of<TaskController>(context);
+    var controller = Provider.of<TaskController>(context);
     List<_StepListTile> tiles = <_StepListTile>[];
 
     // Add exists steps.
-    if (this.items != null) {
-      for (var item in this.items) {
-        tiles.add(this.buildItem(item, controller));
+    if (items != null) {
+      for (var item in items) {
+        tiles.add(buildItem(item, controller));
       }
     }
 
     tiles.add(
-      this.buildItem(
+      buildItem(
         StepEntity(
           id: null,
           message: null,
-          taskId: this.taskId,
+          taskId: controller.task.id,
           isDone: false,
         ),
         controller,
